@@ -1,0 +1,23 @@
+{"id": 1, "name": "Alameda Osuna", "sh_name": "AOA", "icon": "alameda.png"}
+{"id": 2, "name": "Alcala", "sh_name": "ALCA", "icon": "alcala.png"}
+{"id": 3, "name": "Alcobendas", "sh_name": "ALB", "icon": "alcobendas.png"}
+{"id": 4, "name": "Alcorcon", "sh_name": "ALCR", "icon": "alcorcon.png"}
+{"id": 5, "name": "Aldovea", "sh_name": "ALD", "icon": "aldovea.png"}
+{"id": 6, "name": "Aluche", "sh_name": "ALU", "icon": "aluche.png"}
+{"id": 7, "name": "Casar", "sh_name": "CAS", "icon": "casar.png"}
+{"id": 8, "name": "Coslada", "sh_name": "COS", "icon": "coslada.png"}
+{"id": 9, "name": "Gredos", "sh_name": "GRD", "icon": "gredos.png"}
+{"id": 10, "name": "Las Rozas", "sh_name": "ROZ", "icon": "lasrozas.png"}
+{"id": 11, "name": "Majadahonda", "sh_name": "MJH", "icon": "majadahonda.png"}
+{"id": 12, "name": "Retamar", "sh_name": "RET", "icon": "retamar.png"}
+{"id": 13, "name": "Rivas", "sh_name": "RIV", "icon": "rivas.png"}
+{"id": 14, "name": "Rivas A", "sh_name": "RIV A", "icon": "rivas.png"}
+{"id": 15, "name": "Rivas B", "sh_name": "RIV B", "icon": "rivas.png"}
+{"id": 16, "name": "Sanse", "sh_name": "SANS", "icon": "sanse.png"}
+{"id": 17, "name": "Sta.Maria del Pilar", "sh_name": "SMP", "icon": "pilar.png"}
+{"id": 18, "name": "Sta.Maria La Blanca", "sh_name": "SMB", "icon": "lablanca.png"}
+{"id": 19, "name": "Tres Cantos", "sh_name": "TCS", "icon": "trescantos.png"}
+{"id": 20, "name": "Virgen de Europa", "sh_name": "CVE", "icon": "vdeuropa.png"}
+{"id": 21, "name": "Vetonia", "sh_name": "VET", "icon": "vetonia.png"}
+
+

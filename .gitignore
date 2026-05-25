@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# next
+.next/
+out/
+.vercel/
+
+# env / secrets
+.env
+.env.*
+!.env.example
+
+# local artifacts
+*.log
+.DS_Store
+coverage/
+playwright-report/
+test-results/
+
+# generated backups
+.env.local.backup.*

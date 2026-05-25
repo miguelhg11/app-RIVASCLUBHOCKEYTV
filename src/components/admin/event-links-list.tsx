@@ -1,0 +1,302 @@
+"use client";
+
+import { useState, useActionState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { syncChannelBroadcastsAction } from "@/src/actions/broadcast.actions";
+import { CustomDatePicker } from "@/src/components/ui/custom-date-picker";
+import type { CachedYouTubeVideoRow } from "@/src/lib/broadcast/queries";
+import type { PlaylistRow } from "@/src/lib/admin/queries";
+
+type Props = {
+  videos: CachedYouTubeVideoRow[];
+  playlists: PlaylistRow[];
+};
+
+export function EventLinksList({ videos, playlists }: Props) {
+  const router = useRouter();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [selectedType, setSelectedType] = useState("all");
+  const [selectedPlaylist, setSelectedPlaylist] = useState("all");
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const [state, formAction, pending] = useActionState(syncChannelBroadcastsAction, {});
+
+  useEffect(() => {
+    if (state.ok) {
+      router.refresh();
+    }
+  }, [state.ok, router]);
+
+  // Filter logic: AND combination (cumulative)
+  const filteredVideos = videos.filter((video) => {
+    // 1. Text Search (title matches word-by-word or complete phrase)
+    const matchSearch =
+      !searchTerm.trim() ||
+      video.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+    // 2. Date Range Filter
+    let matchDate = true;
+    if (startDate || endDate) {
+      const pubDateOnly = video.publishedAt.split("T")[0];
+      if (startDate && pubDateOnly < startDate) {
+        matchDate = false;
+      }
+      if (endDate && pubDateOnly > endDate) {
+        matchDate = false;
+      }
+    }
+
+    // 3. Type Filter
+    const matchType = selectedType === "all" || video.videoType === selectedType;
+
+    // 4. Playlist Filter
+    const matchPlaylist =
+      selectedPlaylist === "all" || video.playlistIds.includes(selectedPlaylist);
+
+    return matchSearch && matchDate && matchType && matchPlaylist;
+  });
+
+  const handleCopyLink = (url: string, id: string) => {
+    navigator.clipboard.writeText(url);
+    setCopiedId(id);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  const handleResetFilters = () => {
+    setSearchTerm("");
+    setStartDate("");
+    setEndDate("");
+    setSelectedType("all");
+    setSelectedPlaylist("all");
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Filters Container */}
+      <div className="glass-card rounded-xl p-5 space-y-4">
+        <h3 className="text-xs font-semibold uppercase tracking-wider text-text-muted">
+          Buscador y Filtros acumulativos (AND)
+        </h3>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          {/* Keyword Search */}
+          <div>
+            <label className="block text-xs font-semibold tracking-wider text-text-muted uppercase mb-1.5">
+              Buscador por palabras
+            </label>
+            <input
+              type="text"
+              placeholder="Buscar por título..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="glass-input w-full rounded-lg px-3 py-2 text-sm outline-none placeholder-white/20"
+            />
+          </div>
+
+          {/* Date Picker Desde */}
+          <div>
+            <label className="block text-xs font-semibold tracking-wider text-text-muted uppercase mb-1.5">
+              Fecha desde
+            </label>
+            <CustomDatePicker value={startDate} onChange={setStartDate} />
+          </div>
+
+          {/* Date Picker Hasta */}
+          <div>
+            <label className="block text-xs font-semibold tracking-wider text-text-muted uppercase mb-1.5">
+              Fecha hasta
+            </label>
+            <CustomDatePicker value={endDate} onChange={setEndDate} />
+          </div>
+
+          {/* Type Selector */}
+          <div>
+            <label className="block text-xs font-semibold tracking-wider text-text-muted uppercase mb-1.5">
+              Tipo de contenido
+            </label>
+            <select
+              value={selectedType}
+              onChange={(e) => setSelectedType(e.target.value)}
+              className="glass-input w-full rounded-lg px-3 py-2 text-sm outline-none"
+            >
+              <option value="all">Todos los formatos</option>
+              <option value="live">Directo (Live Stream)</option>
+              <option value="video">Vídeo subido</option>
+              <option value="short">Short</option>
+            </select>
+          </div>
+
+          {/* Playlist Selector */}
+          <div>
+            <label className="block text-xs font-semibold tracking-wider text-text-muted uppercase mb-1.5">
+              Lista de reproducción
+            </label>
+            <select
+              value={selectedPlaylist}
+              onChange={(e) => setSelectedPlaylist(e.target.value)}
+              className="glass-input w-full rounded-lg px-3 py-2 text-sm outline-none"
+            >
+              <option value="all">Todas las listas</option>
+              {playlists.map((pl) => (
+                <option key={pl.id} value={pl.youtube_playlist_id}>
+                  {pl.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {(searchTerm || startDate || endDate || selectedType !== "all" || selectedPlaylist !== "all") && (
+          <div className="flex justify-end pt-2">
+            <button
+              onClick={handleResetFilters}
+              className="btn-ghost px-4 py-1.5 text-xs text-accent-cyan hover:text-white"
+            >
+              Limpiar filtros
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Videos List */}
+      <section className="glass-panel rounded-xl p-5">
+        <div className="border-b border-white/10 pb-3 flex flex-wrap gap-4 justify-between items-center">
+          <div>
+            <h2 className="font-display text-sm font-semibold tracking-wider text-text-muted uppercase">
+              Resultados del canal ({filteredVideos.length})
+            </h2>
+            <p className="mt-0.5 text-xs text-text-muted">
+              Vídeos, emisiones grabadas y shorts detectados en el canal de YouTube.
+            </p>
+          </div>
+
+          <div className="flex flex-col items-end gap-1.5">
+            <form action={formAction}>
+              <button
+                type="submit"
+                disabled={pending}
+                className="rounded-lg bg-accent-cyan/15 hover:bg-accent-cyan/25 border border-accent-cyan/30 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-accent-cyan disabled:opacity-50 transition-all flex items-center gap-1.5 cursor-pointer"
+              >
+                {pending ? (
+                  <>
+                    <svg className="animate-spin -ml-0.5 mr-1 h-3.5 w-3.5 text-accent-cyan" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Sincronizando...
+                  </>
+                ) : (
+                  <>
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7C4.797 8.545 4.75 9.768 4.75 11.5v.5H3.5a1 1 0 00-.707 1.707l2.5 2.5a1 1 0 001.414 0l2.5-2.5A1 1 0 008.5 12H7.25v-.5c0-1.57.03-3.12.09-4.66a2.004 2.004 0 011.85-1.85 46.726 46.726 0 017.02 0 2.004 2.004 0 011.85 1.85c.08 1.94.12 3.89.12 5.66H16.5a1 1 0 00-.707 1.707l2.5 2.5a1 1 0 001.414 0l2.5-2.5A1 1 0 0021.5 12h-2z" />
+                    </svg>
+                    Sincronizar con YouTube
+                  </>
+                )}
+              </button>
+            </form>
+            {state.error ? (
+              <span className="text-[10px] text-accent-red font-medium">{state.error}</span>
+            ) : null}
+            {state.ok ? (
+              <span className="text-[10px] text-emerald-400 font-medium">{state.ok}</span>
+            ) : null}
+          </div>
+        </div>
+
+        {filteredVideos.length === 0 ? (
+          <div className="py-12 text-center text-text-muted text-sm">
+            No se encontraron partidos o vídeos que coincidan con la búsqueda.
+          </div>
+        ) : (
+          <div className="mt-3 overflow-auto">
+            <table className="min-w-full text-sm">
+              <thead>
+                <tr className="border-b border-white/10 text-left text-text-muted">
+                  <th className="px-3 py-2.5">Título</th>
+                  <th className="px-3 py-2.5">Fecha</th>
+                  <th className="px-3 py-2.5">Tipo</th>
+                  <th className="px-3 py-2.5">Listas de reproducción</th>
+                  <th className="px-3 py-2.5 text-right">Enlaces rápidos</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredVideos.map((row) => {
+                  const publishedDate = new Date(row.publishedAt);
+                  
+                  // Get active playlists names this video belongs to
+                  const matchedPlaylists = playlists.filter((pl) =>
+                    row.playlistIds.includes(pl.youtube_playlist_id)
+                  );
+
+                  return (
+                    <tr key={row.id} className="border-b border-white/5 align-top hover:bg-white/[0.01] transition-all">
+                      <td className="px-3 py-4 font-medium text-white max-w-sm sm:max-w-md truncate">
+                        <div className="font-semibold text-white whitespace-pre-wrap">{row.title}</div>
+                        {row.description && (
+                          <div className="text-xs text-text-muted/70 mt-1 line-clamp-1">
+                            {row.description}
+                          </div>
+                        )}
+                      </td>
+                      <td className="px-3 py-4 text-text-muted whitespace-nowrap">
+                        {publishedDate.toLocaleDateString()}
+                        <div className="text-[10px] text-text-muted/60 mt-0.5">
+                          {publishedDate.toLocaleTimeString()}
+                        </div>
+                      </td>
+                      <td className="px-3 py-4">
+                        <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold ring-1 ring-inset ${
+                          row.videoType === "live"
+                            ? "bg-accent-red-soft text-accent-red ring-accent-red/20"
+                            : row.videoType === "short"
+                            ? "bg-accent-cyan-soft text-accent-cyan ring-accent-cyan/20"
+                            : "bg-white/5 text-text-muted ring-white/10"
+                        }`}>
+                          {row.videoType === "live" ? "Directo" : row.videoType === "short" ? "Short" : "Vídeo"}
+                        </span>
+                      </td>
+                      <td className="px-3 py-4">
+                        <div className="flex flex-wrap gap-1">
+                          {matchedPlaylists.length === 0 ? (
+                            <span className="text-xs text-text-muted/50">-</span>
+                          ) : (
+                            matchedPlaylists.map((pl) => (
+                              <span key={pl.id} className="inline-flex items-center rounded bg-white/5 px-1.5 py-0.5 text-[10px] text-text-muted">
+                                {pl.name}
+                              </span>
+                            ))
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-3 py-4 text-right">
+                        <div className="flex justify-end gap-2.5">
+                          <button
+                            onClick={() => handleCopyLink(row.youtubeWatchUrl, row.id)}
+                            className="btn-ghost px-2.5 py-1 text-xs text-accent-cyan"
+                          >
+                            {copiedId === row.id ? "¡Copiado!" : "Copiar Enlace"}
+                          </button>
+                          <a
+                            href={row.youtubeWatchUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="rounded bg-accent-cyan/10 px-2.5 py-1 text-xs font-semibold text-accent-cyan ring-1 ring-inset ring-accent-cyan/20 hover:bg-accent-cyan/20 transition-all"
+                          >
+                            Ver en YouTube ↗
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}

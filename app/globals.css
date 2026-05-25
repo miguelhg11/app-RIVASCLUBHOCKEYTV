@@ -1,0 +1,271 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-rajdhani), ui-sans-serif, system-ui, sans-serif;
+
+  --color-void: #030305;
+  --color-surface: #0a0b10;
+  --color-panel: rgba(16, 16, 20, 0.70);
+  --color-border-glass: rgba(255,255,255,0.12);
+  --color-border-glass-hover: rgba(255,255,255,0.20);
+  --color-accent-red: #ff1a1a;
+  --color-accent-red-soft: rgba(255, 26, 26, 0.15);
+  --color-accent-cyan: #00e5ff;
+  --color-accent-cyan-soft: rgba(0, 229, 255, 0.12);
+  --color-text: #f0f0f5;
+  --color-text-muted: #8a8b99;
+}
+
+body {
+  background-color: #030305;
+  color: #f0f0f5;
+  min-height: 100vh;
+  font-family: var(--font-sans);
+}
+
+/* ── Atmospheric background ───────────────────────────────────────────── */
+.atmosphere-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 15% 50%, rgba(255, 26, 26, 0.10), transparent 45%),
+    radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.04), transparent 45%),
+    #030305;
+  overflow: hidden;
+}
+
+.atmosphere-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* ── Glass utilities ──────────────────────────────────────────────────── */
+.glass-panel {
+  background: rgba(16, 16, 20, 0.70);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-card {
+  background: rgba(20, 20, 26, 0.65);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.50),
+    0 0 20px rgba(255, 26, 26, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  transform: translateY(-2px);
+}
+
+/* ── Logo treatment ───────────────────────────────────────────────────── */
+.logo-glow {
+  filter: drop-shadow(0 0 18px rgba(255, 26, 26, 0.55)) drop-shadow(0 0 36px rgba(255, 26, 26, 0.25));
+  transition: filter 0.3s ease;
+}
+
+.logo-glow:hover {
+  filter: drop-shadow(0 0 28px rgba(255, 26, 26, 0.8)) drop-shadow(0 0 56px rgba(255, 26, 26, 0.4));
+}
+
+/* ── Inputs ───────────────────────────────────────────────────────────── */
+.glass-input {
+  background: rgba(6, 6, 8, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #f0f0f5;
+  transition: all 0.2s ease;
+}
+
+.glass-input::placeholder {
+  color: rgba(240, 240, 245, 0.40);
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: rgba(255, 26, 26, 0.6);
+  box-shadow: 0 0 0 3px rgba(255, 26, 26, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 16px rgba(255, 26, 26, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(255, 26, 26, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #f0f0f5;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.20);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+/* ── Neon text utilities ──────────────────────────────────────────────── */
+.text-neon-red {
+  color: #ff1a1a;
+  text-shadow: 0 0 10px rgba(255, 26, 26, 0.45);
+}
+
+.text-neon-cyan {
+  color: #00e5ff;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+/* ── Display font utility ─────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+/* ── Select / Option dark styling ─────────────────────────────────────── */
+select {
+  background-color: #0f0f14;
+  color: #f0f0f5;
+}
+
+select option {
+  background-color: #0f0f14;
+  color: #f0f0f5;
+}
+
+/* ── Agenda match cards (solid, clearly visible against void bg) ─────── */
+.agenda-card {
+  background: #181820;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: all 0.2s ease;
+}
+
+.agenda-card:hover {
+  background: #1c1c26;
+  border-color: rgba(255, 255, 255, 0.30);
+  box-shadow:
+    0 10px 32px rgba(0, 0, 0, 0.65),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  transform: translateY(-1px);
+}
+
+.agenda-card-selected {
+  background: #1a1e28;
+  border: 1px solid rgba(0, 229, 255, 0.40);
+  box-shadow:
+    0 0 28px rgba(0, 229, 255, 0.12),
+    0 6px 20px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* ── Live pulse indicator ─────────────────────────────────────────────── */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 26, 26, 0.6); }
+  50% { opacity: 0.85; box-shadow: 0 0 0 6px rgba(255, 26, 26, 0); }
+}
+
+.live-dot {
+  animation: live-pulse 2s infinite;
+}
+
+/* ── Custom date input styling ────────────────────────────────────────── */
+.custom-date-container {
+  position: relative;
+}
+
+.custom-date-container input[type="date"] {
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  color-scheme: dark; /* Ensures the calendar popover displays in dark theme */
+  font-family: var(--font-display), monospace;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+/* Position the invisible native indicator strictly on the right side */
+.custom-date-container input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 38px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 10;
+}
+
+/* Smooth transitions for the calendar icon and border */
+.custom-date-container svg {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Apply neon cyan glow and scale icon on hover */
+.custom-date-container:hover svg {
+  color: #00e5ff;
+  filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.5));
+  transform: scale(1.08);
+}
+
+

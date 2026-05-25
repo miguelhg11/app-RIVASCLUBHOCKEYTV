@@ -1,0 +1,27 @@
+import { RfepLeagueConfig } from "./types";
+
+export const RFEP_LEAGUES: RfepLeagueConfig[] = [
+  { leagueId: 3150, nameHint: "OK LIGA MASCULINA", categoryKey: "ok_liga_masculina", categoryLabel: "OK Liga Masculina" },
+  { leagueId: 3151, nameHint: "OK LIGA IBERDROLA", categoryKey: "ok_liga_femenina", categoryLabel: "OK Liga Femenina" },
+  { leagueId: 3153, nameHint: "OK LIGA PLATA NORTE", categoryKey: "ok_plata", categoryLabel: "OK Plata" },
+  { leagueId: 3154, nameHint: "OK LIGA PLATA SUR", categoryKey: "ok_plata", categoryLabel: "OK Plata" },
+  { leagueId: 3155, nameHint: "OK LIGA PLATA FEMENINA", categoryKey: "ok_plata", categoryLabel: "OK Plata" },
+  { leagueId: 3158, nameHint: "OK LIGA BRONCE MASCULINA SUR", categoryKey: "ok_bronce", categoryLabel: "OK Bronce" },
+  { leagueId: 3258, nameHint: "COPA DEL REY", categoryKey: "copa_del_rey", categoryLabel: "Copa del Rey" },
+  { leagueId: 3259, nameHint: "COPA DE LA REINA IBERDROLA", categoryKey: "copa_de_la_reina", categoryLabel: "Copa de la Reina" },
+  { leagueId: 3177, nameHint: "SUPERCOPA DE ESPAÑA MASCULINA", categoryKey: "supercopa", categoryLabel: "Supercopa de España" },
+  { leagueId: 3178, nameHint: "SUPERCOPA DE ESPAÑA FEMENINA", categoryKey: "supercopa", categoryLabel: "Supercopa de España" },
+  { leagueId: 3301, nameHint: "COPA SAR LA PRINCESA MASCULINA", categoryKey: "copa_princesa", categoryLabel: "Copa de la Princesa" },
+  { leagueId: 3302, nameHint: "COPA SAR LA PRINCESA FEMENINA", categoryKey: "copa_princesa", categoryLabel: "Copa de la Princesa" },
+  { leagueId: 3260, nameHint: "MINICOPA DEL REY", categoryKey: "minicopa", categoryLabel: "Minicopa" },
+  { leagueId: 3261, nameHint: "MINI COPA DE LA REINA", categoryKey: "minicopa", categoryLabel: "Minicopa" },
+  { leagueId: 3460, nameHint: "XXX CTO ESPAÑA SELECC MASCULINO", categoryKey: "cto_espana_selecciones", categoryLabel: "Cto. España Selecciones" },
+  { leagueId: 3461, nameHint: "XVII CTO ESPAÑA SELECC FEMENINO", categoryKey: "cto_espana_selecciones", categoryLabel: "Cto. España Selecciones" },
+  { leagueId: 3462, nameHint: "CAMPEONATO DE ESPAÑA ALEVIN", categoryKey: "alevin", categoryLabel: "Alevín (Cto. España)" },
+  { leagueId: 3463, nameHint: "CAMPEONATO DE ESPAÑA INFANTIL", categoryKey: "infantil", categoryLabel: "Infantil (Cto. España)" },
+  { leagueId: 3464, nameHint: "CAMPEONATO DE ESPAÑA JUVENIL", categoryKey: "juvenil", categoryLabel: "Juvenil (Cto. España)" },
+  { leagueId: 3465, nameHint: "CAMPEONATO DE ESPAÑA JUNIOR", categoryKey: "junior", categoryLabel: "Junior (Cto. España)" },
+  { leagueId: 3487, nameHint: "COPA DE ESPAÑA ALEVIN FEMENINA", categoryKey: "alevin", categoryLabel: "Alevín Femenino (Copa España)" },
+  { leagueId: 3488, nameHint: "COPA DE ESPAÑA INFANTIL FEMENINA", categoryKey: "infantil", categoryLabel: "Infantil Femenino (Copa España)" },
+  { leagueId: 3489, nameHint: "COPA DE ESPAÑA JUVENIL FEMENINA", categoryKey: "juvenil", categoryLabel: "Juvenil Femenino (Copa España)" },
+];

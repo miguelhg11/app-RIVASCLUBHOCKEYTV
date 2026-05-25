@@ -1,0 +1,3093 @@
+[
+  {
+    "id": 1,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Alameda de Osuna",
+    "shortCode": "AOA",
+    "aliases": [
+      "Alameda Osuna",
+      "AOA",
+      "Alameda de Osuna",
+      "Colegio Alameda de Osuna"
+    ],
+    "normalizedAliases": [
+      "ALAMEDA OSUNA",
+      "AOA",
+      "ALAMEDA DE OSUNA",
+      "COLEGIO ALAMEDA DE OSUNA"
+    ],
+    "assetPath": "badges/fmp/alameda.png",
+    "originalZipPath": "alameda.png",
+    "sha256": "0abf680c5a73e82b020d3faa4b5b8820645781c16f8afdbd11027cc749b9498f",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 2,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Alcalá",
+    "shortCode": "ALCA",
+    "aliases": [
+      "Alcala",
+      "ALCA",
+      "CP Alcalá"
+    ],
+    "normalizedAliases": [
+      "ALCALA",
+      "ALCA",
+      "CP ALCALA"
+    ],
+    "assetPath": "badges/fmp/alcala.png",
+    "originalZipPath": "alcala.png",
+    "sha256": "f43480a7d656ef228b03a370180ebb13d82f504559c65bd1c35356b8dfc904ba",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 3,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Alcobendas",
+    "shortCode": "ALB",
+    "aliases": [
+      "Alcobendas",
+      "ALB",
+      "CP Alcobendas"
+    ],
+    "normalizedAliases": [
+      "ALCOBENDAS",
+      "ALB",
+      "CP ALCOBENDAS"
+    ],
+    "assetPath": "badges/fmp/alcobendas.png",
+    "originalZipPath": "alcobendas.png",
+    "sha256": "b6344822b66b5337e1e1018d7067876ba20a6fa9496158eeb52e5b73af9475cb",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 4,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Alcorcón",
+    "shortCode": "ALCR",
+    "aliases": [
+      "Alcorcon",
+      "ALCR",
+      "CP Alcorcón"
+    ],
+    "normalizedAliases": [
+      "ALCORCON",
+      "ALCR",
+      "CP ALCORCON"
+    ],
+    "assetPath": "badges/fmp/alcorcon.png",
+    "originalZipPath": "alcorcon.png",
+    "sha256": "00f0f3d4c116dcf57ac901df4a4f1d172f6f358e0d90df013b7c46859505a416",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 5,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Aldovea",
+    "shortCode": "ALD",
+    "aliases": [
+      "Aldovea",
+      "ALD"
+    ],
+    "normalizedAliases": [
+      "ALDOVEA",
+      "ALD"
+    ],
+    "assetPath": "badges/fmp/aldovea.png",
+    "originalZipPath": "aldovea.png",
+    "sha256": "7c375aae8feb435d35892017f04ed8a88db8329b29040dfbbfbc9db490a45449",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 6,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Aluche",
+    "shortCode": "ALU",
+    "aliases": [
+      "Aluche",
+      "ALU",
+      "CHP Aluche",
+      "Gestas de España CHP Aluche"
+    ],
+    "normalizedAliases": [
+      "ALUCHE",
+      "ALU",
+      "CHP ALUCHE",
+      "GESTAS DE ESPANA CHP ALUCHE"
+    ],
+    "assetPath": "badges/fmp/aluche.png",
+    "originalZipPath": "aluche.png",
+    "sha256": "d4f8b57d6289c239d4ea76ffdbcb39bcbe2d2579afcf36c1f3c8e1626d44c7c2",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 7,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Coslada",
+    "shortCode": "COS",
+    "aliases": [
+      "Coslada",
+      "COS",
+      "CP Coslada"
+    ],
+    "normalizedAliases": [
+      "COSLADA",
+      "COS",
+      "CP COSLADA"
+    ],
+    "assetPath": "badges/fmp/coslada.png",
+    "originalZipPath": "coslada.png",
+    "sha256": "2d9435aa24a574b83e5b7e3ff7b6cc50223ff437e46fe9179c2cb72f33b3791d",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 8,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "CP Rivas Las Lagunas",
+    "shortCode": "RIV B",
+    "aliases": [
+      "Rivas",
+      "RIV",
+      "Rivas A",
+      "RIV A",
+      "Rivas B",
+      "RIV B",
+      "CP Rivas Las Lagunas",
+      "Rivas Hockey",
+      "ADISS Hockey Rivas",
+      "Hockey Rivas"
+    ],
+    "normalizedAliases": [
+      "RIVAS",
+      "RIV",
+      "RIVAS A",
+      "RIV A",
+      "RIVAS B",
+      "RIV B",
+      "CP RIVAS LAS LAGUNAS",
+      "RIVAS HOCKEY",
+      "ADISS HOCKEY RIVAS",
+      "HOCKEY RIVAS"
+    ],
+    "assetPath": "badges/fmp/rivas.png",
+    "originalZipPath": "rivas.png",
+    "sha256": "31d712a8e842e10053862ee11bc9c18ef20b68d2915e283929c00af67fc57833",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 9,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "El Casar",
+    "shortCode": "CAS",
+    "aliases": [
+      "Casar",
+      "CAS",
+      "CDE El Casar",
+      "El Casar"
+    ],
+    "normalizedAliases": [
+      "CASAR",
+      "CAS",
+      "CDE EL CASAR",
+      "EL CASAR"
+    ],
+    "assetPath": "badges/fmp/casar.png",
+    "originalZipPath": "casar.png",
+    "sha256": "03e3d38dcdeb763d2d769dd434991a715157d458ab5541fa25b8924905f19c36",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 10,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Gredos",
+    "shortCode": "GRD",
+    "aliases": [
+      "Gredos",
+      "GRD",
+      "Gredos San Diego"
+    ],
+    "normalizedAliases": [
+      "GREDOS",
+      "GRD",
+      "GREDOS SAN DIEGO"
+    ],
+    "assetPath": "badges/fmp/gredos.png",
+    "originalZipPath": "gredos.png",
+    "sha256": "ac1fbe0e12ab49ba032135dad960f5ba36be70746b572862d726ca190e6eeb14",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 11,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Las Rozas",
+    "shortCode": "ROZ",
+    "aliases": [
+      "Las Rozas",
+      "ROZ",
+      "CP Las Rozas"
+    ],
+    "normalizedAliases": [
+      "LAS ROZAS",
+      "ROZ",
+      "CP LAS ROZAS"
+    ],
+    "assetPath": "badges/fmp/lasrozas.png",
+    "originalZipPath": "lasrozas.png",
+    "sha256": "5874be1b30e8ce53387952abc707a1946a6150054bca736300ef954ec3b6a987",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 12,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Majadahonda",
+    "shortCode": "MJH",
+    "aliases": [
+      "Majadahonda",
+      "MJH",
+      "CHP Majadahonda"
+    ],
+    "normalizedAliases": [
+      "MAJADAHONDA",
+      "MJH",
+      "CHP MAJADAHONDA"
+    ],
+    "assetPath": "badges/fmp/majadahonda.png",
+    "originalZipPath": "majadahonda.png",
+    "sha256": "b5f882d8dccad562b3be297b83ea5b486e3519a4cfc7e976d047be6147a88a99",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 13,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Retamar",
+    "shortCode": "RET",
+    "aliases": [
+      "Retamar",
+      "RET"
+    ],
+    "normalizedAliases": [
+      "RETAMAR",
+      "RET"
+    ],
+    "assetPath": "badges/fmp/retamar.png",
+    "originalZipPath": "retamar.png",
+    "sha256": "0a01a7901b6a9966025380a6ad2f37f54fb8e0c0828dc45c3573135e4fb87ac6",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 14,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Sanse",
+    "shortCode": "SANS",
+    "aliases": [
+      "Sanse",
+      "SANS",
+      "San Sebastián de los Reyes",
+      "CP Sanse"
+    ],
+    "normalizedAliases": [
+      "SANSE",
+      "SANS",
+      "SAN SEBASTIAN DE LOS REYES",
+      "CP SANSE"
+    ],
+    "assetPath": "badges/fmp/sanse.png",
+    "originalZipPath": "sanse.png",
+    "sha256": "1efaeff5b99e3ba6b43bbc112ce8fcd0b577f76248ade2e9933a3dec19e719c4",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 15,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Santa María del Pilar",
+    "shortCode": "SMP",
+    "aliases": [
+      "Sta.Maria del Pilar",
+      "SMP",
+      "Santa María del Pilar",
+      "CP Pilar"
+    ],
+    "normalizedAliases": [
+      "STA MARIA DEL PILAR",
+      "SMP",
+      "SANTA MARIA DEL PILAR",
+      "CP PILAR"
+    ],
+    "assetPath": "badges/fmp/pilar.png",
+    "originalZipPath": "pilar.png",
+    "sha256": "69134552e5f2e809909c40a8c4d3866f144a13497966203ff60765d5a078c055",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 16,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Santa María La Blanca",
+    "shortCode": "SMB",
+    "aliases": [
+      "Sta.Maria La Blanca",
+      "SMB",
+      "Santa María La Blanca"
+    ],
+    "normalizedAliases": [
+      "STA MARIA LA BLANCA",
+      "SMB",
+      "SANTA MARIA LA BLANCA"
+    ],
+    "assetPath": "badges/fmp/lablanca.png",
+    "originalZipPath": "lablanca.png",
+    "sha256": "1fe20e24f15fcc7f997eabd8626596a4edf808f9cf2bc339dc80d0de8007e39b",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 17,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Tres Cantos",
+    "shortCode": "TCS",
+    "aliases": [
+      "Tres Cantos",
+      "TCS",
+      "Tres Cantos Ibercenter PC"
+    ],
+    "normalizedAliases": [
+      "TRES CANTOS",
+      "TCS",
+      "TRES CANTOS IBERCENTER PC"
+    ],
+    "assetPath": "badges/fmp/trescantos.png",
+    "originalZipPath": "trescantos.png",
+    "sha256": "fb578452ffd586fd4eff49e24553dce755329675a93e388491c37a0587ff4d36",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 18,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Vetonia",
+    "shortCode": "VET",
+    "aliases": [
+      "Vetonia",
+      "VET"
+    ],
+    "normalizedAliases": [
+      "VETONIA",
+      "VET"
+    ],
+    "assetPath": "badges/fmp/vetonia.png",
+    "originalZipPath": "vetonia.png",
+    "sha256": "326e29d202693a7894d3bf05ff3f1845d0ee1c6a38b0022153dcccd9df9baa77",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 19,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Viejasgloriasvde",
+    "shortCode": null,
+    "aliases": [
+      "Viejas Glorias Virgen de Europa",
+      "Viejas Glorias VDE"
+    ],
+    "normalizedAliases": [
+      "VIEJAS GLORIAS VIRGEN DE EUROPA",
+      "VIEJAS GLORIAS VDE"
+    ],
+    "assetPath": "badges/fmp/viejasgloriasvde.png",
+    "originalZipPath": "viejasgloriasVDE.png",
+    "sha256": "5064200f956284d16fea3aa0c381827ed0e5b55d1cd416406bac4b80bdbd64bf",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 20,
+    "sourceScope": "fmp",
+    "canonicalTeamName": "Virgen de Europa",
+    "shortCode": "CVE",
+    "aliases": [
+      "Virgen de Europa",
+      "CVE",
+      "Club Virgen de Europa"
+    ],
+    "normalizedAliases": [
+      "VIRGEN DE EUROPA",
+      "CVE",
+      "CLUB VIRGEN DE EUROPA"
+    ],
+    "assetPath": "badges/fmp/vdeuropa.png",
+    "originalZipPath": "vdeuropa.png",
+    "sha256": "23b6e093d9c2f68d35eaa7f578a3346738442db2cd9246897540cd77d3199113",
+    "verificationStatus": "LOCAL_ZIP_PLUS_CODIGO_TXT",
+    "needsManualReview": false
+  },
+  {
+    "id": 21,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Acordes",
+    "shortCode": null,
+    "aliases": [
+      "Acordes"
+    ],
+    "normalizedAliases": [
+      "ACORDES"
+    ],
+    "assetPath": "badges/rfep/acordes.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/acordes.png",
+    "sha256": "9ecf8d1829da39391e4a1983db23c5c6ab55f2cfdb11e356b47aad8ae77881db",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 22,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Acp Escuela",
+    "shortCode": null,
+    "aliases": [
+      "Acp Escuela"
+    ],
+    "normalizedAliases": [
+      "ACP ESCUELA"
+    ],
+    "assetPath": "badges/rfep/acp_escuela.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/acp-escuela.png",
+    "sha256": "bf178ac6866977a832059c6d6a7cec6474ea816e1efabea201655c98cf267159",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 23,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Albaida",
+    "shortCode": null,
+    "aliases": [
+      "Albaida"
+    ],
+    "normalizedAliases": [
+      "ALBAIDA"
+    ],
+    "assetPath": "badges/rfep/albaida.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/albaida.png",
+    "sha256": "c772768495e323fcb3c28a4b817e4be5bd33421812d0fc4ac49040d2617b8910",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 24,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Alcañiz",
+    "shortCode": null,
+    "aliases": [
+      "Alcañiz"
+    ],
+    "normalizedAliases": [
+      "ALCANIZ"
+    ],
+    "assetPath": "badges/rfep/alcaniz.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/alcañiz.png",
+    "sha256": "e300eec0bcc551dd58182cdc48ecec7089ba6a319e81bbf04a67bb2668778a24",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 25,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Alcoi",
+    "shortCode": null,
+    "aliases": [
+      "Alcoi",
+      "PAS Alcoi",
+      "AITEX PAS Alcoi"
+    ],
+    "normalizedAliases": [
+      "ALCOI",
+      "PAS ALCOI",
+      "AITEX PAS ALCOI"
+    ],
+    "assetPath": "badges/rfep/alcoi.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/alcoi.png",
+    "sha256": "7343b1fd3ffca0fbc968926dbe72dbada8f08a6b16ca42a9ffc33baab872b052",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 26,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Alpicat",
+    "shortCode": null,
+    "aliases": [
+      "Alpicat",
+      "Lleida.net Alpicat"
+    ],
+    "normalizedAliases": [
+      "ALPICAT",
+      "LLEIDA NET ALPICAT"
+    ],
+    "assetPath": "badges/rfep/alpicat.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/alpicat.png",
+    "sha256": "0e7b640964ffbed147cdedce9877494afa3b90b19fc405b2714de1953020202f",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 27,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Andorra",
+    "shortCode": null,
+    "aliases": [
+      "Andorra"
+    ],
+    "normalizedAliases": [
+      "ANDORRA"
+    ],
+    "assetPath": "badges/rfep/andorra.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/andorra.png",
+    "sha256": "5ec9df80b84a9fc44c74f272a0d6f6abe118d911751ff2cb0a13e59d58ccb605",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 28,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Areces Pavitek",
+    "shortCode": null,
+    "aliases": [
+      "Areces Pavitek"
+    ],
+    "normalizedAliases": [
+      "ARECES PAVITEK"
+    ],
+    "assetPath": "badges/rfep/areces_pavitek.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/areces pavitek.png",
+    "sha256": "3398ca761fe2a6e408aa78bf83ab734df121cc61b5c1bbaba8551ebe8bcc3135",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 29,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Arenys De Munt",
+    "shortCode": null,
+    "aliases": [
+      "Arenys De Munt"
+    ],
+    "normalizedAliases": [
+      "ARENYS DE MUNT"
+    ],
+    "assetPath": "badges/rfep/arenys_de_munt.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/arenys de munt.png",
+    "sha256": "4dc54d8c6ecdee5c40d2288e1d37af3517a581f08da98383af1238fba94dfb5e",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 30,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Aurrera Batgora",
+    "shortCode": null,
+    "aliases": [
+      "Aurrera Batgora"
+    ],
+    "normalizedAliases": [
+      "AURRERA BATGORA"
+    ],
+    "assetPath": "badges/rfep/aurrera_batgora.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/aurrera-batgora.png",
+    "sha256": "8be45838eb525c34731e580a8dd51a3a7806603e61ab5153a9d6e6745153ede6",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 31,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Autentic Sedavi",
+    "shortCode": null,
+    "aliases": [
+      "Autentic Sedavi"
+    ],
+    "normalizedAliases": [
+      "AUTENTIC SEDAVI"
+    ],
+    "assetPath": "badges/rfep/autentic_sedavi.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/autentic sedavi.png",
+    "sha256": "7df5514995ea708843a42dffd8a089848570dee83bb77f638f1f362c93a200b8",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 32,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Barbera",
+    "shortCode": null,
+    "aliases": [
+      "Barbera"
+    ],
+    "normalizedAliases": [
+      "BARBERA"
+    ],
+    "assetPath": "badges/rfep/barbera.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/barbera.png",
+    "sha256": "e757517aa0c6594e3ad44de33c4bc62d2c292646ee75a8cdbd991a6b0583e23c",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 33,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Barça",
+    "shortCode": null,
+    "aliases": [
+      "Barça",
+      "barsa",
+      "FCB",
+      "FC Barcelona"
+    ],
+    "normalizedAliases": [
+      "BARCA",
+      "BARSA",
+      "FCB",
+      "FC BARCELONA"
+    ],
+    "assetPath": "badges/rfep/barsa.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/barsa.png",
+    "sha256": "81374518a691276a9556434ef3f3d2672ea2bbf05e79f57da27331b75df8f176",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 34,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Bat Gora Kirol",
+    "shortCode": null,
+    "aliases": [
+      "Bat Gora Kirol"
+    ],
+    "normalizedAliases": [
+      "BAT GORA KIROL"
+    ],
+    "assetPath": "badges/rfep/bat_gora_kirol.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/bat-gora kirol.png",
+    "sha256": "e5fc8dd84269a1b9ccdf96e1577f08315c1775094145e66f72eae9088abad57b",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 35,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Bembibre",
+    "shortCode": null,
+    "aliases": [
+      "Bembibre"
+    ],
+    "normalizedAliases": [
+      "BEMBIBRE"
+    ],
+    "assetPath": "badges/rfep/bembibre.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/bembibre.png",
+    "sha256": "e8c6afaba4ce12c6e40840b6e7e77af7763a7efbeca62c0f2e3c16b4bff70ab2",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 36,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Berenguela",
+    "shortCode": null,
+    "aliases": [
+      "Berenguela"
+    ],
+    "normalizedAliases": [
+      "BERENGUELA"
+    ],
+    "assetPath": "badges/rfep/berenguela.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/berenguela.png",
+    "sha256": "68e43ac4980c46559b9396d91bcbf95f7415023a253875d3233eab15d2b38d32",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 37,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Bigues I Riells",
+    "shortCode": null,
+    "aliases": [
+      "Bigues I Riells"
+    ],
+    "normalizedAliases": [
+      "BIGUES I RIELLS"
+    ],
+    "assetPath": "badges/rfep/bigues_i_riells.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/bigues i riells.png",
+    "sha256": "d0f8359919082c796ab720a9bdaa4f08b7bb0bfad9daf8b9018dba2b067053d7",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 38,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Blanes",
+    "shortCode": null,
+    "aliases": [
+      "Blanes"
+    ],
+    "normalizedAliases": [
+      "BLANES"
+    ],
+    "assetPath": "badges/rfep/blanes.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/blanes.png",
+    "sha256": "826d36d7754906528727d1f69fbb1fb5b688efa144689f068194a4b7f2ba957c",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 39,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Burgos",
+    "shortCode": null,
+    "aliases": [
+      "Burgos"
+    ],
+    "normalizedAliases": [
+      "BURGOS"
+    ],
+    "assetPath": "badges/rfep/burgos.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/burgos.png",
+    "sha256": "5b062870798cd5581c5a42ac744200ae3154e85f776507c187c20a867a038fc6",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 40,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Burguillos",
+    "shortCode": null,
+    "aliases": [
+      "Burguillos"
+    ],
+    "normalizedAliases": [
+      "BURGUILLOS"
+    ],
+    "assetPath": "badges/rfep/burguillos.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/burguillos.png",
+    "sha256": "74c2d984b0a032b36a13f1d210f8578aa774ae3cca843105864796cb94bbb7e1",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 41,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "C.asturiano",
+    "shortCode": null,
+    "aliases": [
+      "C.asturiano"
+    ],
+    "normalizedAliases": [
+      "C ASTURIANO"
+    ],
+    "assetPath": "badges/rfep/c_asturiano.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/c.asturiano.png",
+    "sha256": "a271b1809f046c2c7b5255e71166b5804d69ad0900cdd980a938f1e3a33222fc",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 42,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "C.p.pilar",
+    "shortCode": null,
+    "aliases": [
+      "C.p.pilar"
+    ],
+    "normalizedAliases": [
+      "CP PILAR"
+    ],
+    "assetPath": "badges/rfep/c_p_pilar.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/c.p.pilar.png",
+    "sha256": "89db9d58020e923a7b13bfb0e5ce6d264eea9689dfbbc9c51da1d6a7fe3d57f4",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 43,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Cadí",
+    "shortCode": null,
+    "aliases": [
+      "Cadí"
+    ],
+    "normalizedAliases": [
+      "CADI"
+    ],
+    "assetPath": "badges/rfep/cadi.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/cadi.png",
+    "sha256": "a7e447e2cb1eb76fced0d5622e5d1a56baf5dd7f89db2d8ae8e8be8224335de1",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 44,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Cajar Cpa",
+    "shortCode": null,
+    "aliases": [
+      "Cajar Cpa"
+    ],
+    "normalizedAliases": [
+      "CAJAR CPA"
+    ],
+    "assetPath": "badges/rfep/cajar_cpa.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/cajar cpa.png",
+    "sha256": "b7ae2f8bf0c9514355c2c970bb589b1de5d007dfb466fcaefaa6d80b25336dd3",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 45,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Cajar Granada",
+    "shortCode": null,
+    "aliases": [
+      "Cajar Granada"
+    ],
+    "normalizedAliases": [
+      "CAJAR GRANADA"
+    ],
+    "assetPath": "badges/rfep/cajar_granada.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/cajar granada.png",
+    "sha256": "189bab45b90b6e2df13430d5314bc2e3e25d9601ba6d4ff4d4ff85da86e4c438",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 46,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Calafell",
+    "shortCode": null,
+    "aliases": [
+      "Calafell",
+      "CP Calafell",
+      "Calafell La Menorquina"
+    ],
+    "normalizedAliases": [
+      "CALAFELL",
+      "CP CALAFELL",
+      "CALAFELL LA MENORQUINA"
+    ],
+    "assetPath": "badges/rfep/calafell.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/calafell.png",
+    "sha256": "bd1d596fea479a167d7ff839a580dd1e5b0840bd2c7a2dca1129127a59b33559",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 47,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Caldes",
+    "shortCode": null,
+    "aliases": [
+      "Caldes"
+    ],
+    "normalizedAliases": [
+      "CALDES"
+    ],
+    "assetPath": "badges/rfep/caldes.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/caldes.png",
+    "sha256": "bb82e1c26955ab887ec2cd5172fdb73207755afde483472f9b4cca76b8791a12",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 48,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Capellades",
+    "shortCode": null,
+    "aliases": [
+      "Capellades"
+    ],
+    "normalizedAliases": [
+      "CAPELLADES"
+    ],
+    "assetPath": "badges/rfep/capellades.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/capellades.png",
+    "sha256": "e53b4f14b9d8c3b4a6414c2a6dd806cb8e1ac4c706809ea8bf92ff3e017c1dcf",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 49,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Castellar",
+    "shortCode": null,
+    "aliases": [
+      "Castellar"
+    ],
+    "normalizedAliases": [
+      "CASTELLAR"
+    ],
+    "assetPath": "badges/rfep/castellar.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/castellar.png",
+    "sha256": "f9856309a6ae677f612aec564ddb3a99e19e563a7a0c50045ef876ea9dc6a930",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 50,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Centelles",
+    "shortCode": null,
+    "aliases": [
+      "Centelles"
+    ],
+    "normalizedAliases": [
+      "CENTELLES"
+    ],
+    "assetPath": "badges/rfep/centelles.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/centelles.png",
+    "sha256": "5f6273e42638d5a087753973057ddee0b9538a25f965dc46c100bd71a9c1504e",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 51,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Cerdanyola",
+    "shortCode": null,
+    "aliases": [
+      "Cerdanyola",
+      "Cerdanyola CH",
+      "Cerdanyola Club d'Hoquei"
+    ],
+    "normalizedAliases": [
+      "CERDANYOLA",
+      "CERDANYOLA CH",
+      "CERDANYOLA CLUB D HOQUEI"
+    ],
+    "assetPath": "badges/rfep/cerdanyola.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/cerdanyola.png",
+    "sha256": "3c5fec581239debfa970bb8502ffc0d84ad263a58ed0bfe010bdb1b3b7d1ec50",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 52,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Claret",
+    "shortCode": null,
+    "aliases": [
+      "Claret"
+    ],
+    "normalizedAliases": [
+      "CLARET"
+    ],
+    "assetPath": "badges/rfep/claret.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/claret.png",
+    "sha256": "e35e3a30c7dc5d681d003f6bccec74056f6079fa1687652cc0f88bbe430ac8c8",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 53,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Claret Patin",
+    "shortCode": null,
+    "aliases": [
+      "Claret Patin"
+    ],
+    "normalizedAliases": [
+      "CLARET PATIN"
+    ],
+    "assetPath": "badges/rfep/claret_patin.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/claret-patin.png",
+    "sha256": "0b1eeb36f64e6004d55d28170b71db7f65551e1cdbdc26394627ffdc15219c35",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 54,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Cmd",
+    "shortCode": null,
+    "aliases": [
+      "Cmd"
+    ],
+    "normalizedAliases": [
+      "CMD"
+    ],
+    "assetPath": "badges/rfep/cmd.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/cmd.png",
+    "sha256": "c484bf258c7edf989e252bfbae6c4bac3bb48feee742c6e4b6b5bd18eb47e765",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 55,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Cocentaina",
+    "shortCode": null,
+    "aliases": [
+      "Cocentaina"
+    ],
+    "normalizedAliases": [
+      "COCENTAINA"
+    ],
+    "assetPath": "badges/rfep/cocentaina.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/cocentaina.png",
+    "sha256": "5e2c6970c7111794c1dcb2b89d548ad23af4786816ab17726c048791f8b8c4e1",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 56,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Compostela",
+    "shortCode": null,
+    "aliases": [
+      "Compostela"
+    ],
+    "normalizedAliases": [
+      "COMPOSTELA"
+    ],
+    "assetPath": "badges/rfep/compostela.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/compostela.png",
+    "sha256": "cc8f7cbb5486d577eea2a4a3dc61e604363f3f24deaf191ea01db1d3247c904b",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 57,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Congres Club Pati",
+    "shortCode": null,
+    "aliases": [
+      "Congres Club Pati"
+    ],
+    "normalizedAliases": [
+      "CONGRES CLUB PATI"
+    ],
+    "assetPath": "badges/rfep/congres_club_pati.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/congres club pati.png",
+    "sha256": "a52093ef8047dd3a8fd4b663d9dd7e23a11c8a3373f53f7b4a59c2c9765cf227",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 58,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Corredoira",
+    "shortCode": null,
+    "aliases": [
+      "Corredoira"
+    ],
+    "normalizedAliases": [
+      "CORREDOIRA"
+    ],
+    "assetPath": "badges/rfep/corredoira.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/corredoira.png",
+    "sha256": "989d867e22608cc7bcf99ed1f824924b1ff9e18089e7ad13d9c71c9eb5f3a213",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 59,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Coruña",
+    "shortCode": null,
+    "aliases": [
+      "Coruña"
+    ],
+    "normalizedAliases": [
+      "CORUNA"
+    ],
+    "assetPath": "badges/rfep/coruna.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/coruña.png",
+    "sha256": "bc1c21d7eca27683517a86b0aa073ea72ef600407a4c9eacba7ab6cda6fec83a",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 60,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Cubelles",
+    "shortCode": null,
+    "aliases": [
+      "Cubelles"
+    ],
+    "normalizedAliases": [
+      "CUBELLES"
+    ],
+    "assetPath": "badges/rfep/cubelles.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/cubelles.png",
+    "sha256": "56c27a762259a0a198b69b88469664348beabf34a244d6da8bfcd28642ae63a7",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 61,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "D'horta",
+    "shortCode": null,
+    "aliases": [
+      "D'horta"
+    ],
+    "normalizedAliases": [
+      "D HORTA"
+    ],
+    "assetPath": "badges/rfep/d_horta.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/d'horta.png",
+    "sha256": "a5debddb27a3fbe0ab94d81b17c3e8dfef768a7b182036e174949fbba19ef7f6",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 62,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Digittecnic Cpv",
+    "shortCode": null,
+    "aliases": [
+      "Digittecnic Cpv"
+    ],
+    "normalizedAliases": [
+      "DIGITTECNIC CPV"
+    ],
+    "assetPath": "badges/rfep/digittecnic_cpv.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/digittecnic cpv.png",
+    "sha256": "26c5e0769324aa53ff06ec6d2a6222e88258e67af63131ac587843975948d91d",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 63,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Dominicos",
+    "shortCode": null,
+    "aliases": [
+      "Dominicos",
+      "CAA Dominicos"
+    ],
+    "normalizedAliases": [
+      "DOMINICOS",
+      "CAA DOMINICOS"
+    ],
+    "assetPath": "badges/rfep/dominicos.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/dominicos.png",
+    "sha256": "aa5aa2038a82656deef61432338d73f301e5dfe4edcac921467d56ad6f97db5a",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 64,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Ene Oposicionclubpatinmieres",
+    "shortCode": null,
+    "aliases": [
+      "Ene Oposicionclubpatinmieres",
+      "ENE Oposiciones CP Mieres",
+      "CP Mieres",
+      "Mieres"
+    ],
+    "normalizedAliases": [
+      "ENE OPOSICIONCLUBPATINMIERES",
+      "ENE OPOSICIONES CP MIERES",
+      "CP MIERES",
+      "MIERES"
+    ],
+    "assetPath": "badges/rfep/ene_oposicionclubpatinmieres.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/ene oposicionclubpatinmieres.png",
+    "sha256": "9f3e2fbf5e8e175f42a32a99e201612c4b03efc50f0b7a4d5414d1db74ab3404",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 65,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Espanyol",
+    "shortCode": null,
+    "aliases": [
+      "Espanyol"
+    ],
+    "normalizedAliases": [
+      "ESPANYOL"
+    ],
+    "assetPath": "badges/rfep/espanyol.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/espanyol.png",
+    "sha256": "58e17c7aa40f52080cd80bf5c3755d77326d5cbd30d826b5957f16a151dacc57",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 66,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Fabril",
+    "shortCode": null,
+    "aliases": [
+      "Fabril"
+    ],
+    "normalizedAliases": [
+      "FABRIL"
+    ],
+    "assetPath": "badges/rfep/fabril.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/fabril.png",
+    "sha256": "52edc9428ef8928a379d3787831ec8f9718c88529e08d45eb2ef2251816344e4",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 67,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Floreal",
+    "shortCode": null,
+    "aliases": [
+      "Floreal"
+    ],
+    "normalizedAliases": [
+      "FLOREAL"
+    ],
+    "assetPath": "badges/rfep/floreal.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/floreal.png",
+    "sha256": "c5cf6a28eb8fb42328351c8363072f8fd523bc948dadb9d2b9cdd740e69e8b5c",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 68,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Fraga",
+    "shortCode": null,
+    "aliases": [
+      "Fraga"
+    ],
+    "normalizedAliases": [
+      "FRAGA"
+    ],
+    "assetPath": "badges/rfep/fraga.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/fraga.png",
+    "sha256": "9858a14621339b2d08ce5027e6560f2121a3d0ea89a7d3182b7400f3dfd2c2d7",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 69,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Fuengirola",
+    "shortCode": null,
+    "aliases": [
+      "Fuengirola"
+    ],
+    "normalizedAliases": [
+      "FUENGIROLA"
+    ],
+    "assetPath": "badges/rfep/fuengirola.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/fuengirola.png",
+    "sha256": "64a18c97641b2a1a183f04ba9dc54b77d82624e9c214654a1acb916f854518cd",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 70,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Gallinero Loco",
+    "shortCode": null,
+    "aliases": [
+      "Gallinero Loco"
+    ],
+    "normalizedAliases": [
+      "GALLINERO LOCO"
+    ],
+    "assetPath": "badges/rfep/gallinero_loco.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/gallinero loco.png",
+    "sha256": "322a6ac2e8d2bb348f4d624d30ac96e0de4b94341e5effa2dd9fa7b58580d438",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 71,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Gandia",
+    "shortCode": null,
+    "aliases": [
+      "Gandia"
+    ],
+    "normalizedAliases": [
+      "GANDIA"
+    ],
+    "assetPath": "badges/rfep/gandia.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/gandia.png",
+    "sha256": "e845448600224b00103a37f37de817277b0ce75d49344cac204363216aef501a",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 72,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Gatikako",
+    "shortCode": null,
+    "aliases": [
+      "Gatikako"
+    ],
+    "normalizedAliases": [
+      "GATIKAKO"
+    ],
+    "assetPath": "badges/rfep/gatikako.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/gatikako.png",
+    "sha256": "24669efadb40b19b6f526d904f175c56a72926e0bfc64ef664b520819363820c",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 73,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Geieg",
+    "shortCode": null,
+    "aliases": [
+      "Geieg"
+    ],
+    "normalizedAliases": [
+      "GEIEG"
+    ],
+    "assetPath": "badges/rfep/geieg.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/geieg.png",
+    "sha256": "7a0698d7371952d59ab77dba8d3cac62ca092456e582a49b665671312216004d",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 74,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Girona Hipoteca",
+    "shortCode": null,
+    "aliases": [
+      "Girona Hipoteca"
+    ],
+    "normalizedAliases": [
+      "GIRONA HIPOTECA"
+    ],
+    "assetPath": "badges/rfep/girona_hipoteca.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/girona hipoteca.png",
+    "sha256": "21a3caf16f9f6eb730bbacb610cd6f1d9793ec22f7e8b4238b731c1855f817f1",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 75,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Gurutzeta",
+    "shortCode": null,
+    "aliases": [
+      "Gurutzeta"
+    ],
+    "normalizedAliases": [
+      "GURUTZETA"
+    ],
+    "assetPath": "badges/rfep/gurutzeta.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/gurutzeta.png",
+    "sha256": "e333a6b633232834d602fc3052c66e4beac8db9103b759121e98fbb21cf06989",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 76,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Harina Trad Patinalon",
+    "shortCode": null,
+    "aliases": [
+      "Harina Trad Patinalon"
+    ],
+    "normalizedAliases": [
+      "HARINA TRAD PATINALON"
+    ],
+    "assetPath": "badges/rfep/harina_trad_patinalon.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/harina trad patinalon.png",
+    "sha256": "90ed312345120e6b3f821d171970fd4dc5c5360f378676b1c993b13c998a9e38",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 77,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Hcs Entmenat",
+    "shortCode": null,
+    "aliases": [
+      "Hcs Entmenat"
+    ],
+    "normalizedAliases": [
+      "HCS ENTMENAT"
+    ],
+    "assetPath": "badges/rfep/hcs_entmenat.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/hcs entmenat.png",
+    "sha256": "c8db6c712c104080f15c7827643a961c1e52fee75edafd5ca80eb245ed05dc18",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 78,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Igualada",
+    "shortCode": null,
+    "aliases": [
+      "Igualada",
+      "Igualada HC"
+    ],
+    "normalizedAliases": [
+      "IGUALADA",
+      "IGUALADA HC"
+    ],
+    "assetPath": "badges/rfep/igualada.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/igualada.png",
+    "sha256": "cd73fe9938d4d6961ed8ef9b7e51d75807fffd17ad53529c91f08147d35ab1b2",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 79,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Irlandesas",
+    "shortCode": null,
+    "aliases": [
+      "Irlandesas"
+    ],
+    "normalizedAliases": [
+      "IRLANDESAS"
+    ],
+    "assetPath": "badges/rfep/irlandesas.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/irlandesas.png",
+    "sha256": "98b8442b491b7797fcbaaffc69d071eb8b7cc81ecb10061f217ec39ac1f085cf",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 80,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Italicense",
+    "shortCode": null,
+    "aliases": [
+      "Italicense"
+    ],
+    "normalizedAliases": [
+      "ITALICENSE"
+    ],
+    "assetPath": "badges/rfep/italicense.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/italicense.png",
+    "sha256": "38871f38102b14e0c29d4961b0b8849de4dcb3c7732a00c0af9245df3a3eec32",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 81,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Jolaseta",
+    "shortCode": null,
+    "aliases": [
+      "Jolaseta",
+      "RC Jolaseta"
+    ],
+    "normalizedAliases": [
+      "JOLASETA",
+      "RC JOLASETA"
+    ],
+    "assetPath": "badges/rfep/jolaseta.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/jolaseta.png",
+    "sha256": "b9d1e2140f42ec9d63f43194aca49aa196fe1468ddcc54ba23d5a3c7d55f3950",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 82,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "La Salle",
+    "shortCode": null,
+    "aliases": [
+      "La Salle"
+    ],
+    "normalizedAliases": [
+      "LA SALLE"
+    ],
+    "assetPath": "badges/rfep/la_salle.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/la salle.png",
+    "sha256": "dc2ffda808488fda429f783e96e5e80ac91f9813b12782b77867590dbc076c91",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 83,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Laguna Negra",
+    "shortCode": null,
+    "aliases": [
+      "Laguna Negra"
+    ],
+    "normalizedAliases": [
+      "LAGUNA NEGRA"
+    ],
+    "assetPath": "badges/rfep/laguna_negra.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/laguna negra.png",
+    "sha256": "53c2e89a8abf98af5991ee3ae80ffab2078e9537c0102b41d3d0fcd3d8a6540e",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 84,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Liceo",
+    "shortCode": null,
+    "aliases": [
+      "Liceo",
+      "HC Liceo",
+      "Hockey Club Liceo"
+    ],
+    "normalizedAliases": [
+      "LICEO",
+      "HC LICEO",
+      "HOCKEY CLUB LICEO"
+    ],
+    "assetPath": "badges/rfep/liceo.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/liceo.png",
+    "sha256": "7844ecf5c6a9391ab63e40f55f34cdc81c801c2d811c6aee6e77621ec42e914a",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 85,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Lleida",
+    "shortCode": null,
+    "aliases": [
+      "Lleida",
+      "Lleida.net Alpicat",
+      "Finques Prats Lleida"
+    ],
+    "normalizedAliases": [
+      "LLEIDA",
+      "LLEIDA NET ALPICAT",
+      "FINQUES PRATS LLEIDA"
+    ],
+    "assetPath": "badges/rfep/lleida.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/lleida.png",
+    "sha256": "6dae3016038791a0d08a15d77a24fe488af7f081cdf0555595863d5a7d68ce3f",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 86,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Lloret",
+    "shortCode": null,
+    "aliases": [
+      "Lloret"
+    ],
+    "normalizedAliases": [
+      "LLORET"
+    ],
+    "assetPath": "badges/rfep/lloret.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/lloret.png",
+    "sha256": "cbd982186a7de977bbff3ac3c046024d40cece0725cd51f5171262473c52c78c",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 87,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Loyola Indautxu",
+    "shortCode": null,
+    "aliases": [
+      "Loyola Indautxu"
+    ],
+    "normalizedAliases": [
+      "LOYOLA INDAUTXU"
+    ],
+    "assetPath": "badges/rfep/loyola_indautxu.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/loyola indautxu.png",
+    "sha256": "731fff98dc6d4d05a3793296cb358a6d311c40f8c394641216b15d2f3e0fdcc4",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 88,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Lubians",
+    "shortCode": null,
+    "aliases": [
+      "Lubians"
+    ],
+    "normalizedAliases": [
+      "LUBIANS"
+    ],
+    "assetPath": "badges/rfep/lubians.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/lubians.png",
+    "sha256": "fde7a4ee33d39d286484d18aac1e6c44a05fe123d7bfa47ef699dd8f0211604a",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 89,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Malgrat Grup Escobar",
+    "shortCode": null,
+    "aliases": [
+      "Malgrat Grup Escobar"
+    ],
+    "normalizedAliases": [
+      "MALGRAT GRUP ESCOBAR"
+    ],
+    "assetPath": "badges/rfep/malgrat_grup_escobar.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/malgrat grup escobar.png",
+    "sha256": "28ff1102c44f97c841ef2d179079edb31dd13b7397ad95d9ee6526d0be18a938",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 90,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Manlleu",
+    "shortCode": null,
+    "aliases": [
+      "Manlleu",
+      "CP Manlleu"
+    ],
+    "normalizedAliases": [
+      "MANLLEU",
+      "CP MANLLEU"
+    ],
+    "assetPath": "badges/rfep/manlleu.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/manlleu.png",
+    "sha256": "d280891af64c8a2179a850016050b4c70f54bcbadcb07bd692e5339884a138ad",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 91,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Marinera La",
+    "shortCode": null,
+    "aliases": [
+      "Marinera La"
+    ],
+    "normalizedAliases": [
+      "MARINERA LA"
+    ],
+    "assetPath": "badges/rfep/marinera_la.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/marinera la.png",
+    "sha256": "822cedc271216b655c7facf453b21c287678f3b1e0e469d596bcf5c5b649eccc",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 92,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Martorell",
+    "shortCode": null,
+    "aliases": [
+      "Martorell"
+    ],
+    "normalizedAliases": [
+      "MARTORELL"
+    ],
+    "assetPath": "badges/rfep/martorell.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/martorell.png",
+    "sha256": "cceaf12f5655340403aa7b7a408201223754d6b6d0aac99a3f452329ecbdc13a",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 93,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Mataró",
+    "shortCode": null,
+    "aliases": [
+      "Mataró",
+      "CH Mataró"
+    ],
+    "normalizedAliases": [
+      "MATARO",
+      "CH MATARO"
+    ],
+    "assetPath": "badges/rfep/mataro.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/mataro.png",
+    "sha256": "17434e3f7a46af35899956775ef98642cd9eadf888a0fe4bdd3582a7496b88a4",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 94,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Meraki Gran Canaria",
+    "shortCode": null,
+    "aliases": [
+      "Meraki Gran Canaria"
+    ],
+    "normalizedAliases": [
+      "MERAKI GRAN CANARIA"
+    ],
+    "assetPath": "badges/rfep/meraki_gran_canaria.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/meraki gran canaria.png",
+    "sha256": "852dc62825203f918123b0c8f714ab473855d99d5b5686aa4f46de1541c28c5e",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 95,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Mieres",
+    "shortCode": null,
+    "aliases": [
+      "Mieres",
+      "CP Mieres",
+      "Club Patín Mieres"
+    ],
+    "normalizedAliases": [
+      "MIERES",
+      "CP MIERES",
+      "CLUB PATIN MIERES"
+    ],
+    "assetPath": "badges/rfep/mieres.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/mieres.png",
+    "sha256": "9f3e2fbf5e8e175f42a32a99e201612c4b03efc50f0b7a4d5414d1db74ab3404",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 96,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Mollerussa",
+    "shortCode": null,
+    "aliases": [
+      "Mollerussa"
+    ],
+    "normalizedAliases": [
+      "MOLLERUSSA"
+    ],
+    "assetPath": "badges/rfep/mollerussa.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/mollerussa.png",
+    "sha256": "d87f2c4477836bf634e30d85ff2e6a67b9a0fb61f4f03966e058f18c822db9ee",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 97,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Mollet",
+    "shortCode": null,
+    "aliases": [
+      "Mollet"
+    ],
+    "normalizedAliases": [
+      "MOLLET"
+    ],
+    "assetPath": "badges/rfep/mollet.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/mollet.png",
+    "sha256": "7492ae1a99164829a1b121de01e815a4fd654c24e64a21b5f7e8ab9a76077f3d",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 98,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Monjos Pansalud",
+    "shortCode": null,
+    "aliases": [
+      "Monjos Pansalud"
+    ],
+    "normalizedAliases": [
+      "MONJOS PANSALUD"
+    ],
+    "assetPath": "badges/rfep/monjos_pansalud.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/monjos pansalud.png",
+    "sha256": "a273541fc55dab3d25b1d83f619c399c919bcf36903d7bdad45dd127c20bc96d",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 99,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Mundaiz",
+    "shortCode": null,
+    "aliases": [
+      "Mundaiz"
+    ],
+    "normalizedAliases": [
+      "MUNDAIZ"
+    ],
+    "assetPath": "badges/rfep/mundaiz.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/mundaiz.png",
+    "sha256": "eb5a7eb141c4bb979cdb17958cbbad31169caf86d148cb11771967582e8470ff",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 100,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Muro",
+    "shortCode": null,
+    "aliases": [
+      "Muro"
+    ],
+    "normalizedAliases": [
+      "MURO"
+    ],
+    "assetPath": "badges/rfep/muro.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/muro.png",
+    "sha256": "235a8ad83158ddb4f8aa91077bc94531e19b6987f73911c5e94017770e93a392",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 101,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Nacho Y Teja Elect",
+    "shortCode": null,
+    "aliases": [
+      "Nacho Y Teja Elect"
+    ],
+    "normalizedAliases": [
+      "NACHO Y TEJA ELECT"
+    ],
+    "assetPath": "badges/rfep/nacho_y_teja_elect.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/nacho y teja elect.png",
+    "sha256": "0970868eb35b62463efff9aff745a33aa78f8bb2b3f2adb397ce15ba059f7186",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 102,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Noia",
+    "shortCode": null,
+    "aliases": [
+      "Noia",
+      "CE Noia",
+      "CE Noia Freixenet"
+    ],
+    "normalizedAliases": [
+      "NOIA",
+      "CE NOIA",
+      "CE NOIA FREIXENET"
+    ],
+    "assetPath": "badges/rfep/noia.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/noia.png",
+    "sha256": "e95ab772b8bedbc63dd937df68b184cf10fc24e46ed23d8566002463be020f82",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 103,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Oberena",
+    "shortCode": null,
+    "aliases": [
+      "Oberena"
+    ],
+    "normalizedAliases": [
+      "OBERENA"
+    ],
+    "assetPath": "badges/rfep/oberena.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/oberena.png",
+    "sha256": "d1b6a58fdc6fc553260ac7eae0f6cd47852ca07818f984b27bf99cc1d47be508",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 104,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Olesa Pati",
+    "shortCode": null,
+    "aliases": [
+      "Olesa Pati"
+    ],
+    "normalizedAliases": [
+      "OLESA PATI"
+    ],
+    "assetPath": "badges/rfep/olesa_pati.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/olesa pati.png",
+    "sha256": "e8e5d2191c3ba3fbe5c82af00004da52b03f6d4edd7f9f057004e178c88868c6",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 105,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Olot",
+    "shortCode": null,
+    "aliases": [
+      "Olot",
+      "CH Olot",
+      "B-Sensible CH Olot"
+    ],
+    "normalizedAliases": [
+      "OLOT",
+      "CH OLOT",
+      "B SENSIBLE CH OLOT"
+    ],
+    "assetPath": "badges/rfep/olot.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/olot.png",
+    "sha256": "0de9bc2be20dde845bd3e63dfa777e093a193420f80c66c93c3b26a0b0c3bdec",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 106,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Oviedo",
+    "shortCode": null,
+    "aliases": [
+      "Oviedo",
+      "Oviedo Roller HC"
+    ],
+    "normalizedAliases": [
+      "OVIEDO",
+      "OVIEDO ROLLER HC"
+    ],
+    "assetPath": "badges/rfep/oviedo.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/oviedo.png",
+    "sha256": "6288f2455043c41f48c66fc95e3ee3ed5d72dfbba930e89f0af702b8939cea9d",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 107,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Palafrugell",
+    "shortCode": null,
+    "aliases": [
+      "Palafrugell"
+    ],
+    "normalizedAliases": [
+      "PALAFRUGELL"
+    ],
+    "assetPath": "badges/rfep/palafrugell.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/palafrugell.png",
+    "sha256": "3996c02531dcba0768b219ed61a02157648dd9715f9583711dafc858b6d79279",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 108,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Palau",
+    "shortCode": null,
+    "aliases": [
+      "Palau",
+      "Palau de Plegamans",
+      "Generali HC Palau"
+    ],
+    "normalizedAliases": [
+      "PALAU",
+      "PALAU DE PLEGAMANS",
+      "GENERALI HC PALAU"
+    ],
+    "assetPath": "badges/rfep/palau.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/palau.png",
+    "sha256": "3e91d1fb989b43440874f8eee2aa5ee6d7b639b62ca4e95f3c437b1e5ae877f7",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 109,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Parayas",
+    "shortCode": null,
+    "aliases": [
+      "Parayas"
+    ],
+    "normalizedAliases": [
+      "PARAYAS"
+    ],
+    "assetPath": "badges/rfep/parayas.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/parayas.png",
+    "sha256": "152dc554c515beae09e2ca77262efe17c38ffd7f0cd1e45a1a771c35b79323fe",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 110,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Patinalon",
+    "shortCode": null,
+    "aliases": [
+      "Patinalon"
+    ],
+    "normalizedAliases": [
+      "PATINALON"
+    ],
+    "assetPath": "badges/rfep/patinalon.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/patinalon.png",
+    "sha256": "f952b72f36c15a9f1f5db567642f1c04506c27f3d3af55f055e9895aa61b2d57",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 111,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Ponferrada",
+    "shortCode": null,
+    "aliases": [
+      "Ponferrada"
+    ],
+    "normalizedAliases": [
+      "PONFERRADA"
+    ],
+    "assetPath": "badges/rfep/ponferrada.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/ponferrada.png",
+    "sha256": "f680fe68bb9dbfb228757a1d812843ba850269aa8c7aed4b55e6a88c83aea515",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 112,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Ponteaereas",
+    "shortCode": null,
+    "aliases": [
+      "Ponteaereas"
+    ],
+    "normalizedAliases": [
+      "PONTEAEREAS"
+    ],
+    "assetPath": "badges/rfep/ponteaereas.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/ponteaereas.png",
+    "sha256": "72572f0fa3641951bc0c16a9d60e403617eda178877c30532cafef5934b18e5e",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 113,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Prat",
+    "shortCode": null,
+    "aliases": [
+      "Prat"
+    ],
+    "normalizedAliases": [
+      "PRAT"
+    ],
+    "assetPath": "badges/rfep/prat.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/prat.png",
+    "sha256": "9dd91224d9a7892398ac08df98a444a6a897a9543dc9c5ff4b3d9976b4beed87",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 114,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Puertochico",
+    "shortCode": null,
+    "aliases": [
+      "Puertochico"
+    ],
+    "normalizedAliases": [
+      "PUERTOCHICO"
+    ],
+    "assetPath": "badges/rfep/puertochico.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/puertochico.png",
+    "sha256": "e3f7b61178d122b52903490344e604e8e3f9f5011d803081dc1a7996c4008a30",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 115,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Raspeig",
+    "shortCode": null,
+    "aliases": [
+      "Raspeig"
+    ],
+    "normalizedAliases": [
+      "RASPEIG"
+    ],
+    "assetPath": "badges/rfep/raspeig.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/raspeig.png",
+    "sha256": "f294343427981f352cbf7825a3aaed30a2a17620fbecfcdfb2637708bd72b993",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 116,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Raxoi",
+    "shortCode": null,
+    "aliases": [
+      "Raxoi"
+    ],
+    "normalizedAliases": [
+      "RAXOI"
+    ],
+    "assetPath": "badges/rfep/raxoi.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/raxoi.png",
+    "sha256": "8744fcac17699e527b1ab5ae1b67f31e808b76daa530622c16766529e2c9e1b1",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 117,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Real Sociedad",
+    "shortCode": null,
+    "aliases": [
+      "Real Sociedad",
+      "Real Sociedad SS"
+    ],
+    "normalizedAliases": [
+      "REAL SOCIEDAD",
+      "REAL SOCIEDAD SS"
+    ],
+    "assetPath": "badges/rfep/real_sociedad.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/real sociedad.png",
+    "sha256": "bfd74339deca4410a24aeb7e6b7bb44b99552482511d06b53e73faa0b6971ae0",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 118,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Resa Cambre",
+    "shortCode": null,
+    "aliases": [
+      "Resa Cambre"
+    ],
+    "normalizedAliases": [
+      "RESA CAMBRE"
+    ],
+    "assetPath": "badges/rfep/resa_cambre.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/resa cambre.png",
+    "sha256": "ff8b5ea664ec3399fc76c2b8620d9628d4a1b508a92368614d0c5a6642cd81cf",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 119,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Reus",
+    "shortCode": null,
+    "aliases": [
+      "Reus",
+      "Reus Deportiu",
+      "Reus Deportiu Virginias"
+    ],
+    "normalizedAliases": [
+      "REUS",
+      "REUS DEPORTIU",
+      "REUS DEPORTIU VIRGINIAS"
+    ],
+    "assetPath": "badges/rfep/reus.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/reus.png",
+    "sha256": "8466e255d418b455cdf323252328febc1d9d385068742212b9e9b893be02c6ef",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 120,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Ripollet",
+    "shortCode": null,
+    "aliases": [
+      "Ripollet"
+    ],
+    "normalizedAliases": [
+      "RIPOLLET"
+    ],
+    "assetPath": "badges/rfep/ripollet.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/ripollet.png",
+    "sha256": "42b43bb86b330449ac19e61f621a183500634dc5382edd7b945b32a16c7445c0",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 121,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Riudebitlles",
+    "shortCode": null,
+    "aliases": [
+      "Riudebitlles"
+    ],
+    "normalizedAliases": [
+      "RIUDEBITLLES"
+    ],
+    "assetPath": "badges/rfep/riudebitlles.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/riudebitlles.png",
+    "sha256": "77588d7da04513bbb79a4ae30c20eb913e35060858a1772fa3a72ce7233886f8",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 122,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Rochapea",
+    "shortCode": null,
+    "aliases": [
+      "Rochapea"
+    ],
+    "normalizedAliases": [
+      "ROCHAPEA"
+    ],
+    "assetPath": "badges/rfep/rochapea.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/rochapea.png",
+    "sha256": "d86c85f9c85796a92fa8b0e548785a667e4166bd1252cae0e7df728d224883ff",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 123,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Roda",
+    "shortCode": null,
+    "aliases": [
+      "Roda"
+    ],
+    "normalizedAliases": [
+      "RODA"
+    ],
+    "assetPath": "badges/rfep/roda.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/roda.png",
+    "sha256": "375370b965c14cf974b90a8b6af0ebd8cfa79f36a5c87e7529d128512696fc28",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 124,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Salt",
+    "shortCode": null,
+    "aliases": [
+      "Salt"
+    ],
+    "normalizedAliases": [
+      "SALT"
+    ],
+    "assetPath": "badges/rfep/salt.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/salt.png",
+    "sha256": "56c27a762259a0a198b69b88469664348beabf34a244d6da8bfcd28642ae63a7",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 125,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "San Francisco Solano",
+    "shortCode": null,
+    "aliases": [
+      "San Francisco Solano"
+    ],
+    "normalizedAliases": [
+      "SAN FRANCISCO SOLANO"
+    ],
+    "assetPath": "badges/rfep/san_francisco_solano.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/san francisco solano.png",
+    "sha256": "778711055f81dafb989fae3526f9ba90c7519fef14784dc6be4646bfe3ff14d4",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 126,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sant Celoni",
+    "shortCode": null,
+    "aliases": [
+      "Sant Celoni"
+    ],
+    "normalizedAliases": [
+      "SANT CELONI"
+    ],
+    "assetPath": "badges/rfep/sant_celoni.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sant celoni.png",
+    "sha256": "a05e2e834fc4cd5220bfc6b90837834aa5844491a0f953aebe743c8ed2a70ed6",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 127,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sant Cugat",
+    "shortCode": null,
+    "aliases": [
+      "Sant Cugat"
+    ],
+    "normalizedAliases": [
+      "SANT CUGAT"
+    ],
+    "assetPath": "badges/rfep/sant_cugat.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sant cugat.png",
+    "sha256": "e5f50774f756c719583f1612e8ebe446fed37b0566bd458cde37900a63f24131",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 128,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sant Feliu",
+    "shortCode": null,
+    "aliases": [
+      "Sant Feliu",
+      "CHP Sant Feliu"
+    ],
+    "normalizedAliases": [
+      "SANT FELIU",
+      "CHP SANT FELIU"
+    ],
+    "assetPath": "badges/rfep/sant_feliu.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sant feliu.png",
+    "sha256": "b7123a2902986a0884e77e6cac45e8e49f772c0076bf92605af2b1806891916d",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 129,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sant Jordi",
+    "shortCode": null,
+    "aliases": [
+      "Sant Jordi"
+    ],
+    "normalizedAliases": [
+      "SANT JORDI"
+    ],
+    "assetPath": "badges/rfep/sant_jordi.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sant jordi.png",
+    "sha256": "be32ad8d30e58101e39f04473aa28aeb58184e6a6819971e07e1855e3bddef6f",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 130,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sant Just",
+    "shortCode": null,
+    "aliases": [
+      "Sant Just",
+      "Senergy Renovables Sant Just",
+      "HC Sant Just"
+    ],
+    "normalizedAliases": [
+      "SANT JUST",
+      "SENERGY RENOVABLES SANT JUST",
+      "HC SANT JUST"
+    ],
+    "assetPath": "badges/rfep/sant_just.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sant just.png",
+    "sha256": "16a094e7b633eebcbe1fef6c0704a5e988d2590563d0e4985b16f34eba738b6c",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 131,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Santa Clara Praderas",
+    "shortCode": null,
+    "aliases": [
+      "Santa Clara Praderas"
+    ],
+    "normalizedAliases": [
+      "SANTA CLARA PRADERAS"
+    ],
+    "assetPath": "badges/rfep/santa_clara_praderas.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/santa clara praderas.png",
+    "sha256": "e32a799c375726c74b89e99c18f00460f89337fc3f9937eaec8c52f1e876a6ea",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 132,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sardinero",
+    "shortCode": null,
+    "aliases": [
+      "Sardinero"
+    ],
+    "normalizedAliases": [
+      "SARDINERO"
+    ],
+    "assetPath": "badges/rfep/sardinero.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sardinero.png",
+    "sha256": "bba68b139a5037fc7b66599284d3da49aa08fdea5018ffe95c830ab5479ee739",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 133,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sedavi",
+    "shortCode": null,
+    "aliases": [
+      "Sedavi"
+    ],
+    "normalizedAliases": [
+      "SEDAVI"
+    ],
+    "assetPath": "badges/rfep/sedavi.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sedavi.png",
+    "sha256": "67c0f7dd2995033e8a38abda762f9b0176f2e982d1bc9797bdd25416cd3c54a6",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 134,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sevilla",
+    "shortCode": null,
+    "aliases": [
+      "Sevilla",
+      "CPI Sevilla"
+    ],
+    "normalizedAliases": [
+      "SEVILLA",
+      "CPI SEVILLA"
+    ],
+    "assetPath": "badges/rfep/sevilla.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sevilla.png",
+    "sha256": "4fd37668a46a4c574da76c3fda4d4252e1f8e7eafcfd23a998a674682dc5d002",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 135,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "SHUM Frit Ravich",
+    "shortCode": null,
+    "aliases": [
+      "SHUM Frit Ravich",
+      "SHUM"
+    ],
+    "normalizedAliases": [
+      "SHUM FRIT RAVICH",
+      "SHUM"
+    ],
+    "assetPath": "badges/rfep/shum_frit_ravich.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/shum frit ravich.png",
+    "sha256": "d5288ca0d978e19be4e9393a750ff5baa320d4ecd07b6905f9b059d7e83ca4fd",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 136,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sitges",
+    "shortCode": null,
+    "aliases": [
+      "Sitges"
+    ],
+    "normalizedAliases": [
+      "SITGES"
+    ],
+    "assetPath": "badges/rfep/sitges.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sitges.png",
+    "sha256": "2f7e95224fd50e8d7cc5a8d472b7d7fae911409197a8f1d44c35448e649a1c77",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 137,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Sporting Alcoi",
+    "shortCode": null,
+    "aliases": [
+      "Sporting Alcoi"
+    ],
+    "normalizedAliases": [
+      "SPORTING ALCOI"
+    ],
+    "assetPath": "badges/rfep/sporting_alcoi.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/sporting alcoi.png",
+    "sha256": "223d38ce24902468ba6bc447ebc431e367533097fffdad5327cc41f66b152bfc",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 138,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Tabadilla",
+    "shortCode": null,
+    "aliases": [
+      "Tabadilla"
+    ],
+    "normalizedAliases": [
+      "TABADILLA"
+    ],
+    "assetPath": "badges/rfep/tabadilla.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/tabadilla.png",
+    "sha256": "719df6cad0f771500ee3b3276ca1f04f986f326c3a3cbb0ad8c703bde0204210",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 139,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Taldea Santutxu",
+    "shortCode": null,
+    "aliases": [
+      "Taldea Santutxu"
+    ],
+    "normalizedAliases": [
+      "TALDEA SANTUTXU"
+    ],
+    "assetPath": "badges/rfep/taldea_santutxu.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/taldea santutxu.png",
+    "sha256": "7b55ed62e446eeee1e14ed3c3fd3de048cf1e80a8119a08cb9ffe0a511cb5273",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 140,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Taradell",
+    "shortCode": null,
+    "aliases": [
+      "Taradell",
+      "CP Taradell"
+    ],
+    "normalizedAliases": [
+      "TARADELL",
+      "CP TARADELL"
+    ],
+    "assetPath": "badges/rfep/taradell.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/taradell.png",
+    "sha256": "da52c67224c6131bba71df214d2b9b2604c3ef9941f020f965dc547fd11180f5",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 141,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Telecable",
+    "shortCode": null,
+    "aliases": [
+      "Telecable",
+      "Telecable HC"
+    ],
+    "normalizedAliases": [
+      "TELECABLE",
+      "TELECABLE HC"
+    ],
+    "assetPath": "badges/rfep/telecable.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/telecable.png",
+    "sha256": "0bd50d634d6635fb88cfe2d7bcc2ef290202a4b3d62f2ff6fe46a0d572fca6d9",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 142,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Tenis",
+    "shortCode": null,
+    "aliases": [
+      "Tenis"
+    ],
+    "normalizedAliases": [
+      "TENIS"
+    ],
+    "assetPath": "badges/rfep/tenis.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/tenis.png",
+    "sha256": "607bd3c21536bebaa94a8fd61f6bd32e5c67e0b8dc5041eaea0dda6cfc2315f1",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 143,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Tona",
+    "shortCode": null,
+    "aliases": [
+      "Tona"
+    ],
+    "normalizedAliases": [
+      "TONA"
+    ],
+    "assetPath": "badges/rfep/tona.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/tona.png",
+    "sha256": "c0c42573f5415276882d144cef86d74be7b09e969d15687969498e09c631a541",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 144,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Tordera",
+    "shortCode": null,
+    "aliases": [
+      "Tordera"
+    ],
+    "normalizedAliases": [
+      "TORDERA"
+    ],
+    "assetPath": "badges/rfep/tordera.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/tordera.png",
+    "sha256": "6da2c01c2b2168d0c490454f52d0603e41cb6d49a75059882abe98d6c40cba8c",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 145,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Traviesas",
+    "shortCode": null,
+    "aliases": [
+      "Traviesas"
+    ],
+    "normalizedAliases": [
+      "TRAVIESAS"
+    ],
+    "assetPath": "badges/rfep/traviesas.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/traviesas.png",
+    "sha256": "7d9b854ed12f05e27ad1f2f2f81aefffc37dde3923ae7a57da361a1a5fe2506e",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 146,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Tudela",
+    "shortCode": null,
+    "aliases": [
+      "Tudela"
+    ],
+    "normalizedAliases": [
+      "TUDELA"
+    ],
+    "assetPath": "badges/rfep/tudela.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/tudela.png",
+    "sha256": "2871ca460f3c718746f1cb9a642c3a9ab6f8ed8d56bf3386302d55d92f69420b",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 147,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Urdaneta",
+    "shortCode": null,
+    "aliases": [
+      "Urdaneta"
+    ],
+    "normalizedAliases": [
+      "URDANETA"
+    ],
+    "assetPath": "badges/rfep/urdaneta.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/urdaneta.png",
+    "sha256": "23af8d49628d49d09cade80b9b515ef1952be73bf83d64fd8259a464669e3792",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 148,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Valls Intec",
+    "shortCode": null,
+    "aliases": [
+      "Valls Intec"
+    ],
+    "normalizedAliases": [
+      "VALLS INTEC"
+    ],
+    "assetPath": "badges/rfep/valls_intec.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/valls intec.png",
+    "sha256": "ad021a80d6acd3d8d797c87d4e98abd2c30433b4a013185d8ff868d1c1f03411",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 149,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Vendrell",
+    "shortCode": null,
+    "aliases": [
+      "Vendrell",
+      "CE Vendrell"
+    ],
+    "normalizedAliases": [
+      "VENDRELL",
+      "CE VENDRELL"
+    ],
+    "assetPath": "badges/rfep/vendrell.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/vendrell.png",
+    "sha256": "872474d77fa0abb8e453d9b78044eb40e76b4340df6d19ceaedeb41efb624830",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 150,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Vic",
+    "shortCode": null,
+    "aliases": [
+      "Vic"
+    ],
+    "normalizedAliases": [
+      "VIC"
+    ],
+    "assetPath": "badges/rfep/vic.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/vic.png",
+    "sha256": "7ab27973753f59dc1b77e73f0fcadf26970a08028944ddf03ebe47503d785c8e",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 151,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Vila-sana",
+    "shortCode": null,
+    "aliases": [
+      "Vila-sana",
+      "CP Vila-sana"
+    ],
+    "normalizedAliases": [
+      "VILA SANA",
+      "CP VILA SANA"
+    ],
+    "assetPath": "badges/rfep/vila_sana.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/vila-sana.png",
+    "sha256": "e69e596bc78cae074ce9181ad5a74237ca8100f4bb5756e756e5a20bc438f192",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 152,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Vila-seca",
+    "shortCode": null,
+    "aliases": [
+      "Vila-seca"
+    ],
+    "normalizedAliases": [
+      "VILA SECA"
+    ],
+    "assetPath": "badges/rfep/vila_seca.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/vila-seca.png",
+    "sha256": "9f5c79295439c16818fc455d1342244672572124abd6239762f2af91e32a5910",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 153,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Vilafranca",
+    "shortCode": null,
+    "aliases": [
+      "Vilafranca"
+    ],
+    "normalizedAliases": [
+      "VILAFRANCA"
+    ],
+    "assetPath": "badges/rfep/vilafranca.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/vilafranca.png",
+    "sha256": "96a905df57d81cf561a933d4f19a9dd0606757c79befa0d05ab49e233d68c69a",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 154,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Vilanova",
+    "shortCode": null,
+    "aliases": [
+      "Vilanova"
+    ],
+    "normalizedAliases": [
+      "VILANOVA"
+    ],
+    "assetPath": "badges/rfep/vilanova.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/vilanova.png",
+    "sha256": "24c45addad6ea48795267c7e6cbf364f192a7c54091d79997b7ba798b3f19bc0",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 155,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Vilassar",
+    "shortCode": null,
+    "aliases": [
+      "Vilassar"
+    ],
+    "normalizedAliases": [
+      "VILASSAR"
+    ],
+    "assetPath": "badges/rfep/vilassar.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/vilassar.png",
+    "sha256": "2cb7b10d9360049706524246d70be14e749d57c7ebca4a90ae9d4b60051f74ee",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 156,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Villena",
+    "shortCode": null,
+    "aliases": [
+      "Villena"
+    ],
+    "normalizedAliases": [
+      "VILLENA"
+    ],
+    "assetPath": "badges/rfep/villena.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/villena.png",
+    "sha256": "ac0090d2542806ec3d98a06fc2794a123ea2edd31a1714a2c710d3abda216c9f",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 157,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Voltregà",
+    "shortCode": null,
+    "aliases": [
+      "Voltregà",
+      "CP Voltregà"
+    ],
+    "normalizedAliases": [
+      "VOLTREGA",
+      "CP VOLTREGA"
+    ],
+    "assetPath": "badges/rfep/voltrega.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/voltrega.png",
+    "sha256": "ccd2aada0134e9052c635ed0891752db6665fd79e62d8071f71360f2fc513c45",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 158,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Voto",
+    "shortCode": null,
+    "aliases": [
+      "Voto"
+    ],
+    "normalizedAliases": [
+      "VOTO"
+    ],
+    "assetPath": "badges/rfep/voto.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/voto.png",
+    "sha256": "25a54c8d1d42cfcaeef73ab06f3c1659013d616f2a34503c74e0cb2600f2563f",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 159,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Xàbia",
+    "shortCode": null,
+    "aliases": [
+      "Xàbia"
+    ],
+    "normalizedAliases": [
+      "XABIA"
+    ],
+    "assetPath": "badges/rfep/xabia.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/xabia.png",
+    "sha256": "e845e5e62f9b4f343aae2499ca7e4a07ffa0653647920525a3df71461096aedb",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 160,
+    "sourceScope": "rfep",
+    "canonicalTeamName": "Zafra",
+    "shortCode": null,
+    "aliases": [
+      "Zafra"
+    ],
+    "normalizedAliases": [
+      "ZAFRA"
+    ],
+    "assetPath": "badges/rfep/zafra.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/zafra.png",
+    "sha256": "5dad1156d507f6fb25f6ef2f785acd89b29339c0a58bcdd0ec563ea49b20de48",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": true
+  },
+  {
+    "id": 161,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Andalucia",
+    "shortCode": null,
+    "aliases": [
+      "Andalucia"
+    ],
+    "normalizedAliases": [
+      "ANDALUCIA"
+    ],
+    "assetPath": "badges/selecciones/andalucia.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/andalucia.png",
+    "sha256": "895f54e83a57253d838327e2b9d950cb3efbd043d99dc76f66308e8811debd61",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 162,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Andorra",
+    "shortCode": null,
+    "aliases": [
+      "Andorra"
+    ],
+    "normalizedAliases": [
+      "ANDORRA"
+    ],
+    "assetPath": "badges/selecciones/andorra.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/andorra.png",
+    "sha256": "2a7171de0be73552059a3b5856919c68529d89d77aa290116b7d9593a42e6515",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 163,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Asturias",
+    "shortCode": null,
+    "aliases": [
+      "Asturias"
+    ],
+    "normalizedAliases": [
+      "ASTURIAS"
+    ],
+    "assetPath": "badges/selecciones/asturias.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/asturias.png",
+    "sha256": "0dd8ad294c3fc1768f7e07df7ea47f4c3f61f4a09b3a79e51c46c317d8ce31b0",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 164,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Cantabria",
+    "shortCode": null,
+    "aliases": [
+      "Cantabria"
+    ],
+    "normalizedAliases": [
+      "CANTABRIA"
+    ],
+    "assetPath": "badges/selecciones/cantabria.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/cantabria.png",
+    "sha256": "8f4becda60f0f88cfc3403a140bc3b572a910ee4d266e2fd4a3df6a586ea7498",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 165,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Castilla La Mancha",
+    "shortCode": null,
+    "aliases": [
+      "Castilla La Mancha"
+    ],
+    "normalizedAliases": [
+      "CASTILLA LA MANCHA"
+    ],
+    "assetPath": "badges/selecciones/castilla_la_mancha.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/castilla la mancha.png",
+    "sha256": "f94c836bdca8500517594ade1d04bd4c6501bada6c2da9f96cafbe354917a9ef",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 166,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Cataluña",
+    "shortCode": null,
+    "aliases": [
+      "Cataluña"
+    ],
+    "normalizedAliases": [
+      "CATALUNA"
+    ],
+    "assetPath": "badges/selecciones/cataluna.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/cataluña.png",
+    "sha256": "6bcdf22257d96e7028ec76b4766fb7afef639c79b1980efe8e4a43119298a441",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 167,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Comunidad Valenciana",
+    "shortCode": null,
+    "aliases": [
+      "Comunidad Valenciana"
+    ],
+    "normalizedAliases": [
+      "COMUNIDAD VALENCIANA"
+    ],
+    "assetPath": "badges/selecciones/comunidad_valenciana.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/comunidad valenciana.png",
+    "sha256": "104ef5510c6af9f72ee1559bbc746d0902e5f395beaa505428a3abbc54bd9578",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 168,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Galicia",
+    "shortCode": null,
+    "aliases": [
+      "Galicia"
+    ],
+    "normalizedAliases": [
+      "GALICIA"
+    ],
+    "assetPath": "badges/selecciones/galicia.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/galicia.png",
+    "sha256": "532a79b59a997e6e7721a070fe4863a92ff9689f328afbf72f03033e70e49715",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 169,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Madrid",
+    "shortCode": null,
+    "aliases": [
+      "Madrid"
+    ],
+    "normalizedAliases": [
+      "MADRID"
+    ],
+    "assetPath": "badges/selecciones/madrid.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/madrid.png",
+    "sha256": "64c378bd40e9ebff202233feeb3bf4ee285fcf594e6e16042015aa078a045e75",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 170,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Navarra",
+    "shortCode": null,
+    "aliases": [
+      "Navarra"
+    ],
+    "normalizedAliases": [
+      "NAVARRA"
+    ],
+    "assetPath": "badges/selecciones/navarra.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/navarra.png",
+    "sha256": "5cbf45cd348c3dc0a1a0983fa87278b09ee08a0a208006bd94093a9fa687d2f6",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  },
+  {
+    "id": 171,
+    "sourceScope": "seleccion_autonomica",
+    "canonicalTeamName": "Pais Vasco",
+    "shortCode": null,
+    "aliases": [
+      "Pais Vasco"
+    ],
+    "normalizedAliases": [
+      "PAIS VASCO"
+    ],
+    "assetPath": "badges/selecciones/pais_vasco.png",
+    "originalZipPath": "ESCUDOS HOCKEY ESPAÑA/SELECCIONES AUTONOMICAS/pais vasco.png",
+    "sha256": "c7acd1ec61fbab7a872dec463b4ae18961d428036b6a007bc8bf8a16e242b301",
+    "verificationStatus": "LOCAL_ZIP_FILENAME",
+    "needsManualReview": false
+  }
+]

@@ -1,0 +1,3404 @@
+<script src="http://www.server2.sidgad.es/js/jquery.min.js"></script>
+<script src="http://www.server2.sidgad.es/js/jquery-ui.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+	
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 
+					 <div style="margin: 10px 7px -8px 5px;">
+		<select style="float: left; margin: 8px 5px 0px 5px; width: 150px;" class="filtro_agenda" id="agenda_idm_select">
+		<option value="0">Filtro Modalidad...</option>
+		<option value="1">HOCKEY PATINES</option>
+		<option value="2">HOCKEY LÍNEA</option>
+	</select>
+		<select style="float: left; margin: 8px 5px 0px 5px; width: 150px;" class="filtro_agenda" id="agenda_date_select">
+		<option value="8">Próximos 7 Días</option>
+		<option value="16">Próximos 15 Días</option>
+		<option value="22">Próximos 21 Días</option>
+		<option value="29">Próximos 28 Días</option>
+		<option value="36">Próximos 35 Días</option>
+		<option value="365">Toda la Temporada</option>
+		<option value="0">Temporada completa</option>
+		
+	</select>
+	<select style="float: left; margin: 8px 5px 0px 5px; width: 200px;" class="filtro_agenda" id="agenda_club_select">
+		<option value="0">Filtro Club ...</option>
+				<option value="332"> ALCALA PA</option>
+				<option value="454">50 PROJECT EP</option>
+				<option value="386">ALAMEDA OSUNA HP</option>
+				<option value="503">ALBACETE H.C.</option>
+				<option value="423">ALCALA HP</option>
+				<option value="399">ALCOBENDAS HP</option>
+				<option value="328">ALCOBENDAS PA</option>
+				<option value="398">ALDOVEA HP</option>
+				<option value="535">ALHAMBRA</option>
+				<option value="488">ALOHA PA</option>
+				<option value="393">ALUCHE HP</option>
+				<option value="331">ALUCHE PA</option>
+				<option value="358">ARANJUEZ PA</option>
+				<option value="368">ARGANDA PV</option>
+				<option value="512">ARTISTICO ALCORCON</option>
+				<option value="341">ARTISTICO LAS ROZAS PA</option>
+				<option value="527">ARTISTICO TEJAR SOMONTES</option>
+				<option value="460">ARTIUM PA</option>
+				<option value="431">ASOC. PATIN LINEA ALCALA HL</option>
+				<option value="440">AVILA</option>
+				<option value="499">BECERRIL</option>
+				<option value="345">BERNABELLA PA</option>
+				<option value="389">BLACK THUNDERS RD</option>
+				<option value="457">BOADILLA DEL MONTE H.P.</option>
+				<option value="455">BOADILLA DEL MONTE PA</option>
+				<option value="522">BOADILLA PATINA ARTISTICO</option>
+				<option value="403">BOADILLA PATINA HL-PV</option>
+				<option value="505">BURDINOLA</option>
+				<option value="441">BURGUILLOS</option>
+				<option value="507">CALVIA HC</option>
+				<option value="434">CASAR HP</option>
+				<option value="361">CASTILLA PA</option>
+				<option value="477">CEM INLINE</option>
+				<option value="426">CIUDAD PATINA HL</option>
+				<option value="320">CLUB DE CAMPO VILLA DE MADRID PA</option>
+				<option value="517">CLUB PATIN SEVILLA</option>
+				<option value="492">COCENTAINA</option>
+				<option value="357">COLMENAR VIEJO PA</option>
+				<option value="333">COSLADA PA Y HP</option>
+				<option value="448">CP ALCODIAM</option>
+				<option value="449">CP CAJAR</option>
+				<option value="450">CP IRLANDESAS</option>
+				<option value="496">CPL GALAPAGAR NORK VIKINGS</option>
+				<option value="451">CPP RASPEIG</option>
+				<option value="526">DAGANZO</option>
+				<option value="509">DESLIZARTE MADRID</option>
+				<option value="523">DIAMOND</option>
+				<option value="356">DOCTOR PATIN PA-PAL</option>
+				<option value="511">DRAGONS</option>
+				<option value="344">EL MEJOR PATIN PA</option>
+				<option value="484">EL VALLE</option>
+				<option value="453">ENLINEA PATINA FS</option>
+				<option value="497">ENTABLA SK</option>
+				<option value="475">FAST ROLLER MADRID PV</option>
+				<option value="536">FILOS</option>
+				<option value="330">FMP</option>
+				<option value="481">FREESTYLE MADRID</option>
+				<option value="493">FUENGIROLA</option>
+				<option value="506">FUENLABRADA ROLLER DERBY</option>
+				<option value="319">GETAFE PA</option>
+				<option value="459">GIROS PA</option>
+				<option value="326">GREDOS SAN DIEGO PA</option>
+				<option value="396">H.P. MAJADAHONDA HP</option>
+				<option value="534">HC VILLENA</option>
+				<option value="395">HOCKEY RIVAS LAS LAGUNAS HP</option>
+				<option value="529">INFINIT WHEELS INLINE</option>
+				<option value="463">INLINE MADRID FS-PV-EP-RF</option>
+				<option value="513">JOYROLLERS</option>
+				<option value="352">LA VIDA SOBRE RUEDAS PA-PAL</option>
+				<option value="520">LAGARTOS JAEN HL</option>
+				<option value="516">LAS ENCINAS DE BOADILLA</option>
+				<option value="420">LAS ROZAS HL</option>
+				<option value="400">LAS ROZAS HP</option>
+				<option value="429">LOBOS CASTILLA HL</option>
+				<option value="504">MAD RAMPS</option>
+				<option value="525">MADNESS SKATERS</option>
+				<option value="349">MADRID SOMONTES PA</option>
+				<option value="375">MADRIDPATINA</option>
+				<option value="338">MAJADAHONDA PA</option>
+				<option value="412">MAMUTS HOCKEY</option>
+				<option value="436">MIL RUEDAS PA</option>
+				<option value="491">MOLINA SPORT</option>
+				<option value="342">MORATALAZ PA</option>
+				<option value="359">MOSTOLES 08 PA</option>
+				<option value="335">MOSTOLES PA</option>
+				<option value="343">NERON PA</option>
+				<option value="510">NUEVO BAZTAN HL</option>
+				<option value="476">ONSKATES FS</option>
+				<option value="413">PARLA PV</option>
+				<option value="334">PATIN ALCORCON HP Y PA</option>
+				<option value="371">PATIN DE ORO</option>
+				<option value="473">PATIN PARQUE LISBOA PA Y EP</option>
+				<option value="354">PATINA LAS ROZAS FS-PAL</option>
+				<option value="489">PATINAJE AL3</option>
+				<option value="480">PATINAJE FLIP PA</option>
+				<option value="406">PATINAJE LINEA MADRID</option>
+				<option value="421">PINGUINOS</option>
+				<option value="410">PUMAS DEL NORTE PAL-HL</option>
+				<option value="397">RETAMAR</option>
+				<option value="464">ROLLART SANSE PA</option>
+				<option value="479">ROLLER CENTER PA Y FS</option>
+				<option value="388">ROLLER DERBY MADRID</option>
+				<option value="444">ROLLER'S STARS PAL-PA</option>
+				<option value="418">ROLLING NORTE EP</option>
+				<option value="495">ROLLYBEARS PARLA HL</option>
+				<option value="351">ROULEMENT</option>
+				<option value="515">SAGRADO CORAZON PA</option>
+				<option value="474">SALAMANCA H.C.</option>
+				<option value="427">SAMURAI HL-PA-EP</option>
+				<option value="365">SAN AGUSTIN</option>
+				<option value="472">SAN FERNANDO HENARES PA</option>
+				<option value="531">SAN IGNACIO TORRELODONES</option>
+				<option value="470">SANSE HOCKEY HP</option>
+				<option value="521">SIDEWAY</option>
+				<option value="486">SILVER PA</option>
+				<option value="533">SIN ORGANIZADOR</option>
+				<option value="519">SKATE MANUALS</option>
+				<option value="500">SKATE POZUELO</option>
+				<option value="501">SKATEFUN</option>
+				<option value="514">SKATING SKILLS</option>
+				<option value="384">SLIDERS</option>
+				<option value="376">SOBRE8RUEDAS</option>
+				<option value="402">SPEED WHEELS</option>
+				<option value="374">SPORTING DE VALLECAS FS-PAL</option>
+				<option value="518">SPORTING HOQUEI ALCOI</option>
+				<option value="329">STA. Mª DEL PILAR HP Y PA</option>
+				<option value="428">STA. Mª LA BLANCA</option>
+				<option value="532">TEAMDEJATE SC</option>
+				<option value="411">TISO PATIN</option>
+				<option value="353">TORRELODONES</option>
+				<option value="387">TRES CANTOS HL</option>
+				<option value="424">TRES CANTOS HP</option>
+				<option value="347">TRES CANTOS P.A.</option>
+				<option value="373">TRES60</option>
+				<option value="498">TROYANOS VILLARROBLEDO</option>
+				<option value="490">TROYANOS VILLARROBLEDO</option>
+				<option value="458">TRS MADRID</option>
+				<option value="494">UNIQUE PA</option>
+				<option value="340">UP RIVAS</option>
+				<option value="485">VALENTIA HP</option>
+				<option value="339">VALLEHERMOSO</option>
+				<option value="370">VALLEKAS</option>
+				<option value="508">VALLMONT PA</option>
+				<option value="537">VARIOS ORGANIZADORES</option>
+				<option value="337">VELILLA</option>
+				<option value="378">VELOCIDAD RIVAS PV-FS-EP</option>
+				<option value="437">VETTONIA</option>
+				<option value="530">VIEJAS GLORIAS</option>
+				<option value="524">VILLALBA PATINA</option>
+				<option value="322">VILLANUEVA DEL PARDILLO</option>
+				<option value="394">VIRGEN DE EUROPA</option>
+				<option value="528">ZAFRA HC</option>
+			
+	</select>
+	<select style="float: left; margin: 8px 5px 0px 5px; width: 200px; display: none;" class="filtro_agenda filtro_idc" id="filtrocompeticion1">
+		<option value="0">Filtro Competicion ...</option>
+				<option value="4531">FINAL A JÚNIOR</option>
+				<option value="4303">CTO AUT PREBENJAMÍN XS - 2ª FASE - GRUPO 1</option>
+				<option value="4229">CTO AUT MICRO XS</option>
+				<option value="4552">COPA JMG 1ª AUT FEMENINA - GRUPO A</option>
+				<option value="4549">COPA JMG JUVENIL 1ª DIV - GRUPO A</option>
+				<option value="4548">COPA JMG 2ª AUTONÓMICA MASCULINA</option>
+				<option value="4540">FINAL A 4 SUB-15 FEMENINA</option>
+				<option value="4301">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</option>
+				<option value="4530">FINAL A 4 INFANTIL 1ª DIVISIÓN</option>
+				<option value="4706">FINAL A 4 ALEVÍN 2ª DIVISIÓN</option>
+				<option value="4556">COPA JMG SUB-17 FEMENINA </option>
+				<option value="4737">COPA JMG JUVENIL 2ª DIVISIÓN</option>
+				<option value="4707">FINAL A 4 INFANTIL 2ª DIVISIÓN</option>
+				<option value="4748">COPA JMG ALEVÍN 1ª DIV - FASE FINAL</option>
+				<option value="4747">COPA JMG SUB-13 FEM - FASE FINAL</option>
+				<option value="4743">FINAL A 4 PREBENJAMÍN 1ª DIV</option>
+				<option value="4738">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO A</option>
+				<option value="4304">CTO AUT PREBENJAMÍN XS - 2ª FASE - GRUPO 2</option>
+				<option value="4559">COPA JMG ALEVÍN 2ª DIV - GRUPO A</option>
+				<option value="4535">COPA JMG INFANTIL 1ª DIV - GRUPO A</option>
+				<option value="4701">COPA JMG INFANTIL 2ª DIV - GRUPO A</option>
+				<option value="4302">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</option>
+				<option value="4472">FINAL A 4 SUB-17 FEMENINA</option>
+				<option value="4557">COPA JMG JÚNIOR - GRUPO A</option>
+				<option value="4214">CTO AUT PREBENJAMÍN XS</option>
+				<option value="4550">COPA JMG JUVENIL 1ª DIV - GRUPO B</option>
+				<option value="4554">COPA JMG SUB-15 FEMENINA - GRUPO A</option>
+				<option value="4553">COPA JMG 1ª AUT FEMENINA - GRUPO B</option>
+				<option value="4545">COPA JMG SUB-13 FEMENINA - GRUPO A</option>
+				<option value="4541">COPA JMG ALEVÍN 1ª DIV - GRUPO A</option>
+				<option value="4560">COPA JMG ALEVÍN 2ª DIV - GRUPO B</option>
+				<option value="4536">COPA JMG INFANTIL 1ª DIV - GRUPO B</option>
+				<option value="4555">COPA JMG SUB-15 FEMENINA - GRUPO B</option>
+				<option value="4551">COPA JMG JUVENIL 1ª DIV - GRUPO C</option>
+				<option value="4542">COPA JMG ALEVÍN 1ª DIV - GRUPO B</option>
+				<option value="4546">COPA JMG SUB-13 FEMENINA - GRUPO B</option>
+				<option value="4702">COPA JMG INFANTIL 2ª DIV - GRUPO B</option>
+				<option value="4558">COPA JMG JÚNIOR - GRUPO B</option>
+				<option value="4215">CTO AUT PREBENJAMÍN XS - 1ª FASE - GRUPO A</option>
+				<option value="4432">FINAL A 4 - 1ª FEMENINA</option>
+				<option value="4191">CTO AUT BENJAMÍN 2ª DIVISIÓN - 1ª FASE - GRUPO A</option>
+				<option value="4739">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO B</option>
+				<option value="4197">CTO AUT PREBENJAMÍN 1ª DIVISIÓN</option>
+				<option value="4561">COPA JMG ALEVÍN 2ª DIV - GRUPO C</option>
+				<option value="4188">CTO AUT BENJAMÍN 1ª DIVISIÓN</option>
+				<option value="4216">CTO AUT PREBENJAMÍN XS - 1ª FASE - GRUPO B</option>
+				<option value="4192">CTO AUT BENJAMÍN 2ª DIVISIÓN - 1ª FASE - GRUPO B</option>
+				<option value="4740">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO C</option>
+				<option value="4750">COPA JMG JUVENIL 1ª DIV - FASE FINAL</option>
+				<option value="4538">COPA JMG INFANTIL 1ª DIV - GRUPO C</option>
+				<option value="4703">COPA JMG INFANTIL 2ª DIV - GRUPO C</option>
+				<option value="4471">FINAL A 4 SUB-13 FEMENINA</option>
+				<option value="4543">COPA JMG ALEVÍN 1ª DIV - GRUPO C</option>
+				<option value="4704">COPA JMG INFANTIL 2ª DIV - GRUPO D</option>
+				<option value="4741">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO D</option>
+				<option value="4699">COPA JMG ALEVÍN 2ª DIV - GRUPO D</option>
+				<option value="4544">COPA JMG ALEVÍN 1ª DIV - GRUPO D</option>
+				<option value="4539">COPA JMG INFANTIL 1ª DIV - FASE FINAL</option>
+				<option value="4529">FINAL A 4 JUVENIL 1ª DIVISIÓN</option>
+				<option value="4190">CTO AUT BENJAMÍN 2ª DIVISIÓN</option>
+				<option value="4240">PLAYOFF ALEVÍN 2ª DIVISIÓN</option>
+				<option value="4238">CTO AUT INFANTIL 1ª DIVISIÓN - 2ª FASE - GRUPO 1</option>
+				<option value="4528">FINAL A 4 ALEVÍN 1ª DIVISIÓN</option>
+				<option value="4173">CTO AUT ALEVÍN 1ª DIVISIÓN </option>
+				<option value="4299">CTO AUT JUVENIL 1ª DIVISIÓN - 2ª FASE - GRUPO 1</option>
+				<option value="4300">CTO AUT JUVENIL 1ª DIVISIÓN - 2ª FASE - GRUPO 2</option>
+				<option value="4203">CTO AUT ALEVÍN 2ª DIVISIÓN</option>
+				<option value="4239">CTO AUT INFANTIL 1ª DIVISIÓN - 2ª FASE - GRUPO 2</option>
+				<option value="4230">CTO AUT ALEVÍN 1ª DIVISIÓN - 2ª FASE - GRUPO 1</option>
+				<option value="4233">CTO AUT ALEVÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</option>
+				<option value="4234">CTO AUT ALEVÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</option>
+				<option value="4179">CTO AUT INFANTIL 1ª DIVISIÓN</option>
+				<option value="4232">CTO AUT ALEVÍN 1ª DIVISIÓN - 2ª FASE - GRUPO 2</option>
+				<option value="4180">CTO AUT INFANTIL 1ª DIVISIÓN - 1ª FASE - GRUPO A </option>
+				<option value="4185">CTO AUT JUVENIL 1ª DIVISIÓN - 1ª FASE</option>
+				<option value="4174">CTO AUT ALEVÍN 1ª DIVISIÓN - 1ª FASE - GRUPO A</option>
+				<option value="4204">CTO AUT ALEVÍN 2ª DIVISIÓN - 1ª FASE - GRUPO A</option>
+				<option value="4194">CTO AUT INFANTIL 2ª DIVISIÓN</option>
+				<option value="4181">CTO AUT INFANTIL 1ª DIVISIÓN - 1ª FASE - GRUPO B</option>
+				<option value="4182">CTO AUT JUVENIL 1ª DIVISIÓN</option>
+				<option value="4205">CTO AUT ALEVÍN 2ª DIVISIÓN - 1ª FASE - GRUPO B</option>
+				<option value="4178">CTO AUT ALEVÍN 1ª DIVISIÓN - 1ª FASE - GRUPO B</option>
+				<option value="4206">CTO AUT ALEVÍN 2ª DIVISIÓN - 1ª FASE - GRUPO C</option>
+				<option value="4201">CTO AUT JUVENIL 2ª DIVISIÓN</option>
+				<option value="4186">CTO AUT JÚNIOR</option>
+				<option value="4193">CTO AUT SUB-13 FEMENINO</option>
+				<option value="4199">CTO AUT SUB-15 FEMENINO</option>
+				<option value="4202">CTO AUT SUB-17 FEMENINO</option>
+				<option value="4198">1ª AUTONÓMICA FEMENINA</option>
+				<option value="4187">1ª AUTONÓMICA MASCULINA</option>
+				<option value="4207">2ª AUTONÓMICA MASCULINA</option>
+				<option value="4674">FASE SECTOR SUR ALEVÍN FEMENINA</option>
+				<option value="4711">FASE SECTOR SUR JÚNIOR</option>
+				<option value="4744">FASE SECTOR SUR INFANTIL FEMENINA</option>
+				<option value="4210">AMISTOSOS FMP</option>
+				<option value="4211">OKLIGA</option>
+				<option value="4534">SECTORES Y CAMPEONATOS ESPAÑA 2025-2026</option>
+				<option value="4752">AMISTOSOS SELECCION FMP</option>
+			
+	</select>
+	<select style="float: left; margin: 8px 5px 0px 5px; width: 200px; display: none;" class="filtro_agenda filtro_idc" id="filtrocompeticion2" style="display: none;">
+		<option value="0">Filtro Competicion ...</option>
+				<option value="4429">LIGA INFANTIL GRUPO 1</option>
+				<option value="4165">LIGA SENIOR FEMENINA</option>
+				<option value="4426">LIGA BENJAMIN GRUPO 1</option>
+				<option value="4427">LIGA BENJAMIN GRUPO 2</option>
+				<option value="4156">LIGA SENIOR 1</option>
+				<option value="4430">LIGA INFANTIL GRUPO 2</option>
+				<option value="4168">LIGA SENIOR 2</option>
+				<option value="4431">LIGA INFANTIL GRUPO 3</option>
+				<option value="4371">LIGA SENIOR 3 GRUPO 1</option>
+				<option value="4372">LIGA SENIOR 3 GRUPO 2</option>
+				<option value="4396">LIGA SENIOR 3 GRUPO 3</option>
+				<option value="4171">LIGA SUB20 FEMENINA</option>
+				<option value="4163">LIGA JUNIOR</option>
+				<option value="4162">LIGA JUVENIL</option>
+				<option value="4161">LIGA INFANTIL</option>
+				<option value="4157">LIGA ALEVÍN 1</option>
+				<option value="4159">LIGA ALEVÍN 2</option>
+				<option value="4175">LIGA BENJAMÍN</option>
+				<option value="4305">LIGA PREBENJAMIN</option>
+				<option value="4212">AMISTOSOS FMP</option>
+				<option value="4169">LIGA SENIOR 3 GRUPO A</option>
+				<option value="4170">LIGA SENIOR 3 GRUPO B</option>
+				<option value="4759">PARTIDOS AMISTOSOS SELECCIÓN MADRILEÑA</option>
+			
+	</select>
+	
+	<select style="float: left; margin: 8px 5px 0px 5px; width: 250px;" class="filtro_agenda" id="agenda_pista_select">
+		<option value="0">Filtro Pista ...</option>
+				<option value="146">A DESIGNAR</option>
+				<option value="143">ANFEVI (POLIDEPORTIVO EL VIDRIO)</option>
+				<option value="192">CASA DE LA JUVENTUD - ALGETE</option>
+				<option value="190">CDE EL VALLE</option>
+				<option value="171">CEIP CLARA CAMPOAMOR</option>
+				<option value="210">CEIP GONZALO FERNANDEZ DE CORDOBA</option>
+				<option value="214">CEIP MIGUEL HERNANDEZ</option>
+				<option value="221">CEIP PADRE GARRALDA</option>
+				<option value="118">CENTRO DE PATINAJE LAS ROZAS</option>
+				<option value="154">CENTRO DE PATINAJE LAS ROZAS-CUBIERTA</option>
+				<option value="155">CENTRO DE PATINAJE LAS ROZAS-DESCUBIERTA</option>
+				<option value="138">CENTRO DEP. MUN. FRANCISCO FDEZ. OCHOA</option>
+				<option value="135">CENTRO DEP. MUN. WILFRED AGBONAVBARE</option>
+				<option value="127">CENTRO DEPORTIVO LAURA OTER</option>
+				<option value="227">CENTRO DEPORTIVO MUNICIPAL BARAJAS</option>
+				<option value="123">CENTRO DEPORTIVO MUNICIPAL LAS CRUCES</option>
+				<option value="176">CIRCUITO LA LAGUNA</option>
+				<option value="207">CIRCUITO VELOCIDAD PARLA</option>
+				<option value="205">CIRCUITO VELOCIDAD VICALVARO</option>
+				<option value="167">CIUDAD DEPORTIVA JUAN ANTONIO SAMARANCH</option>
+				<option value="133">CIUDAD DEPORTIVA LAS OLIVAS</option>
+				<option value="145">CIUDAD DEPORTIVO VALDELASFUENTES</option>
+				<option value="198">CLUB BREZO OSUNA</option>
+				<option value="172">CLUB DEPORTIVO SOMONTES</option>
+				<option value="218">CLUB LAS ENCINAS DE BOADILLA</option>
+				<option value="137">CLUB SOCIAL DEPORTIVO PARQUE LISBOA</option>
+				<option value="184">COL. STA MARIA LA BLANCA - DESCUBIERTA</option>
+				<option value="139">COLEGIO ALAMEDA DE OSUNA-DESCUBIERTA</option>
+				<option value="140">COLEGIO ALAMEDA DE OSUNA-PABELLON</option>
+				<option value="124">COLEGIO ALDOVEA</option>
+				<option value="187">COLEGIO ANTONIO OSUNA</option>
+				<option value="234">COLEGIO BILINGÜE VALLMONT</option>
+				<option value="131">COLEGIO CASTILLA</option>
+				<option value="178">COLEGIO EUROPEO DE MADRID</option>
+				<option value="197">COLEGIO GREDOS SAN DIEGO ALCALÁ HENARES</option>
+				<option value="129">COLEGIO LUYFE RIVAS</option>
+				<option value="199">COLEGIO MIRABAL</option>
+				<option value="163">COLEGIO PARQUE</option>
+				<option value="134">COLEGIO PUBLICO VIRGEN DE NAVALAZARZA		</option>
+				<option value="142">COLEGIO RETAMAR</option>
+				<option value="216">COLEGIO SAGRADO CORAZÓN REPARADORAS</option>
+				<option value="215">COLEGIO SAN AGUSTIN LOS NEGRALES</option>
+				<option value="217">COLEGIO SAN AGUSTIN LOS NEGRALES</option>
+				<option value="150">COLEGIO SAN JOSE DEL PARQUE</option>
+				<option value="125">COLEGIO SANTA MARIA DEL PILAR-NARANJA</option>
+				<option value="153">COLEGIO SANTA MARIA DEL PILAR-PABELLON</option>
+				<option value="152">COLEGIO SANTA MARIA DEL PILAR-PISTA ROJA</option>
+				<option value="230">COLEGIO SANTA MARIA LA BLANCA - CUBIERTA</option>
+				<option value="159">COLEGIO VIRGEN DE EUROPA - CARPA</option>
+				<option value="121">COLEGIO VIRGEN DE EUROPA - PABELLON</option>
+				<option value="162">COLEGIO VIRGEN DE EUROPA - PISTA VERDE</option>
+				<option value="203">COLEGIO VIRGEN DE NAVALAZARZA</option>
+				<option value="157">COLLADO VILLALBA - PISTA URBANA</option>
+				<option value="177">COMPLEJO DEPORTIVO MUNICIPAL ANGEL NIETO</option>
+				<option value="186">COMPLEJO DEPORTIVO SANTIAGO APOSTOL</option>
+				<option value="136">CUBIERTA MULTIUSOS AVILA</option>
+				<option value="206">HURRICANE SKATE HOUSE</option>
+				<option value="182">I.D. MUN. BASICA LOS ROSALES</option>
+				<option value="213">IDB POETA VILLEGAS</option>
+				<option value="224">IES JAIME FERRAN</option>
+				<option value="235">IES MARIA GUERRERO</option>
+				<option value="179">INST. DEPORT. MUNICIPAL LAS TABLAS</option>
+				<option value="175">INSTALACIÓN DEPORTIVA BÁSICA DRÁCENA 42</option>
+				<option value="223">INSTALACIÓN DEPORTIVA LOS ARROYOS</option>
+				<option value="191">INSTALACION DEPORTIVA MUNIC. EL CASAR </option>
+				<option value="200">MAD RAMPS</option>
+				<option value="212">MADRID CAPITAL</option>
+				<option value="181">NUEVO BAZTAN, POLIDEPORTIVO MUNICIPAL</option>
+				<option value="169">PABELLON JUAN CARLOS I</option>
+				<option value="226">PABELLÓN MUN. ENRIQUE BLAS ECHEVARRIA</option>
+				<option value="148">PABELLON MUNICIPAL BURGUILLOS DEL CERRO</option>
+				<option value="225">PABELLON MUNICIPAL DAGANZO</option>
+				<option value="194">PARQUE DEPORTIVO LA CANTERA</option>
+				<option value="158">PARQUE DEPORTIVO PUERTA DE HIERRO</option>
+				<option value="166">PARQUE DEPORTIVO SOMONTES</option>
+				<option value="165">PATINODROMO ALUCHE</option>
+				<option value="180">PISTA EXTERIOR PARQUE DOLORES IBARRURI</option>
+				<option value="189">PISTA PATINAJE PACO DE LUCIA</option>
+				<option value="170">PISTA POLIDEPORTIVA PARQUE HENARES</option>
+				<option value="173">PISTAS AVENIDA PONTEVEDRA</option>
+				<option value="128">POL MUNICIPAL CERRO TELEGRAFO PISTA 1</option>
+				<option value="188">POL MUNICIPAL CERRO TELEGRAFO-PISTA 2</option>
+				<option value="204">POL. MUN. PRINCIPE FELIPE</option>
+				<option value="130">POL. MUNICIPAL BECERRIL DE LA SIERRA</option>
+				<option value="122">POL. PRADO STO DOMINGO PABELLON</option>
+				<option value="222">POL. PRADO STO DOMINGO PISTA EXTERIOR</option>
+				<option value="193">POLID MUNICIPAL LA VIA</option>
+				<option value="151">POLID. MUNICIPAL JOSE CABALLERO-PABELLON</option>
+				<option value="120">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</option>
+				<option value="202">POLIDEPORTIVO ALEGRA</option>
+				<option value="185">POLIDEPORTIVO ANDRES TORREJON (EL SOTO)</option>
+				<option value="126">POLIDEPORTIVO DEL VAL-PISTA CUBIERTA</option>
+				<option value="156">POLIDEPORTIVO DEL VAL-PISTA DESCUBIERTA</option>
+				<option value="195">POLIDEPORTIVO EL PLANTIO</option>
+				<option value="168">POLIDEPORTIVO FERMIN CACHO</option>
+				<option value="196">POLIDEPORTIVO MARGOT MOLET (VICALVARO)</option>
+				<option value="174">POLIDEPORTIVO MARIA DE VILLOTA</option>
+				<option value="141">POLIDEPORTIVO MUNC. CERRO DE LA MINA</option>
+				<option value="144">POLIDEPORTIVO MUNIC. MORATALAZ</option>
+				<option value="164">POLIDEPORTIVO MUNIC. PARACUELLOS DE JARA</option>
+				<option value="119">POLIDEPORTIVO MUNICIPAL DE ALUCHE</option>
+				<option value="149">POLIDEPORTIVO MUNICIPAL DE CAMPO REAL</option>
+				<option value="132">POLIDEPORTIVO MUNICIPAL GALAPAGAR</option>
+				<option value="147">POLIDEPORTIVO MUNICIPAL VALLEAGUADO</option>
+				<option value="211">POLIDEPORTIVO NUEVO BAZTAN</option>
+				<option value="116">POLIDEPORTIVO PLATA Y CASTAÑAR</option>
+				<option value="183">POLIDEPORTIVO SAN AGUSTIN DEL GUADALIX</option>
+				<option value="117">POLIDEPORTIVO VICENTE DEL BOSQUE</option>
+				<option value="160">RECINTO FERIAL MIGUEL RIOS</option>
+				<option value="161">ROLLER CENTER MADRID</option>
+				<option value="208">SAN BLAS-CANILLEJAS</option>
+				<option value="232">SIN INSTALACIÓN</option>
+				<option value="209">SKATE IGNACIO ECHEVERRIA FUENLABRADA</option>
+				<option value="229">SKATE PARK TORREJON DE ARDOZ</option>
+				<option value="220">SKATEPARK ALCALA DE HENARES</option>
+				<option value="231">SKATEPARK HOYO DE MANZANARES</option>
+				<option value="228">SKATEPARK TRES CANTOS</option>
+				<option value="219">SKATEPARK VILLANUEVA DE LA CAÑADA</option>
+				<option value="201">THE STYLE OUTLETS</option>
+				<option value="233">VARIAS INSTALACIONES</option>
+			
+	</select>
+	
+	<input type="hidden" id="pdf_params" value="">
+	
+	<a class="menu_competicion_btn public_pdf" href="#" pdf_url="^general^agenda_default.php^" style="float: right; margin: 5px 5px 1px 0px;">
+		<span class="fa fa-file-pdf-o icon_boton" aria-hidden="true"  style="color: red;"></span>
+	PDF - AGENDA</a>
+	</div>
+<div id="agenda_listado" style="margin: 0px 10px 0px 10px;">
+	
+	
+	
+
+<table class="tabla_standard" style="font-size: 10px!important" id="agenda_tabla">
+		<thead>
+			<th colspan="2" style="text-align: left; padding-left: 5px;" >Modalidad / Competición </th>
+			<th>Fecha</th>
+			<th>Hora</th>
+			<th colspan="2" style="text-align: left; padding-left: 5px;">Local</th>
+			<th colspan="2" style="text-align: left; padding-left: 5px;">Visitante</th>
+			<th>Result.</th>
+			<th style="text-align: left; padding-left: 5px;">Pista</th>
+		</thead>
+		<tbody>
+				<tr class="fila_agenda pista_230" param_game="1_7_428_399_4301">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:00</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA B</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA LA BLANCA - CUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="1_7_400_428_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:00</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS </td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_395_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:30</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR C</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS C</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_139" param_game="1_7_386_424_4229">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT MICRO XS</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:00</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA A</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_158" param_game="2_7_376_420_4305">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA PREBENJAMIN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:00</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS A</td>
+			<td width="20"></td>
+			<td>LAS ROZAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">PARQUE DEPORTIVO PUERTA DE HIERRO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_119" param_game="1_7_393_386_4739">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:00</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL DE ALUCHE</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_230" param_game="1_7_428_334_4301">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:15</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA C</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA LA BLANCA - CUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_136" param_game="1_7_437_386_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:00</td>
+			<td width="20"></td>
+			<td>VETTONIA HC</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CUBIERTA MULTIUSOS AVILA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_142" param_game="1_7_397_423_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:00</td>
+			<td width="20"></td>
+			<td>RETAMAR </td>
+			<td width="20"></td>
+			<td>CP ALCALÁ B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO RETAMAR</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_122" param_game="1_7_334_329_4303">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT PREBENJAMÍN XS - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:00</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN B</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL. PRADO STO DOMINGO PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_158" param_game="2_7_376_420_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:00</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS A</td>
+			<td width="20"></td>
+			<td>LAS ROZAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">PARQUE DEPORTIVO PUERTA DE HIERRO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_139" param_game="1_7_386_399_4229">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT MICRO XS</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:15</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_424_4229">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT MICRO XS</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:15</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_179" param_game="2_7_421_412_4165">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR FEMENINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:30</td>
+			<td width="20"></td>
+			<td>PINGÜINOS A</td>
+			<td width="20"></td>
+			<td>MAMUTS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INST. DEPORT. MUNICIPAL LAS TABLAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="1_7_399_333_4557">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JÚNIOR - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:30</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS</td>
+			<td width="20"></td>
+			<td>CP COSLADA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_122" param_game="1_7_334_394_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:30</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN A</td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL. PRADO STO DOMINGO PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_184" param_game="1_7_428_393_4561">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 2ª DIV - GRUPO C</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:45</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA C</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COL. STA MARIA LA BLANCA - DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_158" param_game="2_7_376_406_4372">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 3 GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:45</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS C</td>
+			<td width="20"></td>
+			<td>CPLM C</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">PARQUE DEPORTIVO PUERTA DE HIERRO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_386_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:30</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR B</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_125" param_game="1_7_329_470_4559">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 2ª DIV - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:30</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR B</td>
+			<td width="20"></td>
+			<td>SANSE HOCK PAISAJISMO  BATRES</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA DEL PILAR-NARANJA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="2_7_420_426_4159">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA ALEVÍN 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:30</td>
+			<td width="20"></td>
+			<td>LAS ROZAS B</td>
+			<td width="20"></td>
+			<td>RENOS MÓSTOLES</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_184" param_game="1_7_428_400_4556">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-17 FEMENINA </div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">14:00</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COL. STA MARIA LA BLANCA - DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_179" param_game="2_7_421_387_4159">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA ALEVÍN 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">14:00</td>
+			<td width="20"></td>
+			<td>PINGÜINOS B</td>
+			<td width="20"></td>
+			<td>TRES CANTOS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INST. DEPORT. MUNICIPAL LAS TABLAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_158" param_game="2_7_376_495_4431">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA INFANTIL GRUPO 3</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">14:30</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS</td>
+			<td width="20"></td>
+			<td>ROLLYBEARS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">PARQUE DEPORTIVO PUERTA DE HIERRO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_182" param_game="2_7_412_429_4305">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA PREBENJAMIN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">14:30</td>
+			<td width="20"></td>
+			<td>MAMUTS</td>
+			<td width="20"></td>
+			<td>LOBOS CASTILLA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">I.D. MUN. BASICA LOS ROSALES</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_132" param_game="2_7_496_373_4168">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">14:30</td>
+			<td width="20"></td>
+			<td>VIKINGS B</td>
+			<td width="20"></td>
+			<td>TRES60</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL GALAPAGAR</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="1_7_400_395_4558">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JÚNIOR - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">15:00</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS </td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_185" param_game="2_7_426_412_4168">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">15:30</td>
+			<td width="20"></td>
+			<td>RENOS MÓSTOLES A</td>
+			<td width="20"></td>
+			<td>MAMUTS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO ANDRES TORREJON (EL SOTO)</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_128" param_game="1_7_395_334_4704">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 2ª DIV - GRUPO D</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">15:45</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS C</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL MUNICIPAL CERRO TELEGRAFO PISTA 1</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="2_7_375_411_4168">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:00</td>
+			<td width="20"></td>
+			<td>MADRIDPATINA A</td>
+			<td width="20"></td>
+			<td>TISO PATÍN B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="2_7_387_376_4426">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA BENJAMIN GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:30</td>
+			<td width="20"></td>
+			<td>TRES CANTOS A</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_122" param_game="1_7_334_393_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:45</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL. PRADO STO DOMINGO PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_141" param_game="1_7_470_396_4301">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:15</td>
+			<td width="20"></td>
+			<td>SANSE HOCK PAISAJISMO BATRES A</td>
+			<td width="20"></td>
+			<td>CHP MAJADAHONDA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNC. CERRO DE LA MINA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_185" param_game="2_7_426_412_4159">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA ALEVÍN 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:15</td>
+			<td width="20"></td>
+			<td>RENOS MÓSTOLES</td>
+			<td width="20"></td>
+			<td>MAMUTS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO ANDRES TORREJON (EL SOTO)</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_128" param_game="1_7_395_396_4536">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:15</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS B</td>
+			<td width="20"></td>
+			<td>CHP MAJADAHONDA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL MUNICIPAL CERRO TELEGRAFO PISTA 1</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="2_7_411_387_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:30</td>
+			<td width="20"></td>
+			<td>TISO PATÍN A</td>
+			<td width="20"></td>
+			<td>TRES CANTOS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="1_7_400_470_4538">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - GRUPO C</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:00</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS A</td>
+			<td width="20"></td>
+			<td>SANSE HOCK PAISAJISMO BATRES A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_141" param_game="1_7_396_393_4748">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:30</td>
+			<td width="20"></td>
+			<td>CHP MAJADAHONDA</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNC. CERRO DE LA MINA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_179" param_game="2_7_421_412_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:00</td>
+			<td width="20"></td>
+			<td>PINGÜINOS A</td>
+			<td width="20"></td>
+			<td>MAMUTS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INST. DEPORT. MUNICIPAL LAS TABLAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="2_7_387_426_4372">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 3 GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:00</td>
+			<td width="20"></td>
+			<td>TRES CANTOS C</td>
+			<td width="20"></td>
+			<td>RENOS MÓSTOLES C</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_155" param_game="1_7_470_400_4303">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT PREBENJAMÍN XS - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:15</td>
+			<td width="20"></td>
+			<td>SANSE HOCK PAISAJISMO BATRES A</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS-DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="1_7_400_434_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">24/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:30</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS </td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="1_7_399_386_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">25/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:30</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS A</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_119" param_game="1_7_434_393_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">25/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:45</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR A</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL DE ALUCHE</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_140" param_game="1_7_470_386_4538">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - GRUPO C</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">25/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">20:00</td>
+			<td width="20"></td>
+			<td>SANSE HOCK PAISAJISMO BATRES A</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_140" param_game="1_7_386_395_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">25/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">20:15</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA </td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_230" param_game="1_7_428_386_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">26/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:30</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA E</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA LA BLANCA - CUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="1_7_400_428_4555">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-15 FEMENINA - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">26/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:45</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_184" param_game="1_7_428_400_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">26/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">20:00</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS </td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COL. STA MARIA LA BLANCA - DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_140" param_game="1_7_386_434_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">26/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">21:30</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA </td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_142" param_game="1_7_397_428_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">27/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">00:00</td>
+			<td width="20"></td>
+			<td>RETAMAR </td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA E</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">COLEGIO RETAMAR</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_139" param_game="1_7_386_329_4229">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT MICRO XS</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">27/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">00:00</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_139" param_game="1_7_470_386_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">27/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">00:00</td>
+			<td width="20"></td>
+			<td>SANSE HOCK PAISAJISMO BATRES B</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_140" param_game="1_7_386_334_4541">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 1ª DIV - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">27/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">15:00</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA A</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_140" param_game="1_7_386_399_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">27/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">21:00</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA </td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS </td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_147" param_game="1_7_333_530_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">27/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">21:30</td>
+			<td width="20"></td>
+			<td>CP COSLADA</td>
+			<td width="20"></td>
+			<td>CDE VIEJAS GLORIAS CVE</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL VALLEAGUADO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="1_7_424_333_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">28/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:15</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC B</td>
+			<td width="20"></td>
+			<td>CP COSLADA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_428_4737">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 2ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">28/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:15</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_182" param_game="2_7_412_495_4168">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">28/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">21:00</td>
+			<td width="20"></td>
+			<td>MAMUTS B</td>
+			<td width="20"></td>
+			<td>ROLLYBEARS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">I.D. MUN. BASICA LOS ROSALES</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_140" param_game="1_7_386_400_4555">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-15 FEMENINA - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">29/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:00</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_159" param_game="1_7_394_428_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">29/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:30</td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA B</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA E</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO VIRGEN DE EUROPA - CARPA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_147" param_game="1_7_333_434_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">29/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:00</td>
+			<td width="20"></td>
+			<td>CP COSLADA A</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL VALLEAGUADO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="1_7_399_334_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">29/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:45</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS </td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_132" param_game="2_7_496_411_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">29/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">20:00</td>
+			<td width="20"></td>
+			<td>VIKINGS A</td>
+			<td width="20"></td>
+			<td>TISO PATÍN A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL GALAPAGAR</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_121" param_game="1_7_530_386_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">29/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">21:00</td>
+			<td width="20"></td>
+			<td>CDE VIEJAS GLORIAS CVE</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA </td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO VIRGEN DE EUROPA - PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__395_4750">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__424_4539">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_333_4747">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-13 FEM - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="20"></td>
+			<td>CP COSLADA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__394_4539">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="1_7_399_393_4739">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS A</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__333_4750">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>CP COSLADA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__424_4748">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_122" param_game="1_7_334_386_4747">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-13 FEM - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL. PRADO STO DOMINGO PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_141" param_game="1_7_396_333_4737">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 2ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td>CHP MAJADAHONDA</td>
+			<td width="20"></td>
+			<td>CP COSLADA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNC. CERRO DE LA MINA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__393_4539">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>CHP ALUCHE</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__434_4748">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>CDE EL CASAR A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_184" param_game="1_7_428_424_4738">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA A</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COL. STA MARIA LA BLANCA - DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__399_4539">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_202" param_game="1_7_470_428_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td>SANSE HOCK PAISAJISMO BATRES B</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA E</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO ALEGRA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__399_4750">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__395_4748">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="1_7_399_428_4747">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-13 FEM - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__394_4750">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_7__386_4748">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_128" param_game="1_7_395_423_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:15</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS C</td>
+			<td width="20"></td>
+			<td>CP ALCALÁ B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL MUNICIPAL CERRO TELEGRAFO PISTA 1</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_122" param_game="1_7_334_395_4301">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:30</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN B</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL. PRADO STO DOMINGO PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_333_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:15</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR B</td>
+			<td width="20"></td>
+			<td>CP COSLADA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_128" param_game="1_7_395_329_4304">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT PREBENJAMÍN XS - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:30</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS C</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR C</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL MUNICIPAL CERRO TELEGRAFO PISTA 1</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_147" param_game="1_7_333_428_4301">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:30</td>
+			<td width="20"></td>
+			<td>CP COSLADA B</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL VALLEAGUADO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="1_7_424_333_4303">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT PREBENJAMÍN XS - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:45</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC B</td>
+			<td width="20"></td>
+			<td>CP COSLADA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="1_7_399_386_4304">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT PREBENJAMÍN XS - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:45</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS B</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_136" param_game="1_7_437_428_4699">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 2ª DIV - GRUPO D</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:00</td>
+			<td width="20"></td>
+			<td>VETTONIA HC</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CUBIERTA MULTIUSOS AVILA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_125" param_game="1_7_329_428_4303">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT PREBENJAMÍN XS - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:15</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR B</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA DEL PILAR-NARANJA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_139" param_game="1_7_386_397_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:30</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="20"></td>
+			<td>RETAMAR </td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_386_4229">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT MICRO XS</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:30</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_122" param_game="1_7_334_399_4560">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 2ª DIV - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:00</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN C</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL. PRADO STO DOMINGO PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="1_7_424_334_4738">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:00</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC A</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_136" param_game="1_7_437_428_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:30</td>
+			<td width="20"></td>
+			<td>VETTONIA HC</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA D</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CUBIERTA MULTIUSOS AVILA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_125" param_game="1_7_329_470_4301">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:30</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR B</td>
+			<td width="20"></td>
+			<td>SANSE HOCK PAISAJISMO BATRES A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA DEL PILAR-NARANJA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_386_4557">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JÚNIOR - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:45</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA </td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_139" param_game="1_7_386_424_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:45</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA A</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_125" param_game="1_7_329_434_4740">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO C</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:15</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR A</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA DEL PILAR-NARANJA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="1_7_424_329_4229">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT MICRO XS</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:15</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC A</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_138" param_game="2_7_406_496_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:30</td>
+			<td width="20"></td>
+			<td>CPLM A</td>
+			<td width="20"></td>
+			<td>VIKINGS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEP. MUN. FRANCISCO FDEZ. OCHOA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="1_7_400_395_4556">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-17 FEMENINA </div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">15:00</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_141" param_game="1_7_396_434_4737">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 2ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:00</td>
+			<td width="20"></td>
+			<td>CHP MAJADAHONDA</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNC. CERRO DE LA MINA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_121" param_game="1_7_394_399_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:00</td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA A</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO VIRGEN DE EUROPA - PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="1_7_400_334_4303">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT PREBENJAMÍN XS - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:30</td>
+			<td width="20"></td>
+			<td>CP LAS ROZAS</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_147" param_game="1_7_333_395_4741">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO D</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:00</td>
+			<td width="20"></td>
+			<td>CP COSLADA A</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL VALLEAGUADO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_140" param_game="1_7_386_434_4703">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 2ª DIV - GRUPO C</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:00</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA C</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_122" param_game="1_7_334_333_4704">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 2ª DIV - GRUPO D</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:00</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN B</td>
+			<td width="20"></td>
+			<td>CP COSLADA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL. PRADO STO DOMINGO PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_128" param_game="1_7_395_329_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:00</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR </td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL MUNICIPAL CERRO TELEGRAFO PISTA 1</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_424_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:00</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR B</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_121" param_game="1_7_394_434_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:15</td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA B</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR C</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO VIRGEN DE EUROPA - PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_141" param_game="1_7_396_423_4301">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:15</td>
+			<td width="20"></td>
+			<td>CHP MAJADAHONDA</td>
+			<td width="20"></td>
+			<td>CP ALCALÁ A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNC. CERRO DE LA MINA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_119" param_game="1_7_393_437_4548">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG 2ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:00</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE B</td>
+			<td width="20"></td>
+			<td>VETTONIA HC</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL DE ALUCHE</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_7_434_470_4559">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 2ª DIV - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:15</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR B</td>
+			<td width="20"></td>
+			<td>SANSE HOCK PAISAJISMO  BATRES</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_141" param_game="1_7_396_333_4548">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG 2ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">18:30</td>
+			<td width="20"></td>
+			<td>CHP MAJADAHONDA</td>
+			<td width="20"></td>
+			<td>CP COSLADA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNC. CERRO DE LA MINA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_158" param_game="2_7_376_376_4305">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA PREBENJAMIN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:00</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS A</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">PARQUE DEPORTIVO PUERTA DE HIERRO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_128" param_game="1_7_395_329_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:30</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS A</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL MUNICIPAL CERRO TELEGRAFO PISTA 1</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="2_7_387_421_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">20:00</td>
+			<td width="20"></td>
+			<td>TRES CANTOS A</td>
+			<td width="20"></td>
+			<td>PINGÜINOS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_158" param_game="2_7_376_406_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">30/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">20:00</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS A</td>
+			<td width="20"></td>
+			<td>CPLM A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">PARQUE DEPORTIVO PUERTA DE HIERRO</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_140" param_game="1_15_386_428_4556">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-17 FEMENINA </div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:00</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_128" param_game="1_15_395_394_4741">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO D</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:15</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS A</td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL MUNICIPAL CERRO TELEGRAFO PISTA 1</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_126" param_game="1_15_423_333_4301">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:30</td>
+			<td width="20"></td>
+			<td>CP ALCALÁ A</td>
+			<td width="20"></td>
+			<td>CP COSLADA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO DEL VAL-PISTA CUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_125" param_game="1_15_329_334_4197">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT PREBENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">09:30</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR A</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA DEL PILAR-NARANJA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_125" param_game="1_15_329_424_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:00</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR A</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">0 - 0			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA DEL PILAR-NARANJA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_119" param_game="1_15_393_333_4561">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 2ª DIV - GRUPO C</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:30</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE B</td>
+			<td width="20"></td>
+			<td>CP COSLADA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL DE ALUCHE</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="1_15_399_428_4301">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:45</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS B</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA C</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_15_434_329_4559">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 2ª DIV - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:00</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR C</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_132" param_game="2_15_496_429_4396">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 3 GRUPO 3</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:00</td>
+			<td width="20"></td>
+			<td>VIKINGS C</td>
+			<td width="20"></td>
+			<td>LOBOS CASTILLA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL GALAPAGAR</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_125" param_game="1_15_329_424_4747">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-13 FEM - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:15</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR </td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC </td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA DEL PILAR-NARANJA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_230" param_game="1_15_428_334_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:30</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA A</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO SANTA MARIA LA BLANCA - CUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_119" param_game="1_15_393_395_4188">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 1ª DIVISIÓN</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">11:45</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL DE ALUCHE</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="1_15_424_386_4229">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT MICRO XS</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:00</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC A</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="1_15_399_424_4554">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-15 FEMENINA - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:00</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_139" param_game="1_15_386_428_4302">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">CTO AUT BENJAMÍN 2ª DIVISIÓN - 2ª FASE - GRUPO 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:30</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA B</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA D</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_191" param_game="1_15_434_333_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:30</td>
+			<td width="20"></td>
+			<td>CDE EL CASAR</td>
+			<td width="20"></td>
+			<td>CP COSLADA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INSTALACION DEPORTIVA MUNIC. EL CASAR </td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_119" param_game="1_15_393_394_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:00</td>
+			<td width="20"></td>
+			<td>CHP ALUCHE</td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL DE ALUCHE</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="1_15_424_334_4560">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 2ª DIV - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:15</td>
+			<td width="20"></td>
+			<td>TRES CANTOS PC C</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN C</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_120" param_game="1_15_399_334_4560">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 2ª DIV - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:15</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS B</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLID. MUNICIPAL JOSE CABALLERO-PISTA 4</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_182" param_game="2_15_412_412_4371">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 3 GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">14:30</td>
+			<td width="20"></td>
+			<td>MAMUTS C</td>
+			<td width="20"></td>
+			<td>MAMUTS D</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">I.D. MUN. BASICA LOS ROSALES</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_121" param_game="1_15_530_423_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">15:00</td>
+			<td width="20"></td>
+			<td>CDE VIEJAS GLORIAS CVE</td>
+			<td width="20"></td>
+			<td>CP ALCALÁ </td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO VIRGEN DE EUROPA - PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_122" param_game="1_15_334_428_4701">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 2ª DIV - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:00</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN A</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL. PRADO STO DOMINGO PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_128" param_game="1_15_395_334_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:00</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL MUNICIPAL CERRO TELEGRAFO PISTA 1</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_182" param_game="2_15_412_412_4165">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR FEMENINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:15</td>
+			<td width="20"></td>
+			<td>MAMUTS B</td>
+			<td width="20"></td>
+			<td>MAMUTS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">I.D. MUN. BASICA LOS ROSALES</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="2_15_387_406_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:15</td>
+			<td width="20"></td>
+			<td>TRES CANTOS A</td>
+			<td width="20"></td>
+			<td>CPLM B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_127" param_game="2_15_387_421_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:00</td>
+			<td width="20"></td>
+			<td>TRES CANTOS B</td>
+			<td width="20"></td>
+			<td>PINGÜINOS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEPORTIVO LAURA OTER</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_132" param_game="2_15_496_376_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:00</td>
+			<td width="20"></td>
+			<td>VIKINGS A</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL GALAPAGAR</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_124" param_game="1_15_398_396_4548">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG 2ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:00</td>
+			<td width="20"></td>
+			<td>ALDOVEA HP</td>
+			<td width="20"></td>
+			<td>CHP MAJADAHONDA</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALDOVEA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_182" param_game="2_15_412_420_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">31/05/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">19:40</td>
+			<td width="20"></td>
+			<td>MAMUTS A</td>
+			<td width="20"></td>
+			<td>LAS ROZAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">I.D. MUN. BASICA LOS ROSALES</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_126" param_game="1_15_423_428_4702">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 2ª DIV - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">03/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">20:00</td>
+			<td width="20"></td>
+			<td>CP ALCALÁ </td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO DEL VAL-PISTA CUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_138" param_game="2_15_406_412_4156">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">03/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">21:00</td>
+			<td width="20"></td>
+			<td>CPLM A</td>
+			<td width="20"></td>
+			<td>MAMUTS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DEP. MUN. FRANCISCO FDEZ. OCHOA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_15___4748">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_15___4539">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_15___4750">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_15___4748">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_121" param_game="1_15_394_333_4741">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO D</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA</td>
+			<td width="20"></td>
+			<td>CP COSLADA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO VIRGEN DE EUROPA - PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_15___4750">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_15___4747">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-13 FEM - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_15___4539">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_126" param_game="1_15_423_329_4740">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO C</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td>CP ALCALÁ</td>
+			<td width="20"></td>
+			<td>STA Mª DEL PILAR A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO DEL VAL-PISTA CUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_122" param_game="1_15_334_428_4738">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO A</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:00</td>
+			<td width="20"></td>
+			<td>CP ALCORCÓN A</td>
+			<td width="20"></td>
+			<td>STA Mª LA BLANCA A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POL. PRADO STO DOMINGO PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="2_15_420_387_4159">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA ALEVÍN 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">13:10</td>
+			<td width="20"></td>
+			<td>LAS ROZAS B</td>
+			<td width="20"></td>
+			<td>TRES CANTOS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_118" param_game="2_15_420_387_4157">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA ALEVÍN 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">14:20</td>
+			<td width="20"></td>
+			<td>LAS ROZAS A</td>
+			<td width="20"></td>
+			<td>TRES CANTOS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">CENTRO DE PATINAJE LAS ROZAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_179" param_game="2_15_411_421_4168">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 2</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">06/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:00</td>
+			<td width="20"></td>
+			<td>TISO PATÍN B</td>
+			<td width="20"></td>
+			<td>PINGÜINOS B</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">INST. DEPORT. MUNICIPAL LAS TABLAS</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_139" param_game="1_21_386_399_4739">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG PREBENJAMÍN 1ª DIV - GRUPO B</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">07/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">10:30</td>
+			<td width="20"></td>
+			<td>ALAMEDA DE OSUNA A</td>
+			<td width="20"></td>
+			<td>CP ALCOBENDAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO ALAMEDA DE OSUNA-DESCUBIERTA</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_121" param_game="1_21_394_395_4187">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">1ª AUTONÓMICA MASCULINA</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">07/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">12:30</td>
+			<td width="20"></td>
+			<td>VIRGEN DE EUROPA</td>
+			<td width="20"></td>
+			<td>CP RIVAS LAS LAGUNAS</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">COLEGIO VIRGEN DE EUROPA - PABELLON</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_182" param_game="2_21_412_376_4157">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA ALEVÍN 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">07/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">16:00</td>
+			<td width="20"></td>
+			<td>MAMUTS A</td>
+			<td width="20"></td>
+			<td>SOBRE8RUEDAS A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">I.D. MUN. BASICA LOS ROSALES</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_132" param_game="2_21_410_431_4371">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+								HL			</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">LIGA SENIOR 3 GRUPO 1</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">07/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;">17:00</td>
+			<td width="20"></td>
+			<td>PUMAS</td>
+			<td width="20"></td>
+			<td>BISONTES A</td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini">POLIDEPORTIVO MUNICIPAL GALAPAGAR</td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_21___4750">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG JUVENIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">13/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_21___4747">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG SUB-13 FEM - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">13/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_21___4748">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG ALEVÍN 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">13/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				<tr class="fila_agenda pista_" param_game="1_21___4539">
+			<td style="background-color: #4B4442; color: #FFF; padding: 0px 5px 0px 5px; font-size: 11px; width: 15px;">
+				HP							</td>
+			<td><div style="font-size: 12px; padding-left: 5px;">COPA JMG INFANTIL 1ª DIV - FASE FINAL</div>
+			</td>
+			<td width="75" class="tabla_standard_less_mini" style="text-align: center;">13/06/2026</td>
+			<td width="60" class="tabla_standard_less_mini" style="text-align: center;"></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="20"></td>
+			<td></td>
+			<td width="50" style="text-align: center; font-weight: bold;">			</td>
+			<td class="tabla_standard_less_mini"></td>
+	
+
+		</tr>
+				</tbody>
+	</table>
+	
+	
+	
+</div>
+
+<script>
+var $j = jQuery.noConflict();
+$j(document).ready(function() {
+	
+	function filtrar_agenda() {
+		var idm_agenda = $j('#agenda_idm_select').val();
+		var agenda_date_select = $j('#agenda_date_select').val();
+		var agenda_club_select = $j('#agenda_club_select').val();
+		var agenda_pista_select = $j('#agenda_pista_select').val();
+		if (idm_agenda>0) {
+			$j('.filtro_idc').hide();
+			$j('#filtrocompeticion'+idm_agenda).show();
+			var filtro_idc = $j('#filtrocompeticion'+idm_agenda).val();
+			$j(".fila_agenda").each(function() {
+				var param_game = $j(this).attr("param_game");
+				param_game = param_game.split('_');
+					var show_line = 1;
+					
+					if (parseInt(idm_agenda)!=parseInt(param_game[0])) {
+						show_line = 0;
+					}
+					if (show_line==1) {
+						//fecha
+						if (parseInt(agenda_date_select)>parseInt(param_game[1])) {	
+							show_line=1;
+						} else {
+							show_line=0;
+						}
+						if (show_line==1) {					
+							//club
+							if (agenda_club_select>0) {
+								if ( (parseInt(agenda_club_select)==parseInt(param_game[2])) || (parseInt(agenda_club_select)==parseInt(param_game[3])) ) 
+									{
+										show_line==1;
+									} else {
+										show_line=0;
+									}
+							}
+							if (show_line==1) {	
+								if (filtro_idc>0) {
+									if (parseInt(filtro_idc)==parseInt(param_game[4])) {
+										show_line==1;
+									} else {
+										show_line=0;
+									}
+								}
+							}
+						}
+					}
+				if (show_line==1) {
+					$j(this).show();
+				} else {
+					$j(this).hide();
+				}
+			})
+		} else {
+			$j('.filtro_idc').hide();
+			$j(".fila_agenda").each(function() {
+				var param_game = $j(this).attr("param_game");
+				param_game = param_game.split('_');
+					var show_line = 1;
+					//fecha
+					if (parseInt(agenda_date_select)>parseInt(param_game[1])) {	
+						show_line=1;
+					} else {
+						show_line=0;
+					}
+					if (show_line==1) {					
+						//club
+						if (agenda_club_select>0) {
+							if ( (parseInt(agenda_club_select)==parseInt(param_game[2])) || (parseInt(agenda_club_select)==parseInt(param_game[3])) ) 
+								{
+									show_line==1;
+								} else {
+									show_line=0;
+								}
+						}
+						if (show_line==1) {	
+							if (filtro_idc>0) {
+								if (parseInt(filtro_idc)==parseInt(param_game[4])) {
+									show_line==1;
+								} else {
+									show_line=0;
+								}
+							}
+						}
+					}					
+					if (show_line==1) {
+						$j(this).show();
+					} else {
+						$j(this).hide();
+					}					
+			})
+		}
+		var cliente_agenda = 'fmp';
+		if (cliente_agenda == 'fnp') {
+			$j('#filtrocompeticion1').show();
+		}
+		if (agenda_pista_select>0) {
+			$j(".fila_agenda").hide();
+			$j(".pista_"+agenda_pista_select).show();
+		}
+		$j('#pdf_params').val(idm_agenda+','+agenda_date_select+','+agenda_club_select+','+filtro_idc+',fmp');
+			}
+	
+	
+
+	filtrar_agenda();
+	
+	$j(".filtro_agenda").on('change', function(e){
+		e.preventDefault();	
+		filtrar_agenda();
+	
+	});
+
+});	
+</script>
+
+
