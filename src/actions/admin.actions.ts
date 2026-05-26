@@ -277,14 +277,21 @@ export async function createAdminUserAction(_prev: AdminActionState, formData: F
     teamsAssigned: teamIds.length,
   });
 
+  let welcomeEmailSent = false;
   try {
-    await sendWelcomeEmail(parsed.data.email, generatedPassword, parsed.data.name);
+    welcomeEmailSent = await sendWelcomeEmail(parsed.data.email, generatedPassword, parsed.data.name);
   } catch (emailErr) {
     console.error("Failed to send welcome email:", emailErr);
   }
 
   await revalidateAllResourcePaths();
-  return { ok: `Usuario creado. Password inicial: ${generatedPassword} (enviada por email)` };
+  if (welcomeEmailSent) {
+    return { ok: `Usuario creado. Password inicial: ${generatedPassword} (enviada por email)` };
+  }
+
+  return {
+    ok: `Usuario creado, pero no se pudo enviar email. Password temporal para entregar manualmente: ${generatedPassword}`,
+  };
 }
 
 export async function createStreamKeyAction(_prev: AdminActionState, formData: FormData): Promise<AdminActionState> {
@@ -396,30 +403,38 @@ export async function createThumbnailBackgroundAction(
 ): Promise<AdminActionState> {
   await requireAdmin();
 
-  const parsed = thumbnailBackgroundSchema.safeParse({
-    name: formData.get("name"),
-    urlPath: formData.get("urlPath"),
-  });
+  const name = String(formData.get("name") || "").trim();
+  const urlPath = String(formData.get("urlPath") || "").trim();
+  const base64Data = String(formData.get("base64Data") || "").trim();
+  const isDefault = formData.get("isDefault") === "true";
 
-  if (!parsed.success) {
-    return { error: "Datos de fondo no validos." };
+  if (!name) {
+    return { error: "El nombre es obligatorio." };
   }
 
   const supabase = getSupabaseServerClient();
+
+  if (isDefault) {
+    // Unset current default background
+    await supabase.from("thumbnail_backgrounds").update({ is_default: false }).eq("is_default", true);
+  }
+
   const { error } = await supabase.from("thumbnail_backgrounds").insert({
-    name: parsed.data.name,
-    url_path: parsed.data.urlPath,
+    name,
+    url_path: urlPath || "base64",
+    base64_data: base64Data || null,
+    is_default: isDefault,
     active: true,
   });
 
   if (error) {
     await writeAdminLog("create_thumbnail_background", "failed", sanitizeForLog({ reason: error.message }));
-    return { error: "No se pudo crear el fondo." };
+    return { error: `No se pudo crear el fondo: ${error.message}` };
   }
 
-  await writeAdminLog("create_thumbnail_background", "ok", { name: parsed.data.name, urlPath: parsed.data.urlPath });
+  await writeAdminLog("create_thumbnail_background", "ok", { name, urlPath, isDefault });
   await revalidateAllResourcePaths();
-  return { ok: "Fondo creado." };
+  return { ok: "Fondo creado correctamente." };
 }
 
 export async function updateUserAssignmentAction(
@@ -942,25 +957,45 @@ export async function updateThumbnailBackgroundAction(
   formData: FormData,
 ): Promise<AdminActionState> {
   await requireAdmin();
-  const parsed = updateThumbnailBackgroundSchema.safeParse({
-    id: formData.get("id"),
-    name: formData.get("name"),
-    urlPath: formData.get("urlPath"),
-  });
-  if (!parsed.success) return { error: "Fondo no valido." };
+  const id = String(formData.get("id") || "").trim();
+  const name = String(formData.get("name") || "").trim();
+  const urlPath = String(formData.get("urlPath") || "").trim();
+  const base64Data = String(formData.get("base64Data") || "").trim();
+  const isDefault = formData.get("isDefault") === "true";
+
+  if (!id || !name) {
+    return { error: "ID y Nombre son obligatorios." };
+  }
 
   const supabase = getSupabaseServerClient();
+
+  if (isDefault) {
+    // Unset other default backgrounds first
+    await supabase.from("thumbnail_backgrounds").update({ is_default: false }).eq("is_default", true);
+  }
+
+  const updatePayload: any = {
+    name,
+    url_path: urlPath || "base64",
+    is_default: isDefault,
+  };
+  if (base64Data) {
+    updatePayload.base64_data = base64Data;
+  }
+
   const { error } = await supabase
     .from("thumbnail_backgrounds")
-    .update({ name: parsed.data.name, url_path: parsed.data.urlPath })
-    .eq("id", parsed.data.id);
+    .update(updatePayload)
+    .eq("id", id);
+
   if (error) {
-    await writeAdminLog("update_thumbnail_background", "failed", sanitizeForLog({ reason: error.message, ...parsed.data }));
-    return { error: "No se pudo actualizar el fondo." };
+    await writeAdminLog("update_thumbnail_background", "failed", sanitizeForLog({ reason: error.message, id }));
+    return { error: `No se pudo actualizar el fondo: ${error.message}` };
   }
-  await writeAdminLog("update_thumbnail_background", "ok", parsed.data);
+
+  await writeAdminLog("update_thumbnail_background", "ok", { id, name, urlPath, isDefault });
   await revalidateAllResourcePaths();
-  return { ok: "Fondo actualizado." };
+  return { ok: "Fondo actualizado correctamente." };
 }
 
 export async function resetUserPasswordAction(_prev: AdminActionState, formData: FormData): Promise<AdminActionState> {
@@ -997,15 +1032,22 @@ export async function resetUserPasswordAction(_prev: AdminActionState, formData:
   }
 
   // 4. Send email
+  let resetEmailSent = false;
   try {
-    await sendAdminPasswordResetEmail(userRow.email, newPassword);
+    resetEmailSent = await sendAdminPasswordResetEmail(userRow.email, newPassword);
   } catch (emailErr) {
     console.error("Failed to send admin reset password email:", emailErr);
   }
 
   await writeAdminLog("reset_user_password", "ok", { id, email: userRow.email });
   await revalidateAllResourcePaths();
-  return { ok: "Contraseña restablecida y enviada por email." };
+  if (resetEmailSent) {
+    return { ok: "Contraseña restablecida y enviada por email." };
+  }
+
+  return {
+    ok: `Contraseña restablecida, pero no se pudo enviar email. Password temporal para entregar manualmente: ${newPassword}`,
+  };
 }
 
 async function writeAdminLog(operationType: string, status: string, metadata: unknown) {
@@ -1062,6 +1104,7 @@ export async function revalidateAllResourcePaths() {
   revalidatePath("/admin/federations");
   revalidatePath("/admin/logs");
   revalidatePath("/dashboard");
+  revalidatePath("/dashboard/live");
   revalidatePath("/dashboard/new");
   revalidatePath("/dashboard/agenda");
   revalidatePath("/dashboard/broadcasts");

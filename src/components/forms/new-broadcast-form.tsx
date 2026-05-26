@@ -6,6 +6,7 @@ import { createBroadcastAction, type CreateBroadcastState } from "@/src/actions/
 import type { UnifiedFederationMatch } from "@/src/lib/federations/shared/federation-match";
 import { getCategorySortOrder, getUnifiedCategoryLabel } from "@/src/lib/federations/shared/match-sorting";
 import { THUMBNAIL_CATEGORY_SHORT_LABELS } from "@/src/lib/thumbnails/rivas-thumbnail-style";
+import { CustomDatePicker } from "@/src/components/ui/custom-date-picker";
 
 type Option = { id: string; name: string };
 type BlockedOption = { id: string; name: string; reason: string };
@@ -61,6 +62,7 @@ export function NewBroadcastForm({
   playlists,
   teamResourcesMap = {},
   categorizedBadges,
+  thumbnailBackgrounds = [],
 }: {
   mode: "agenda" | "manual";
   agendaOnly?: boolean;
@@ -75,6 +77,7 @@ export function NewBroadcastForm({
     rfep: { canonical_name: string; logo_url: string; normalized_aliases: string[] }[];
     selecciones: { canonical_name: string; logo_url: string; normalized_aliases: string[] }[];
   };
+  thumbnailBackgrounds?: Array<{ id: string; name: string; url_path: string; is_default: boolean; base64_data: string | null }>;
 }) {
   const [state, formAction, pending] = useActionState(createBroadcastAction, initialState);
   const [matches, setMatches] = useState<UnifiedFederationMatch[]>([]);
@@ -84,10 +87,45 @@ export function NewBroadcastForm({
 
   const [competitionName, setCompetitionName] = useState("");
   const [scheduledStart, setScheduledStart] = useState("");
+  const [datePart, setDatePart] = useState("");
+  const [hourPart, setHourPart] = useState("");
+  const [minutePart, setMinutePart] = useState("");
   const [homeTeamName, setHomeTeamName] = useState("");
   const [awayTeamName, setAwayTeamName] = useState("");
   const [venue, setVenue] = useState("");
   const [description, setDescription] = useState("");
+
+  // Sync scheduledStart to split date/time fields
+  useEffect(() => {
+    if (scheduledStart) {
+      const parts = scheduledStart.split("T");
+      if (parts[0]) {
+        setDatePart(parts[0]);
+      }
+      if (parts[1]) {
+        const timeParts = parts[1].split(":");
+        setHourPart(timeParts[0] || "");
+        setMinutePart(timeParts[1] || "");
+      }
+    } else {
+      setDatePart("");
+      setHourPart("");
+      setMinutePart("");
+    }
+  }, [scheduledStart]);
+
+  const handleDateTimeChange = (date: string, hour: string, minute: string) => {
+    setDatePart(date);
+    setHourPart(hour);
+    setMinutePart(minute);
+    if (date) {
+      const h = hour.padStart(2, "0") || "00";
+      const m = minute.padStart(2, "0") || "00";
+      setScheduledStart(`${date}T${h}:${m}`);
+    } else {
+      setScheduledStart("");
+    }
+  };
 
   const [selectedMatchId, setSelectedMatchId] = useState("");
   const [federationSource, setFederationSource] = useState("manual");
@@ -131,6 +169,26 @@ export function NewBroadcastForm({
   const [badgePickerSide, setBadgePickerSide] = useState<"local" | "visitor" | null>(null);
   const [badgePickerTab, setBadgePickerTab] = useState<"fmp" | "rfep" | "selecciones">("fmp");
   const [badgePickerSearch, setBadgePickerSearch] = useState("");
+
+  // --- Backgrounds Gallery States ---
+  const defaultBg = useMemo(() => {
+    const markedDefault = thumbnailBackgrounds.find((bg) => bg.is_default);
+    if (markedDefault) return markedDefault;
+
+    const plantillaFallback = thumbnailBackgrounds.find((bg) => {
+      const name = bg.name.toLowerCase();
+      const path = (bg.url_path || "").toLowerCase();
+      return name.includes("plantilla") || path.includes("/thumbnails/plantilla") || path.includes("plantilla.png");
+    });
+    if (plantillaFallback) return plantillaFallback;
+
+    return thumbnailBackgrounds[0] || null;
+  }, [thumbnailBackgrounds]);
+
+  const [selectedBackgroundId, setSelectedBackgroundId] = useState(() => defaultBg?.id ?? "");
+  const [backgroundPickerOpen, setBackgroundPickerOpen] = useState(false);
+  const [backgroundSearch, setBackgroundSearch] = useState("");
+  const [agendaNowTs] = useState(() => Date.now());
 
 
   // ========================================================================
@@ -302,6 +360,35 @@ export function NewBroadcastForm({
     });
   }, [sortedBadges, badgePickerSide, badgePickerTab, badgePickerSearch]);
 
+  const filteredBackgrounds = useMemo(() => {
+    if (!backgroundSearch) return thumbnailBackgrounds;
+    const search = backgroundSearch.toLowerCase();
+    return thumbnailBackgrounds.filter(bg => bg.name.toLowerCase().includes(search));
+  }, [thumbnailBackgrounds, backgroundSearch]);
+
+  useEffect(() => {
+    if (thumbnailBackgrounds.length === 0) {
+      if (selectedBackgroundId) setSelectedBackgroundId("");
+      return;
+    }
+
+    const hasSelection = thumbnailBackgrounds.some((bg) => bg.id === selectedBackgroundId);
+    if (!hasSelection) {
+      setSelectedBackgroundId(defaultBg?.id ?? "");
+    }
+  }, [thumbnailBackgrounds, selectedBackgroundId, defaultBg]);
+
+  const getBackgroundPreviewSrc = (bg: { id: string; url_path: string; base64_data: string | null }) => {
+    if (bg.base64_data) return bg.base64_data;
+
+    const raw = (bg.url_path || "").trim();
+    if (!raw) return `/api/thumbnail/background?id=${bg.id}`;
+    if (raw.startsWith("data:image/")) return raw;
+    if (raw.startsWith("http://") || raw.startsWith("https://")) return raw;
+    if (raw.startsWith("/")) return raw;
+    return `/${raw}`;
+  };
+
   // Dynamic calculations for thumbnail overrides (reactive to inputs when not manually edited)
   const displayShortTitle = useMemo(() => {
     if (userEditedShortTitle) return shortTitle;
@@ -322,6 +409,75 @@ export function NewBroadcastForm({
     const venueStr = venue || "Ubicación no informada";
     return [dateStr, timeStr, venueStr.toUpperCase()].filter(Boolean).join(" · ");
   }, [bottomLine, scheduledStart, venue, userEditedBottomLine]);
+
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [loadingPreview, setLoadingPreview] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    async function updatePreview() {
+      setLoadingPreview(true);
+      try {
+        const res = await fetch("/api/thumbnail/render", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            shortTitle: displayShortTitle,
+            competitionLine: displayCompetitionLine,
+            localName: homeTeamName || "Local",
+            visitorName: awayTeamName || "Visitante",
+            bottomLine: displayBottomLine,
+            localLogo: localLogo,
+            visitorLogo: visitorLogo,
+            backgroundId: selectedBackgroundId,
+          }),
+        });
+        if (!res.ok) throw new Error("Render failed");
+        const blob = await res.blob();
+        if (active) {
+          setPreviewUrl((prev) => {
+            if (prev && prev.startsWith("blob:")) {
+              URL.revokeObjectURL(prev);
+            }
+            return URL.createObjectURL(blob);
+          });
+        }
+      } catch (err) {
+        console.error("Failed to generate preview:", err);
+      } finally {
+        if (active) setLoadingPreview(false);
+      }
+    }
+
+    const timer = setTimeout(updatePreview, 300);
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
+  }, [
+    displayShortTitle,
+    displayCompetitionLine,
+    homeTeamName,
+    awayTeamName,
+    displayBottomLine,
+    localLogo,
+    visitorLogo,
+    selectedBackgroundId,
+    previewTick,
+  ]);
+
+  useEffect(() => {
+    return () => {
+      setPreviewUrl((prev) => {
+        if (prev && prev.startsWith("blob:")) {
+          URL.revokeObjectURL(prev);
+        }
+        return "";
+      });
+    };
+  }, []);
 
   // Filtrado de stream keys y playlists basado en el equipo seleccionado
   const { filteredKeys, filteredBlockedKeys, filteredPlaylists } = useMemo(() => {
@@ -372,8 +528,11 @@ export function NewBroadcastForm({
       
       // Intentamos buscar el nombre canónico correspondiente al escudo resuelto
       let localSelVal = "OTROS";
-      if (localCrest === "/badges/fmp/rivas.png") {
-        localSelVal = "CP RIVAS LAS LAGUNAS";
+      if (localCrest === "/badges/fmp/rivas.png" && categorizedBadges) {
+        const allList = [...categorizedBadges.fmp, ...categorizedBadges.rfep, ...categorizedBadges.selecciones];
+        const rivasBadge = allList.find((b) => b.logo_url === "/badges/fmp/rivas.png")
+          || allList.find((b) => b.canonical_name.toUpperCase().includes("RIVAS"));
+        localSelVal = rivasBadge?.canonical_name || "OTROS";
       } else if (categorizedBadges) {
         const allList = [...categorizedBadges.fmp, ...categorizedBadges.rfep, ...categorizedBadges.selecciones];
         const matchBadge = allList.find(b => b.logo_url === localCrest);
@@ -382,8 +541,11 @@ export function NewBroadcastForm({
       setLocalSelection(localSelVal);
 
       let visitorSelVal = "OTROS";
-      if (visitorCrest === "/badges/fmp/rivas.png") {
-        visitorSelVal = "CP RIVAS LAS LAGUNAS";
+      if (visitorCrest === "/badges/fmp/rivas.png" && categorizedBadges) {
+        const allList = [...categorizedBadges.fmp, ...categorizedBadges.rfep, ...categorizedBadges.selecciones];
+        const rivasBadge = allList.find((b) => b.logo_url === "/badges/fmp/rivas.png")
+          || allList.find((b) => b.canonical_name.toUpperCase().includes("RIVAS"));
+        visitorSelVal = rivasBadge?.canonical_name || "OTROS";
       } else if (categorizedBadges) {
         const allList = [...categorizedBadges.fmp, ...categorizedBadges.rfep, ...categorizedBadges.selecciones];
         const matchBadge = allList.find(b => b.logo_url === visitorCrest);
@@ -481,7 +643,12 @@ export function NewBroadcastForm({
     type Group = { key: string; label: string; order: number; subGroups: SubGroup[] };
 
     const groupsMap = new Map<string, Group>();
+    const now = agendaNowTs;
+
     for (const match of matches) {
+      if (match.datetimeIso && new Date(match.datetimeIso).getTime() < now) {
+        continue;
+      }
       const catKey = match.categoryKey || "otros";
       const catLabel = getUnifiedCategoryLabel(catKey, match.categoryLabel || "Otras Competiciones");
       const order = getCategorySortOrder(catKey);
@@ -512,7 +679,7 @@ export function NewBroadcastForm({
           return a.letter.localeCompare(b.letter);
         }),
       }));
-  }, [matches]);
+  }, [matches, agendaNowTs]);
 
   const filteredGroups = useMemo(() => {
     if (!selectedCategory) return groupedMatches;
@@ -642,6 +809,13 @@ export function NewBroadcastForm({
       <input type="hidden" name="awayCrestUrl" value={visitorLogoBase64 || visitorLogo} />
       <input type="hidden" name="thumbnailPayload" value={thumbnailPayloadJson} />
       <input type="hidden" name="thumbnailOverrides" value={thumbnailOverridesJson} />
+      <input type="hidden" name="thumbnailBackgroundId" value={selectedBackgroundId} />
+      {categorizedBadges && localSelection !== "OTROS" && (
+        <input type="hidden" name="homeTeamName" value={homeTeamName} />
+      )}
+      {categorizedBadges && visitorSelection !== "OTROS" && (
+        <input type="hidden" name="awayTeamName" value={awayTeamName} />
+      )}
 
       {mode === "agenda" ? (
         <section className="glass-panel rounded-xl p-5">
@@ -790,11 +964,52 @@ export function NewBroadcastForm({
               <input name="competitionName" required value={competitionName} onChange={(e) => setCompetitionName(e.target.value)}
                 className="w-full rounded-lg border border-white/25 bg-[#1a1a24] px-3 py-2.5 text-white focus:border-accent-cyan focus:outline-none" />
             </label>
-            <label className="text-sm font-medium">
+            <div className="text-sm font-medium space-y-1">
               <span className="mb-1 block text-text-muted">Fecha y hora</span>
-              <input name="scheduledStart" type="datetime-local" required value={scheduledStart} onChange={(e) => setScheduledStart(e.target.value)}
-                className="w-full rounded-lg border border-white/25 bg-[#1a1a24] px-3 py-2.5 text-white focus:border-accent-cyan focus:outline-none" />
-            </label>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-grow">
+                  <CustomDatePicker
+                    value={datePart}
+                    onChange={(date) => handleDateTimeChange(date, hourPart, minutePart)}
+                    placeholder="Fecha del partido"
+                  />
+                </div>
+                
+                <div className="flex items-center gap-2 bg-[#1a1a24] border border-white/25 rounded-lg px-3 py-2 w-full sm:w-auto shrink-0 justify-center">
+                  <svg className="h-4 w-4 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <input
+                    type="text"
+                    maxLength={2}
+                    placeholder="HH"
+                    value={hourPart}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^0-9]/g, "");
+                      if (val === "" || (parseInt(val) >= 0 && parseInt(val) <= 23)) {
+                        handleDateTimeChange(datePart, val, minutePart);
+                      }
+                    }}
+                    className="w-8 bg-transparent text-center text-sm font-semibold text-white focus:outline-none placeholder-white/20 border-b border-white/10 focus:border-accent-cyan"
+                  />
+                  <span className="text-white/50 font-bold">:</span>
+                  <input
+                    type="text"
+                    maxLength={2}
+                    placeholder="MM"
+                    value={minutePart}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/[^0-9]/g, "");
+                      if (val === "" || (parseInt(val) >= 0 && parseInt(val) <= 59)) {
+                        handleDateTimeChange(datePart, hourPart, val);
+                      }
+                    }}
+                    className="w-8 bg-transparent text-center text-sm font-semibold text-white focus:outline-none placeholder-white/20 border-b border-white/10 focus:border-accent-cyan"
+                  />
+                </div>
+              </div>
+              <input type="hidden" name="scheduledStart" value={scheduledStart} required />
+            </div>
 
             {/* --- Equipo Local (Dropdown o Input de "Otros") --- */}
             <div className="text-sm font-medium space-y-2">
@@ -1117,13 +1332,47 @@ export function NewBroadcastForm({
               </button>
             </div>
 
+            {/* Selector de fondo */}
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-black/20 p-4 border border-white/5 rounded-xl text-sm">
+              <div>
+                <span className="block font-bold text-white uppercase tracking-wider text-xs">Fondo de miniatura</span>
+                <span className="text-xs text-text-muted mt-0.5">
+                  {thumbnailBackgrounds.find(bg => bg.id === selectedBackgroundId)?.name || "Fondo por defecto"}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setBackgroundPickerOpen(true);
+                  setBackgroundSearch("");
+                }}
+                className="flex items-center justify-center gap-1.5 rounded-lg border border-white/15 bg-white/5 hover:bg-white/10 hover:border-white/25 px-3 py-2 text-xs font-bold text-accent-cyan uppercase tracking-wider transition-all active:scale-[0.98]"
+              >
+                <span>🖼️</span>
+                <span>CAMBIAR FONDO</span>
+              </button>
+            </div>
+
             {/* Thumbnail Live Image */}
-            <div className="flex justify-center bg-black/40 border border-white/5 rounded-xl p-4">
+            <div className="flex justify-center bg-black/40 border border-white/5 rounded-xl p-4 relative">
               <img
-                src={`/api/thumbnail/render?shortTitle=${encodeURIComponent(displayShortTitle)}&competitionLine=${encodeURIComponent(displayCompetitionLine)}&localName=${encodeURIComponent(homeTeamName || "Local")}&visitorName=${encodeURIComponent(awayTeamName || "Visitante")}&bottomLine=${encodeURIComponent(displayBottomLine)}&localLogo=${encodeURIComponent(localLogo)}&visitorLogo=${encodeURIComponent(visitorLogo)}&t=${previewTick}`}
+                src={previewUrl || "/thumbnails/plantilla.png"}
                 alt="Previsualización miniatura YouTube"
-                className="w-full max-w-lg aspect-video rounded-lg border border-white/10 shadow-2xl object-cover bg-slate-900"
+                className={`w-full max-w-lg aspect-video rounded-lg border border-white/10 shadow-2xl object-cover bg-slate-900 transition-all duration-300 ${
+                  loadingPreview ? "opacity-60" : "opacity-100"
+                }`}
               />
+              {loadingPreview && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="rounded-full bg-black/60 px-3 py-1.5 text-xs font-semibold text-accent-cyan border border-accent-cyan/20 animate-pulse flex items-center gap-2">
+                    <svg className="animate-spin h-3.5 w-3.5 text-accent-cyan" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Generando...
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Editable Thumbnail Overrides */}
@@ -1326,6 +1575,126 @@ export function NewBroadcastForm({
               <button
                 type="button"
                 onClick={() => setBadgePickerSide(null)}
+                className="rounded-lg bg-white/5 border border-white/10 px-4 py-2 text-xs font-bold text-text-muted hover:bg-white/10 hover:text-white transition-all active:scale-[0.98]"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Selector Visual de Fondos (Modal) */}
+      {backgroundPickerOpen && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-md transition-opacity duration-300"
+          onClick={() => setBackgroundPickerOpen(false)}
+        >
+          <div 
+            className="glass-panel w-full max-w-4xl max-h-[85vh] flex flex-col rounded-2xl border border-white/10 bg-[#0e0e16]/95 shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Cabecera */}
+            <div className="flex items-center justify-between border-b border-white/10 p-4 bg-black/20">
+              <div>
+                <h3 className="text-base font-extrabold text-white uppercase tracking-wider">
+                  Seleccionar Fondo de Miniatura
+                </h3>
+                <p className="text-xs text-text-muted mt-0.5">Elige uno de los fondos oficiales cargados en el sistema.</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setBackgroundPickerOpen(false)}
+                className="rounded-full bg-white/5 p-1.5 text-text-muted hover:bg-white/10 hover:text-white transition-all"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Barra de búsqueda */}
+            <div className="p-4 border-b border-white/5 bg-black/10">
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Buscar fondo por nombre..."
+                  value={backgroundSearch}
+                  onChange={(e) => setBackgroundSearch(e.target.value)}
+                  className="w-full rounded-lg border border-white/15 bg-[#161622] pl-10 pr-4 py-2.5 text-sm text-white placeholder-white/30 focus:border-accent-cyan focus:outline-none"
+                />
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-white/35">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            {/* Grid de fondos */}
+            <div className="flex-1 overflow-y-auto p-4 bg-[#09090f] custom-scrollbar">
+              {filteredBackgrounds.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-16 text-text-muted">
+                  <svg className="w-12 h-12 text-white/10 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <p className="text-sm">No se encontraron fondos con esos filtros.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                  {filteredBackgrounds.map((bg) => {
+                    const isSelected = selectedBackgroundId === bg.id;
+
+                    return (
+                      <div
+                        key={bg.id}
+                        onClick={() => {
+                          setSelectedBackgroundId(bg.id);
+                          setPreviewTick(t => t + 1);
+                          setBackgroundPickerOpen(false);
+                        }}
+                        className={`cursor-pointer group flex flex-col rounded-xl border overflow-hidden transition-all duration-200 hover:scale-[1.02] ${
+                          isSelected
+                            ? "bg-accent-cyan/10 border-accent-cyan shadow-lg shadow-accent-cyan/5"
+                            : "bg-[#12121a]/60 border-white/5 hover:border-white/20 hover:bg-[#1a1a26]"
+                        }`}
+                      >
+                        {/* Preview del fondo */}
+                        <div className="aspect-video w-full flex items-center justify-center bg-black/40 relative overflow-hidden">
+                          <img
+                            src={getBackgroundPreviewSrc(bg)}
+                            alt={bg.name}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                            onError={(event) => {
+                              const next = `/api/thumbnail/background?id=${bg.id}`;
+                              if (event.currentTarget.src.endsWith(next)) return;
+                              event.currentTarget.src = next;
+                            }}
+                          />
+                          {bg.is_default && (
+                            <span className="absolute top-2 left-2 rounded bg-accent-cyan px-1.5 py-0.5 text-[9px] font-extrabold text-black uppercase">
+                              Default
+                            </span>
+                          )}
+                        </div>
+                        <div className="p-3">
+                          <span className="text-[11px] font-bold block leading-tight truncate text-white/90 group-hover:text-accent-cyan transition-colors uppercase tracking-wide">
+                            {bg.name}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="border-t border-white/10 p-3 bg-black/25 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setBackgroundPickerOpen(false)}
                 className="rounded-lg bg-white/5 border border-white/10 px-4 py-2 text-xs font-bold text-text-muted hover:bg-white/10 hover:text-white transition-all active:scale-[0.98]"
               >
                 Cancelar

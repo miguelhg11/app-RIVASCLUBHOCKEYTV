@@ -13,10 +13,10 @@ export default async function AdminEventLinksPage() {
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-2xl font-bold tracking-wide text-white">
-          LINKS EVENTOS
+          BUSCADOR CONTENIDOS
         </h1>
         <p className="mt-1 text-xs tracking-widest text-text-muted uppercase">
-          Acceso rápido a partidos, directos, vídeos y shorts del canal
+          Búsqueda y acceso rápido a directos, vídeos y shorts del canal
         </p>
       </div>
 

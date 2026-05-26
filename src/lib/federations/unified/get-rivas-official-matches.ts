@@ -14,6 +14,22 @@ type UnifiedCachePayload = {
   matches: UnifiedFederationMatch[];
 };
 
+function isUpcomingWithin7Days(match: UnifiedFederationMatch, nowMs: number): boolean {
+  if (!match.datetimeIso) return false;
+  const scheduledMs = new Date(match.datetimeIso).getTime();
+  if (!Number.isFinite(scheduledMs)) return false;
+  const maxMs = nowMs + 7 * 24 * 60 * 60 * 1000;
+  if (scheduledMs < nowMs || scheduledMs > maxMs) return false;
+  if (match.status === "FINISHED") return false;
+  if (match.score && String(match.score).trim().length > 0) return false;
+  return true;
+}
+
+function filterUpcoming(matches: UnifiedFederationMatch[]): UnifiedFederationMatch[] {
+  const nowMs = Date.now();
+  return matches.filter((m) => isUpcomingWithin7Days(m, nowMs));
+}
+
 // Helper to convert FmpMatch to UnifiedFederationMatch
 function adaptFmpToUnified(match: FmpMatch): UnifiedFederationMatch {
   return {
@@ -70,11 +86,11 @@ export async function getRivasOfficialMatches(
       const payload = data?.value as UnifiedCachePayload | undefined;
       const expiresAt = payload?.expiresAt ? new Date(payload.expiresAt).getTime() : 0;
       if (payload?.matches && Array.isArray(payload.matches) && expiresAt > Date.now()) {
-        return payload.matches;
+        return filterUpcoming(payload.matches);
       }
     }
 
-    const matches = await fetchAndBuildMatches();
+    const matches = filterUpcoming(await fetchAndBuildMatches());
     const now = Date.now();
     const cachePayload: UnifiedCachePayload = {
       generatedAt: new Date(now).toISOString(),
@@ -92,7 +108,7 @@ export async function getRivasOfficialMatches(
     const { data } = await supabase.from("app_settings").select("value").eq("key", FEDERATIONS_CACHE_KEY).maybeSingle();
     const payload = data?.value as UnifiedCachePayload | undefined;
     if (payload?.matches && Array.isArray(payload.matches)) {
-      return payload.matches;
+      return filterUpcoming(payload.matches);
     }
     return [];
   }

@@ -369,9 +369,11 @@ export async function listMyFinishedEvents(seasonId: string): Promise<Array<{
   scheduledStart: string;
   youtubeWatchUrl: string | null;
   teamName: string;
+  canDelete: boolean;
 }>> {
   const session = await requireSession();
   const supabase = getSupabaseServerClient();
+  const isAdmin = session.role === "admin" || (session.role as string) === "superadmin";
 
   // Active status check
   const { data: userRow, error: userErr } = await supabase
@@ -385,25 +387,61 @@ export async function listMyFinishedEvents(seasonId: string): Promise<Array<{
     return [];
   }
 
-  // Completed events of teams assigned to the user in user_teams for this season (applies to both users and admins)
-  const { data: utRows, error: utErr } = await supabase
-    .from("user_teams")
-    .select("team_id")
-    .eq("user_id", session.userId);
+  let data: any[] | null = null;
+  let error: any = null;
 
-  if (utErr || !utRows || utRows.length === 0) {
-    return [];
+  if (isAdmin) {
+    const res = await supabase
+      .from("broadcasts")
+      .select("id, title, scheduled_start, youtube_watch_url, teams(name), created_by")
+      .eq("season_id", seasonId)
+      .eq("youtube_life_cycle_status", "complete")
+      .is("deleted_at", null)
+      .order("scheduled_start", { ascending: false });
+    data = res.data as any[] | null;
+    error = res.error;
+  } else {
+    const { data: utRows, error: utErr } = await supabase
+      .from("user_teams")
+      .select("team_id")
+      .eq("user_id", session.userId);
+
+    if (utErr || !utRows || utRows.length === 0) {
+      return [];
+    }
+
+    const teamIds = utRows.map((r) => r.team_id);
+    const res = await supabase
+      .from("broadcasts")
+      .select("id, title, scheduled_start, youtube_watch_url, teams(name), created_by")
+      .eq("season_id", seasonId)
+      .in("team_id", teamIds)
+      .eq("youtube_life_cycle_status", "complete")
+      .is("deleted_at", null)
+      .order("scheduled_start", { ascending: false });
+    const teamRows = (res.data as any[] | null) ?? [];
+    const teamError = res.error;
+
+    const ownRes = await supabase
+      .from("broadcasts")
+      .select("id, title, scheduled_start, youtube_watch_url, teams(name), created_by")
+      .eq("season_id", seasonId)
+      .eq("created_by", session.userId)
+      .eq("youtube_life_cycle_status", "complete")
+      .is("deleted_at", null)
+      .order("scheduled_start", { ascending: false });
+
+    const ownRows = (ownRes.data as any[] | null) ?? [];
+    const ownError = ownRes.error;
+
+    const merged = new Map<string, any>();
+    for (const row of [...teamRows, ...ownRows]) {
+      merged.set(row.id, row);
+    }
+
+    data = Array.from(merged.values()).sort((a, b) => String(b.scheduled_start).localeCompare(String(a.scheduled_start)));
+    error = teamError || ownError;
   }
-
-  const teamIds = utRows.map((r) => r.team_id);
-  const { data, error } = await supabase
-    .from("broadcasts")
-    .select("id, title, scheduled_start, youtube_watch_url, teams(name)")
-    .eq("season_id", seasonId)
-    .in("team_id", teamIds)
-    .eq("youtube_life_cycle_status", "complete")
-    .is("deleted_at", null)
-    .order("scheduled_start", { ascending: false });
 
   if (error) {
     console.error("Failed to query finished events:", error.message);
@@ -419,6 +457,75 @@ export async function listMyFinishedEvents(seasonId: string): Promise<Array<{
       scheduledStart: row.scheduled_start,
       youtubeWatchUrl: row.youtube_watch_url,
       teamName: team?.name || "-",
+      canDelete: isAdmin || row.created_by === session.userId,
     };
   });
+}
+
+export async function listFinishedEventsAdminGlobal(seasonId?: string): Promise<Array<{
+  id: string;
+  title: string;
+  scheduledStart: string;
+  youtubeWatchUrl: string | null;
+  youtubeShareUrl: string | null;
+  teamName: string;
+  creatorName: string | null;
+}>> {
+  const session = await requireSession();
+  if (session.role !== "admin" && (session.role as string) !== "superadmin") {
+    return [];
+  }
+
+  const supabase = getSupabaseServerClient();
+  let query = supabase
+    .from("broadcasts")
+    .select("id, title, scheduled_start, youtube_watch_url, youtube_share_url, teams(name), users!broadcasts_created_by_fkey(name)")
+    .eq("youtube_life_cycle_status", "complete")
+    .is("deleted_at", null)
+    .order("scheduled_start", { ascending: false })
+    .limit(300);
+
+  if (seasonId) {
+    query = query.eq("season_id", seasonId);
+  }
+
+  const { data, error } = await query;
+  if (error) {
+    console.error("Failed to query admin finished events:", error.message);
+    return [];
+  }
+
+  const rows = (data ?? []) as any[];
+  return rows.map((row) => {
+    const team = Array.isArray(row.teams) ? row.teams[0] : row.teams;
+    const creator = Array.isArray(row.users) ? row.users[0] : row.users;
+    return {
+      id: row.id,
+      title: row.title,
+      scheduledStart: row.scheduled_start,
+      youtubeWatchUrl: row.youtube_watch_url,
+      youtubeShareUrl: row.youtube_share_url,
+      teamName: team?.name || "-",
+      creatorName: creator?.name || null,
+    };
+  });
+}
+
+export async function getActiveThumbnailBackgrounds() {
+  const supabase = getSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("thumbnail_backgrounds")
+    .select("id, name, url_path, is_default")
+    .eq("active", true)
+    .order("name", { ascending: true });
+
+  if (error) {
+    console.error("Failed to query active thumbnail backgrounds:", error.message);
+    return [] as Array<{ id: string; name: string; url_path: string; is_default: boolean; base64_data: string | null }>;
+  }
+
+  return ((data ?? []) as Array<{ id: string; name: string; url_path: string; is_default: boolean }>).map((row) => ({
+    ...row,
+    base64_data: null,
+  }));
 }

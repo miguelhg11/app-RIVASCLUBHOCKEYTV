@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { loginAction, type LoginActionState } from "@/src/actions/auth.actions";
+import { PasswordInput } from "@/src/components/ui/password-input";
 
 const initialState: LoginActionState = {};
 
@@ -36,10 +37,9 @@ export function LoginForm() {
             ¿Olvidaste tu contraseña?
           </a>
         </div>
-        <input
+        <PasswordInput
           required
           name="password"
-          type="password"
           autoComplete="current-password"
           className="glass-input w-full rounded-lg px-4 py-3 text-sm outline-none"
           placeholder="········"

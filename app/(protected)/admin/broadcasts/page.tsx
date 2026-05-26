@@ -3,6 +3,7 @@ import { SyncBroadcastsForm } from "@/src/components/admin/sync-broadcasts-form"
 import { listPendingBroadcastsAdmin, listUnassignedExternalBroadcasts } from "@/src/lib/broadcast/queries";
 import { listUsers, listTeams } from "@/src/lib/admin/queries";
 import { PendingBroadcastsList } from "@/src/components/admin/pending-broadcasts-list";
+import { ReactiveSyncHandler } from "@/src/components/ui/reactive-sync-handler";
 
 export default async function AdminBroadcastsPage() {
   const [broadcasts, unassignedBroadcasts, users, teams] = await Promise.all([
@@ -14,6 +15,7 @@ export default async function AdminBroadcastsPage() {
 
   return (
     <div className="space-y-6">
+      <ReactiveSyncHandler />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold tracking-wide text-white font-rajdhani">

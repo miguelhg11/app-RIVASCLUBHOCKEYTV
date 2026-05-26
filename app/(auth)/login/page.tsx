@@ -11,10 +11,10 @@ export default function LoginPage() {
           <Image
             src="/imagenes/RIVASHOCKEYTV.png"
             alt="Rivas Hockey TV"
-            width={280}
-            height={84}
+            width={380}
+            height={114}
             priority
-            className="logo-glow h-auto w-56"
+            className="logo-glow h-auto w-72 sm:w-80"
           />
           <div>
             <h1 className="font-display text-xl font-semibold tracking-wide text-white">

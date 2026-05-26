@@ -1,10 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useActionState } from "react";
 import Link from "next/link";
 import { EndBroadcastForm } from "./end-broadcast-form";
+import { deleteBroadcastAction } from "@/src/actions/broadcast.actions";
 import type { PendingBroadcastAdminRow, UnassignedExternalBroadcastRow } from "@/src/lib/broadcast/queries";
 import type { UserRow, TeamRow } from "@/src/lib/admin/queries";
+
+import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
+import { YouTubeShareButton } from "@/src/components/ui/youtube-share-button";
+
+function DeleteBroadcastButton({ id }: { id: string }) {
+  const [state, formAction, pending] = useActionState(deleteBroadcastAction, {});
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    if (!window.confirm("¿Estás seguro de que deseas eliminar por completo esta programación? Esto borrará el directo local y lo removerá de la API de YouTube.")) {
+      e.preventDefault();
+    }
+  };
+
+  return (
+    <form action={formAction} onSubmit={handleSubmit} className="inline-block">
+      <input type="hidden" name="id" value={id} />
+      <button
+        type="submit"
+        disabled={pending}
+        className="rounded border border-accent-red-soft bg-accent-red-soft px-2.5 py-1 text-xs font-semibold text-accent-red hover:bg-accent-red/20 disabled:opacity-50 transition-all"
+      >
+        {pending ? "Eliminando..." : "Eliminar"}
+      </button>
+      {state.error && <p className="text-[10px] text-accent-red mt-1">{state.error}</p>}
+    </form>
+  );
+}
 
 type Props = {
   initialBroadcasts: PendingBroadcastAdminRow[];
@@ -95,7 +123,7 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                   <th className="px-3 py-2.5">Creador</th>
                   <th className="px-3 py-2.5">Estado Live</th>
                   <th className="px-3 py-2.5">Estado Sync</th>
-                  <th className="px-3 py-2.5">URLs</th>
+                  <th className="px-3 py-2.5 text-center">URLs</th>
                   <th className="px-3 py-2.5 text-right">Acciones</th>
                 </tr>
               </thead>
@@ -141,32 +169,27 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                         </span>
                       </td>
                       <td className="px-3 py-3 text-text-muted">{row.youtubeSyncStatus}</td>
-                      <td className="px-3 py-3">
-                        <div className="flex flex-col gap-1">
+                      <td className="px-3 py-3 text-center">
+                        <div className="flex flex-col items-center gap-1">
                           {row.youtubeWatchUrl ? (
-                            <a
-                              className="text-accent-cyan hover:underline text-xs"
-                              href={row.youtubeWatchUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              Watch ↗
-                            </a>
+                            <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" />
                           ) : null}
                           {row.youtubeShareUrl ? (
-                            <a
-                              className="text-accent-cyan hover:underline text-xs"
-                              href={row.youtubeShareUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              Share ↗
-                            </a>
+                            <YouTubeShareButton href={row.youtubeShareUrl} size="sm" />
                           ) : null}
                         </div>
                       </td>
                       <td className="px-3 py-3 text-right">
-                        <EndBroadcastForm id={row.id} disabled={!canEnd} />
+                        <div className="flex items-center justify-end gap-2 flex-wrap">
+                          <Link
+                            href={`/dashboard/broadcasts/${row.id}/edit`}
+                            className="rounded border border-accent-cyan bg-accent-cyan/5 px-2.5 py-1 text-xs font-semibold text-accent-cyan hover:bg-accent-cyan/15 transition-all"
+                          >
+                            Editar
+                          </Link>
+                          <EndBroadcastForm id={row.id} disabled={!canEnd} />
+                          <DeleteBroadcastButton id={row.id} />
+                        </div>
                       </td>
                     </tr>
                   );
@@ -202,7 +225,7 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                   <th className="px-3 py-2.5">Título</th>
                   <th className="px-3 py-2.5">Fecha Programada</th>
                   <th className="px-3 py-2.5">Estado Live</th>
-                  <th className="px-3 py-2.5">URLs</th>
+                  <th className="px-3 py-2.5 text-center">URLs</th>
                   <th className="px-3 py-2.5 text-right">Acciones</th>
                 </tr>
               </thead>
@@ -220,27 +243,13 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                           {row.youtubeLifeCycleStatus}
                         </span>
                       </td>
-                      <td className="px-3 py-3">
-                        <div className="flex flex-col gap-1">
+                      <td className="px-3 py-3 text-center">
+                        <div className="flex flex-col items-center gap-1">
                           {row.youtubeWatchUrl && (
-                            <a
-                              className="text-accent-cyan hover:underline text-xs"
-                              href={row.youtubeWatchUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              Watch ↗
-                            </a>
+                            <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" />
                           )}
                           {row.youtubeShareUrl && (
-                            <a
-                              className="text-accent-cyan hover:underline text-xs"
-                              href={row.youtubeShareUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                            >
-                              Share ↗
-                            </a>
+                            <YouTubeShareButton href={row.youtubeShareUrl} size="sm" />
                           )}
                         </div>
                       </td>

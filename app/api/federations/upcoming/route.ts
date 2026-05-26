@@ -10,7 +10,7 @@ export async function GET() {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
   const isAdmin = session.role === "admin" || (session.role as string) === "superadmin";
-  const matches = await getRivasOfficialMatches(session.email ?? "", isAdmin);
+  const matches = await getRivasOfficialMatches(session.email ?? "", isAdmin, { forceRefresh: true });
   
   return NextResponse.json(
     { matches },

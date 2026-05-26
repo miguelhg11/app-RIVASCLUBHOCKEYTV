@@ -1,4 +1,5 @@
 import { getBroadcastForSuccessPage } from "@/src/lib/broadcast/queries";
+import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
 
 type SuccessPageProps = {
   params: Promise<{ id: string }>;
@@ -26,8 +27,13 @@ export default async function BroadcastSuccessPage({ params }: SuccessPageProps)
         <p>
           <strong>Titulo:</strong> {broadcast.title}
         </p>
-        <p>
-          <strong>URL YouTube:</strong> {broadcast.youtube_watch_url ?? "-"}
+        <p className="flex items-center gap-3">
+          <strong>URL YouTube:</strong>{" "}
+          {broadcast.youtube_watch_url ? (
+            <YouTubeWatchButton href={broadcast.youtube_watch_url} size="sm" />
+          ) : (
+            "-"
+          )}
         </p>
         <p>
           <strong>RTMP URL:</strong> {stream?.rtmp_url ?? "-"}

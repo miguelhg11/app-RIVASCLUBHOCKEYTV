@@ -4,6 +4,91 @@ import { requireSession } from "@/src/lib/auth/guards";
 import { ROLES } from "@/src/lib/auth/roles";
 import { getSupabaseServerClient } from "@/src/lib/supabase/server";
 
+export async function autoSyncBroadcastStatuses() {
+  const supabase = getSupabaseServerClient();
+
+  // 1. Find all active broadcasts (not deleted, and status is not complete)
+  const { data: activeBroadcasts, error } = await supabase
+    .from("broadcasts")
+    .select("id, youtube_broadcast_id, youtube_life_cycle_status, last_youtube_sync_at")
+    .is("deleted_at", null)
+    .neq("youtube_life_cycle_status", "complete")
+    .limit(50); // limit to protect performance
+
+  if (error || !activeBroadcasts || activeBroadcasts.length === 0) {
+    return;
+  }
+
+  // 2. Filter those that have not been synced in the last 30 seconds (cooldown)
+  const now = new Date();
+  const listToSync = activeBroadcasts.filter((bc) => {
+    if (!bc.youtube_broadcast_id) return false;
+    if (!bc.last_youtube_sync_at) return true;
+    const lastSync = new Date(bc.last_youtube_sync_at);
+    return now.getTime() - lastSync.getTime() > 30000; // 30 seconds cooldown
+  });
+
+  if (listToSync.length === 0) {
+    return;
+  }
+
+  const ids = listToSync.map((bc) => bc.youtube_broadcast_id) as string[];
+
+  try {
+    const { getYouTubeBroadcastStatuses } = await import("@/src/lib/youtube/service");
+    const statuses = await getYouTubeBroadcastStatuses(ids);
+
+    const nowIso = now.toISOString();
+
+    for (const bc of listToSync) {
+      const youtubeId = bc.youtube_broadcast_id!;
+      const remote = statuses[youtubeId];
+
+      if (remote) {
+        const statusChanged = remote.lifeCycleStatus !== bc.youtube_life_cycle_status;
+        const updatePayload: any = {
+          youtube_life_cycle_status: remote.lifeCycleStatus,
+          last_youtube_sync_at: nowIso,
+          youtube_sync_status: "synced",
+          youtube_last_error: null,
+        };
+
+        if (remote.actualStart) updatePayload.actual_start_time = remote.actualStart;
+        if (remote.actualEnd) updatePayload.actual_end_time = remote.actualEnd;
+
+        if (remote.lifeCycleStatus === "complete") {
+          updatePayload.ended_at = nowIso;
+          updatePayload.ended_by = "system_auto_sync";
+        }
+
+        await supabase
+          .from("broadcasts")
+          .update(updatePayload)
+          .eq("id", bc.id);
+
+        if (statusChanged) {
+          console.log(`Auto-synchronized status for broadcast ${bc.id}: ${bc.youtube_life_cycle_status} -> ${remote.lifeCycleStatus}`);
+        }
+      } else {
+        // Not found on YouTube: could be deleted. Soft-delete locally to match YouTube Studio.
+        console.log(`Broadcast ${bc.id} (${youtubeId}) not found on YouTube. Soft-deleting.`);
+        await supabase
+          .from("broadcasts")
+          .update({
+            deleted_at: nowIso,
+            youtube_life_cycle_status: "complete",
+            youtube_sync_status: "synced",
+            youtube_last_error: "Eliminado o cancelado desde YouTube Studio.",
+            last_youtube_sync_at: nowIso,
+          })
+          .eq("id", bc.id);
+      }
+    }
+  } catch (err) {
+    console.error("Failed to auto-sync broadcast statuses:", err);
+  }
+}
+
 export async function getBroadcastForSuccessPage(id: string) {
   const session = await requireSession();
   const supabase = getSupabaseServerClient();
@@ -27,18 +112,101 @@ export async function getBroadcastForSuccessPage(id: string) {
 
 export async function listMyBroadcasts() {
   const session = await requireSession();
+  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
   const supabase = getSupabaseServerClient();
 
   const { data } = await supabase
     .from("broadcasts")
-    .select("id,title,scheduled_start,youtube_watch_url,youtube_sync_status,youtube_life_cycle_status,created_by")
+    .select("id,title,scheduled_start,youtube_watch_url,youtube_share_url,youtube_sync_status,youtube_life_cycle_status,created_by")
     .is("deleted_at", null)
     .eq("created_by", session.userId)
     .order("scheduled_start", { ascending: false })
     .limit(100);
 
   const list = data ?? [];
-  return list.filter((bc) => bc.youtube_life_cycle_status !== "complete");
+  const nowMs = Date.now();
+  const liveStatuses = new Set(["live", "testing"]);
+
+  return list.filter((bc) => {
+    if (bc.youtube_life_cycle_status === "complete") return false;
+    const status = (bc.youtube_life_cycle_status ?? "").toLowerCase();
+    if (liveStatuses.has(status)) return false;
+    const scheduledMs = new Date(bc.scheduled_start).getTime();
+    if (!Number.isFinite(scheduledMs)) return true;
+    return scheduledMs >= nowMs;
+  });
+}
+
+export type LiveBroadcastRow = {
+  id: string;
+  title: string;
+  scheduledStart: string;
+  youtubeLifeCycleStatus: string;
+  youtubeSyncStatus: string;
+  youtubeWatchUrl: string | null;
+  youtubeShareUrl: string | null;
+  createdBy: string;
+};
+
+export async function listLiveBroadcastsForSession(scope: "personal" | "global" = "personal"): Promise<LiveBroadcastRow[]> {
+  const session = await requireSession();
+  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
+  const supabase = getSupabaseServerClient();
+
+  let query = supabase
+    .from("broadcasts")
+    .select("id,title,scheduled_start,youtube_life_cycle_status,youtube_sync_status,youtube_watch_url,youtube_share_url,created_by")
+    .is("deleted_at", null)
+    .eq("youtube_life_cycle_status", "live")
+    .order("scheduled_start", { ascending: true })
+    .limit(100);
+
+  const globalAllowed = scope === "global" && session.role === ROLES.admin;
+  if (!globalAllowed) {
+    query = query.eq("created_by", session.userId);
+  }
+
+  const { data, error } = await query;
+  if (error) {
+    console.error("Failed to query live broadcasts:", error.message);
+    return [];
+  }
+
+  return (data ?? []).map((row) => ({
+    id: row.id,
+    title: row.title,
+    scheduledStart: row.scheduled_start,
+    youtubeLifeCycleStatus: row.youtube_life_cycle_status ?? "unknown",
+    youtubeSyncStatus: row.youtube_sync_status ?? "unknown",
+    youtubeWatchUrl: row.youtube_watch_url,
+    youtubeShareUrl: row.youtube_share_url,
+    createdBy: row.created_by,
+  }));
+}
+
+export async function countLiveBroadcastsForSession(scope: "personal" | "global" = "personal"): Promise<number> {
+  const session = await requireSession().catch(() => null);
+  if (!session) return 0;
+  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
+
+  const supabase = getSupabaseServerClient();
+  let query = supabase
+    .from("broadcasts")
+    .select("id", { count: "exact", head: true })
+    .is("deleted_at", null)
+    .eq("youtube_life_cycle_status", "live");
+
+  const globalAllowed = scope === "global" && session.role === ROLES.admin;
+  if (!globalAllowed) {
+    query = query.eq("created_by", session.userId);
+  }
+
+  const { count, error } = await query;
+  if (error) {
+    console.error("Failed to count live broadcasts:", error.message);
+    return 0;
+  }
+  return count ?? 0;
 }
 
 export async function listAllBroadcastsAdmin() {
@@ -79,6 +247,7 @@ export async function listAdminBroadcastOverview(): Promise<AdminBroadcastOvervi
   if (session.role !== ROLES.admin) {
     return [];
   }
+  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
 
   const supabase = getSupabaseServerClient();
 
@@ -185,6 +354,7 @@ export async function listPendingBroadcastsAdmin(): Promise<PendingBroadcastAdmi
   if (session.role !== ROLES.admin) {
     return [];
   }
+  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
 
   const supabase = getSupabaseServerClient();
   const { data, error } = await supabase
@@ -401,3 +571,42 @@ export async function getExternalBroadcastById(id: string): Promise<UnassignedEx
   };
 }
 
+export async function getBroadcastForEdit(id: string) {
+  const session = await requireSession();
+  const supabase = getSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("broadcasts")
+    .select(`
+      id,
+      title,
+      description,
+      scheduled_start,
+      competition_name,
+      home_team_name,
+      away_team_name,
+      home_crest_url,
+      away_crest_url,
+      venue,
+      team_id,
+      stream_key_id,
+      playlist_id,
+      thumbnail_background_id,
+      thumbnail_payload,
+      thumbnail_overrides,
+      created_by,
+      federation_source,
+      federation_match_id
+    `)
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error || !data) {
+    return null;
+  }
+
+  if (session.role !== ROLES.admin && data.created_by !== session.userId) {
+    return null;
+  }
+
+  return data;
+}

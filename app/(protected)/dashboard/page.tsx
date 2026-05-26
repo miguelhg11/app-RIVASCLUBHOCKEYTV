@@ -2,13 +2,17 @@ import Link from "next/link";
 import { logoutAction } from "@/src/actions/auth.actions";
 import { requireSession } from "@/src/lib/auth/guards";
 import { ROLES } from "@/src/lib/auth/roles";
+import { countLiveBroadcastsForSession } from "@/src/lib/broadcast/queries";
+import { ReactiveSyncHandler } from "@/src/components/ui/reactive-sync-handler";
 
 export default async function DashboardPage() {
   const session = await requireSession();
   const isAdmin = session.role === ROLES.admin;
+  const liveCount = await countLiveBroadcastsForSession();
 
   return (
     <div className="space-y-8">
+      <ReactiveSyncHandler />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold tracking-wide text-white">
@@ -26,6 +30,22 @@ export default async function DashboardPage() {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {liveCount > 0 && (
+          <Link href="/dashboard/live" className="group relative overflow-hidden rounded-xl border border-accent-red/35 bg-gradient-to-r from-[#2a0f13] to-[#1a1d28] p-6 shadow-lg shadow-accent-red/20">
+            <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-accent-red/20 blur-2xl transition-all group-hover:bg-accent-red/35" />
+            <div className="relative">
+              <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-accent-red/30 bg-accent-red/15 px-3 py-1 text-[11px] font-bold tracking-widest text-accent-red uppercase animate-pulse">
+                <span className="h-2 w-2 rounded-full bg-accent-red live-dot" />
+                Live
+              </div>
+              <h2 className="font-display text-lg font-semibold tracking-wide text-white">Programaciones LIVE ({liveCount})</h2>
+              <p className="mt-1 text-xs leading-relaxed text-red-100/80">
+                Emisiones en curso. Ver, compartir o finalizar en tiempo real.
+              </p>
+            </div>
+          </Link>
+        )}
+
         {/* Programa agenda */}
         <Link href="/dashboard/agenda" className="glass-card group relative overflow-hidden rounded-xl p-6">
           <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-emerald-500/10 blur-2xl transition-all group-hover:bg-emerald-500/20" />

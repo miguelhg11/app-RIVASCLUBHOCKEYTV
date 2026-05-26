@@ -164,13 +164,13 @@ Aquí puedes gestionar los identificadores de equipo de Rivas en cada federació
   },
   {
     step: 9,
-    label: "Programaciones",
+    label: "Programaciones pendientes",
     href: "/admin/broadcasts",
     icon: "M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M12 18.75H4.5a2.25 2.25 0 01-2.25-2.25V7.5A2.25 2.25 0 014.5 5.25H12m0 0l3.75 3.75M12 5.25l-3.75 3.75",
     color: "text-accent-red",
     bg: "bg-accent-red/10",
     ring: "ring-accent-red/20",
-    subtitle: "Operaciones — Gestión de directos",
+    subtitle: "Operaciones — Pendientes globales",
     description: `Visión completa de todos los directos programados, activos y terminados de todos los equipos.
 
 Como administrador puedes:
@@ -185,21 +185,45 @@ Los usuarios estándar solo ven sus propios directos en su panel personal.`,
   },
   {
     step: 10,
-    label: "Links Eventos",
+    label: "Programaciones LIVE",
+    href: "/admin/broadcasts/live",
+    icon: "M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M12 18.75H4.5a2.25 2.25 0 01-2.25-2.25V7.5A2.25 2.25 0 014.5 5.25H12m0 0l3.75 3.75M12 5.25l-3.75 3.75",
+    color: "text-accent-red",
+    bg: "bg-accent-red/10",
+    ring: "ring-accent-red/20",
+    subtitle: "Operaciones — LIVE globales",
+    description: `Listado global de emisiones en curso para todos los equipos.
+
+Permite visualizar, compartir y finalizar directos en tiempo real con confirmación.`,
+  },
+  {
+    step: 11,
+    label: "Programaciones finalizadas",
+    href: "/admin/broadcasts/finished",
+    icon: "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
+    color: "text-violet-300",
+    bg: "bg-violet-500/10",
+    ring: "ring-violet-500/20",
+    subtitle: "Operaciones — Histórico global",
+    description: `Histórico de emisiones finalizadas del canal.
+
+Incluye enlace de visualización y opción de eliminación completa para administradores.`,
+  },
+  {
+    step: 12,
+    label: "Buscador contenidos",
     href: "/admin/event-links",
     icon: "M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244",
     color: "text-accent-cyan",
     bg: "bg-accent-cyan/10",
     ring: "ring-accent-cyan/20",
-    subtitle: "Operaciones — URLs externas de eventos",
-    description: `Gestiona enlaces externos asociados a eventos: webs de la competición, resultados en vivo, actas arbitrales, etc.
+    subtitle: "Operaciones — Buscador del canal",
+    description: `Buscador de contenidos del canal (directos, vídeos, shorts y enlaces de evento).
 
-Estos links se pueden asociar a programaciones concretas para facilitar el acceso rápido a información complementaria del partido.
-
-Útil para retransmisiones con cobertura amplia donde se quiere ofrecer contexto adicional al espectador o al equipo técnico.`,
+Útil para localizar y compartir rápidamente piezas publicadas.`,
   },
   {
-    step: 11,
+    step: 13,
     label: "Reportes",
     href: "/admin/reports",
     icon: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
@@ -216,7 +240,7 @@ Estos links se pueden asociar a programaciones concretas para facilitar el acces
 Útil para reportar a la directiva del club o para planificar la gestión de recursos de la siguiente temporada.`,
   },
   {
-    step: 12,
+    step: 14,
     label: "Logs",
     href: "/admin/logs",
     icon: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z",
@@ -311,7 +335,7 @@ export function AdminPageClient({ unassignedCount }: { unassignedCount: number }
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {sections.map((section) => {
-          const isBroadcasts = section.label === "Programaciones";
+          const isBroadcasts = section.href === "/admin/broadcasts";
           const showPulse = isBroadcasts && unassignedCount > 0;
 
           return (
@@ -322,15 +346,16 @@ export function AdminPageClient({ unassignedCount }: { unassignedCount: number }
                   showPulse ? "ring-1 ring-accent-red/30 bg-accent-red/[0.02]" : ""
                 }`}
               >
-                {/* Step badge */}
-                <div className="absolute top-2 left-2 flex h-5 w-5 items-center justify-center rounded-full bg-white/5 border border-white/10 text-[10px] font-bold text-text-muted">
-                  {section.step}
-                </div>
-
-                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${section.bg} ${section.color} ring-1 ring-inset ${section.ring}`}>
-                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d={section.icon} />
-                  </svg>
+                {/* Icon container with anchored step badge */}
+                <div className="relative shrink-0">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${section.bg} ${section.color} ring-1 ring-inset ${section.ring}`}>
+                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d={section.icon} />
+                    </svg>
+                  </div>
+                  <div className="absolute -top-1.5 -left-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#12131a] border border-white/20 text-[9px] font-extrabold text-white shadow-md shadow-black/50">
+                    {section.step}
+                  </div>
                 </div>
 
                 <div className="flex-1 min-w-0">

@@ -6,6 +6,8 @@ import { syncChannelBroadcastsAction } from "@/src/actions/broadcast.actions";
 import { CustomDatePicker } from "@/src/components/ui/custom-date-picker";
 import type { CachedYouTubeVideoRow } from "@/src/lib/broadcast/queries";
 import type { PlaylistRow } from "@/src/lib/admin/queries";
+import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
+import { DeleteChannelContentForm } from "@/src/components/admin/delete-channel-content-form";
 
 type Props = {
   videos: CachedYouTubeVideoRow[];
@@ -22,12 +24,36 @@ export function EventLinksList({ videos, playlists }: Props) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const [state, formAction, pending] = useActionState(syncChannelBroadcastsAction, {});
+  const [autoSyncing, setAutoSyncing] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    async function runAutoSync() {
+      setAutoSyncing(true);
+      try {
+        const res = await syncChannelBroadcastsAction({});
+        if (res.ok && active) {
+          router.refresh();
+        }
+      } catch (err) {
+        console.error("Auto sync failed:", err);
+      } finally {
+        if (active) setAutoSyncing(false);
+      }
+    }
+    runAutoSync();
+    return () => {
+      active = false;
+    };
+  }, [router]);
 
   useEffect(() => {
     if (state.ok) {
       router.refresh();
     }
   }, [state.ok, router]);
+
+  const isSyncing = pending || autoSyncing;
 
   // Filter logic: AND combination (cumulative)
   const filteredVideos = videos.filter((video) => {
@@ -176,10 +202,10 @@ export function EventLinksList({ videos, playlists }: Props) {
             <form action={formAction}>
               <button
                 type="submit"
-                disabled={pending}
+                disabled={isSyncing}
                 className="rounded-lg bg-accent-cyan/15 hover:bg-accent-cyan/25 border border-accent-cyan/30 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-accent-cyan disabled:opacity-50 transition-all flex items-center gap-1.5 cursor-pointer"
               >
-                {pending ? (
+                {isSyncing ? (
                   <>
                     <svg className="animate-spin -ml-0.5 mr-1 h-3.5 w-3.5 text-accent-cyan" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -219,7 +245,7 @@ export function EventLinksList({ videos, playlists }: Props) {
                   <th className="px-3 py-2.5">Fecha</th>
                   <th className="px-3 py-2.5">Tipo</th>
                   <th className="px-3 py-2.5">Listas de reproducción</th>
-                  <th className="px-3 py-2.5 text-right">Enlaces rápidos</th>
+                  <th className="px-3 py-2.5 text-right">Enlaces y acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -279,14 +305,8 @@ export function EventLinksList({ videos, playlists }: Props) {
                           >
                             {copiedId === row.id ? "¡Copiado!" : "Copiar Enlace"}
                           </button>
-                          <a
-                            href={row.youtubeWatchUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="rounded bg-accent-cyan/10 px-2.5 py-1 text-xs font-semibold text-accent-cyan ring-1 ring-inset ring-accent-cyan/20 hover:bg-accent-cyan/20 transition-all"
-                          >
-                            Ver en YouTube ↗
-                          </a>
+                          <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" />
+                          <DeleteChannelContentForm youtubeVideoId={row.youtubeVideoId} />
                         </div>
                       </td>
                     </tr>

@@ -526,6 +526,64 @@ export async function deleteYouTubeBroadcast(input: { youtubeBroadcastId: string
   return { ok: true };
 }
 
+export async function deleteYouTubeVideo(input: { youtubeVideoId: string }) {
+  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
+    return { ok: true };
+  }
+
+  const youtube = getYoutubeClient();
+  await youtube.videos.delete({ id: input.youtubeVideoId });
+  return { ok: true };
+}
+
+export async function updateYouTubeBroadcast(input: {
+  youtubeBroadcastId: string;
+  title: string;
+  description: string;
+  scheduledStart: string;
+}) {
+  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
+    return { ok: true };
+  }
+
+  const youtube = getYoutubeClient();
+  await youtube.liveBroadcasts.update({
+    part: ["snippet"],
+    requestBody: {
+      id: input.youtubeBroadcastId,
+      snippet: {
+        title: input.title,
+        description: input.description,
+        scheduledStartTime: input.scheduledStart,
+      },
+    },
+  });
+  return { ok: true };
+}
+
+export async function uploadYouTubeBroadcastThumbnail(input: {
+  videoId: string;
+  imageBuffer: Buffer;
+  mimeType: string;
+}) {
+  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
+    return { ok: true };
+  }
+
+  const youtube = getYoutubeClient();
+  await youtube.thumbnails.set({
+    videoId: input.videoId,
+    media: {
+      mimeType: input.mimeType,
+      body: input.imageBuffer,
+    },
+  });
+
+  return { ok: true };
+}
+
+
+
 export type SyncedYouTubeVideo = {
   youtubeVideoId: string;
   title: string;
@@ -750,4 +808,34 @@ export async function listYouTubeChannelVideos(): Promise<SyncedYouTubeVideo[]> 
       playlistIds: playlistItemsMap.get(videoId) ?? [],
     };
   });
+}
+
+export async function getYouTubeBroadcastStatuses(
+  ids: string[]
+): Promise<Record<string, { lifeCycleStatus: string; actualStart: string | null; actualEnd: string | null }>> {
+  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
+    const out: Record<string, { lifeCycleStatus: string; actualStart: string | null; actualEnd: string | null }> = {};
+    for (const id of ids) {
+      out[id] = { lifeCycleStatus: "ready", actualStart: null, actualEnd: null };
+    }
+    return out;
+  }
+
+  const youtube = getYoutubeClient();
+  const res = await youtube.liveBroadcasts.list({
+    part: ["id", "status", "snippet"],
+    id: ids,
+  });
+
+  const out: Record<string, { lifeCycleStatus: string; actualStart: string | null; actualEnd: string | null }> = {};
+  for (const item of res.data.items ?? []) {
+    if (item.id) {
+      out[item.id] = {
+        lifeCycleStatus: item.status?.lifeCycleStatus ?? "unknown",
+        actualStart: (item.snippet as any)?.actualStartTime ?? (item as any).actualStartTime ?? null,
+        actualEnd: (item.snippet as any)?.actualEndTime ?? (item as any).actualEndTime ?? null,
+      };
+    }
+  }
+  return out;
 }

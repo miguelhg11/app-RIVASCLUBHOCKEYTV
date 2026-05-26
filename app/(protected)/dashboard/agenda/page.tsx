@@ -1,5 +1,6 @@
-import { getBroadcastFormResourcesForCurrentUser } from "@/src/lib/user/queries";
+import { getBroadcastFormResourcesForCurrentUser, getTeamResourcesMap, getActiveThumbnailBackgrounds } from "@/src/lib/user/queries";
 import { NewBroadcastForm } from "@/src/components/forms/new-broadcast-form";
+import { getCategorizedBadges } from "@/src/lib/thumbnails/resolver";
 
 export default async function AgendaPage({
   searchParams,
@@ -8,7 +9,12 @@ export default async function AgendaPage({
 }) {
   const params = await searchParams;
   const initialMatchId = typeof params.matchId === "string" ? params.matchId : "";
-  const assigned = await getBroadcastFormResourcesForCurrentUser();
+  const [assigned, teamResourcesMap, categorizedBadges, activeBackgrounds] = await Promise.all([
+    getBroadcastFormResourcesForCurrentUser(),
+    getTeamResourcesMap(),
+    getCategorizedBadges(),
+    getActiveThumbnailBackgrounds(),
+  ]);
   const hasMinimum = assigned.teams.length > 0 && assigned.streamKeys.length > 0 && assigned.playlists.length > 0;
 
   return (
@@ -32,6 +38,7 @@ export default async function AgendaPage({
       ) : null}
 
       <NewBroadcastForm
+        key={`agenda-${initialMatchId}`}
         mode="agenda"
         agendaOnly
         initialMatchId={initialMatchId}
@@ -39,6 +46,9 @@ export default async function AgendaPage({
         streamKeys={assigned.streamKeys}
         blockedStreamKeys={assigned.streamKeysBlocked}
         playlists={assigned.playlists}
+        teamResourcesMap={teamResourcesMap}
+        categorizedBadges={categorizedBadges}
+        thumbnailBackgrounds={activeBackgrounds}
       />
     </div>
   );

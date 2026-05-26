@@ -25,7 +25,7 @@ export function TeamStreamKeyAssignmentForm({
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <label className="text-sm">
           <span className="mb-1 block text-text-muted">Equipo</span>
-          <select name="teamId" required className="w-full glass-card rounded-lg px-4 py-3">
+          <select name="teamId" required className="w-full glass-input rounded-lg px-3 py-2 text-sm outline-none pr-8">
             <option value="">Selecciona equipo</option>
             {teams.map((team) => (
               <option key={team.id} value={team.id}>{team.label}</option>
@@ -35,7 +35,7 @@ export function TeamStreamKeyAssignmentForm({
 
         <label className="text-sm">
           <span className="mb-1 block text-text-muted">Stream key</span>
-          <select name="streamKeyId" required className="w-full glass-card rounded-lg px-4 py-3">
+          <select name="streamKeyId" required className="w-full glass-input rounded-lg px-3 py-2 text-sm outline-none pr-8">
             <option value="">Selecciona stream key</option>
             {streamKeys.map((streamKey) => (
               <option key={streamKey.id} value={streamKey.id}>{streamKey.label}</option>
@@ -45,7 +45,7 @@ export function TeamStreamKeyAssignmentForm({
 
         <label className="text-sm">
           <span className="mb-1 block text-text-muted">Accion</span>
-          <select name="mode" className="w-full glass-card rounded-lg px-4 py-3">
+          <select name="mode" className="w-full glass-input rounded-lg px-3 py-2 text-sm outline-none pr-8">
             <option value="assign">Asignar</option>
             <option value="unassign">Desasignar</option>
           </select>

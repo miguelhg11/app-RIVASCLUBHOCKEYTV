@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { listMySeasons, listMyFinishedEvents } from "@/src/lib/user/queries";
 import { SeasonSelector } from "./SeasonSelector";
+import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
+import { DeleteBroadcastButton } from "@/src/components/forms/delete-broadcast-button";
 
 type SearchParams = Promise<{ seasonId?: string }>;
 
@@ -73,6 +75,7 @@ export default async function FinishedEventsPage({ searchParams }: { searchParam
                   <th className="px-3 py-2.5">Equipo</th>
                   <th className="px-3 py-2.5">Fecha y Hora</th>
                   <th className="px-3 py-2.5">Enlace de Grabación</th>
+                  <th className="px-3 py-2.5 text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody>
@@ -85,17 +88,13 @@ export default async function FinishedEventsPage({ searchParams }: { searchParam
                       <td className="px-3 py-3.5 text-text-muted">{date.toLocaleString()}</td>
                       <td className="px-3 py-3.5">
                         {event.youtubeWatchUrl ? (
-                          <a
-                            href={event.youtubeWatchUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-accent-cyan hover:underline hover:text-white transition-all text-xs font-semibold uppercase tracking-wider"
-                          >
-                            Ver en YouTube ↗
-                          </a>
+                          <YouTubeWatchButton href={event.youtubeWatchUrl} size="sm" />
                         ) : (
                           <span className="text-text-muted/50">-</span>
                         )}
+                      </td>
+                      <td className="px-3 py-3.5 text-right">
+                        {event.canDelete ? <DeleteBroadcastButton id={event.id} /> : <span className="text-text-muted/50">-</span>}
                       </td>
                     </tr>
                   );

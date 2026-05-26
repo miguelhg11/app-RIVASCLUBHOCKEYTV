@@ -89,7 +89,7 @@ async function main() {
   };
 
   const appEnv = await ask('APP_ENV', 'APP_ENV', 'development');
-  const appBaseUrl = await ask('APP_BASE_URL', 'APP_BASE_URL', 'http://localhost:3000');
+  const appBaseUrl = await ask('APP_BASE_URL', 'APP_BASE_URL', 'https://rivasyoutubelivehandoff.vercel.app/');
   const sessionSecret = existing.SESSION_SECRET || generateSecret();
   console.log(`SESSION_SECRET generado/mantenido: ${mask(sessionSecret)}`);
 

@@ -1,4 +1,4 @@
-import { getBroadcastFormResourcesForCurrentUser, getTeamResourcesMap } from "@/src/lib/user/queries";
+import { getBroadcastFormResourcesForCurrentUser, getTeamResourcesMap, getActiveThumbnailBackgrounds } from "@/src/lib/user/queries";
 import { NewBroadcastForm } from "@/src/components/forms/new-broadcast-form";
 import { getCategorizedBadges } from "@/src/lib/thumbnails/resolver";
 
@@ -9,10 +9,11 @@ export default async function NewBroadcastPage({
 }) {
   const params = await searchParams;
   const initialMatchId = typeof params.matchId === "string" ? params.matchId : "";
-  const [assigned, teamResourcesMap, categorizedBadges] = await Promise.all([
+  const [assigned, teamResourcesMap, categorizedBadges, activeBackgrounds] = await Promise.all([
     getBroadcastFormResourcesForCurrentUser(),
     getTeamResourcesMap(),
     getCategorizedBadges(),
+    getActiveThumbnailBackgrounds(),
   ]);
   const hasMinimum = assigned.teams.length > 0 && assigned.streamKeys.length > 0 && assigned.playlists.length > 0;
 
@@ -40,6 +41,7 @@ export default async function NewBroadcastPage({
       ) : null}
 
       <NewBroadcastForm
+        key={`manual-${initialMatchId}`}
         mode="manual"
         initialMatchId={initialMatchId}
         teams={assigned.teams}
@@ -48,6 +50,7 @@ export default async function NewBroadcastPage({
         playlists={assigned.playlists}
         teamResourcesMap={teamResourcesMap}
         categorizedBadges={categorizedBadges}
+        thumbnailBackgrounds={activeBackgrounds}
       />
     </div>
   );

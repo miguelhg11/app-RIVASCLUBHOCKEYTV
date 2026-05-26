@@ -75,6 +75,8 @@ export type ThumbnailBackgroundRow = {
   name: string;
   url_path: string;
   active: boolean;
+  base64_data?: string | null;
+  is_default?: boolean;
 };
 
 export type UserAssignmentsMap = Record<
@@ -105,7 +107,7 @@ export async function listTeams(): Promise<TeamRow[]> {
 
   const season = await getSelectedSeason();
 
-  // Comprobar si team_playlists existe para evitar roturas
+  // Comprobar si team_playlists existe para avoid roturas
   const { error: testError } = await supabase.from("team_playlists").select("playlist_id").limit(1);
   const hasTeamPlaylists = !testError;
 
@@ -219,7 +221,7 @@ export async function listThumbnailBackgrounds(): Promise<ThumbnailBackgroundRow
   const supabase = getSupabaseServerClient();
   const { data } = await supabase
     .from("thumbnail_backgrounds")
-    .select("id,name,url_path,active")
+    .select("id,name,url_path,active,base64_data,is_default")
     .order("created_at", { ascending: false });
   return (data ?? []) as ThumbnailBackgroundRow[];
 }

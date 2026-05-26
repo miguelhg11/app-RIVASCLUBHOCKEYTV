@@ -5,6 +5,7 @@ import { useActionState, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { resetPasswordWithTokenAction } from "@/src/actions/forgot-password.actions";
+import { PasswordInput } from "@/src/components/ui/password-input";
 
 const initialState = {} as { error?: string; ok?: string };
 
@@ -46,10 +47,9 @@ function ResetPasswordFormInner() {
         <span className="mb-1.5 block text-xs font-semibold tracking-wider text-text-muted uppercase">
           Nueva Contraseña
         </span>
-        <input
+        <PasswordInput
           required
           name="newPassword"
-          type="password"
           minLength={8}
           autoComplete="new-password"
           className="glass-input w-full rounded-lg px-4 py-3 text-sm outline-none"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, type FormEvent } from "react";
 import { endBroadcastAction, type EndBroadcastState } from "@/src/actions/broadcast.actions";
 
 const initialState: EndBroadcastState = {};
@@ -8,8 +8,14 @@ const initialState: EndBroadcastState = {};
 export function EndBroadcastForm({ id, disabled }: { id: string; disabled?: boolean }) {
   const [state, formAction, pending] = useActionState(endBroadcastAction, initialState);
 
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
+    if (!window.confirm("¿Seguro que deseas finalizar esta emision en directo? Una vez finalizada no se puede retomar.")) {
+      e.preventDefault();
+    }
+  }
+
   return (
-    <form action={formAction} className="inline-flex items-center gap-2">
+    <form action={formAction} onSubmit={onSubmit} className="inline-flex items-center gap-2">
       <input type="hidden" name="id" value={id} />
       <button
         type="submit"

@@ -3,6 +3,75 @@ import { NextRequest } from "next/server";
 import fs from "node:fs";
 import path from "node:path";
 import { RIVAS_THUMBNAIL_STYLE } from "@/src/lib/thumbnails/rivas-thumbnail-style";
+import { createClient } from "@supabase/supabase-js";
+
+async function getBackgroundBase64(id: string): Promise<string | null> {
+  if (!id) return null;
+  console.log("[getBackgroundBase64] Fetching background ID:", id);
+  try {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+    if (!supabaseUrl || !supabaseKey) {
+      console.error("[getBackgroundBase64] Missing Supabase env variables!", { supabaseUrl, hasKey: !!supabaseKey });
+      return null;
+    }
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: { persistSession: false, autoRefreshToken: false },
+    });
+    const { data, error } = await supabase
+      .from("thumbnail_backgrounds")
+      .select("name, base64_data, url_path")
+      .eq("id", id)
+      .maybeSingle();
+
+    if (error) {
+      console.error("[getBackgroundBase64] Supabase database error:", error);
+      return null;
+    }
+    if (!data) {
+      console.warn("[getBackgroundBase64] No row found for ID:", id);
+      return null;
+    }
+
+    console.log("[getBackgroundBase64] Background row found:", { name: data.name, hasBase64: !!data.base64_data, urlPath: data.url_path });
+
+    if (data.base64_data) {
+      return data.base64_data;
+    }
+
+    if (data.url_path) {
+      let cleanPath = data.url_path;
+      if (cleanPath.startsWith("/")) {
+        cleanPath = cleanPath.slice(1);
+      }
+      const fullPath = path.join(process.cwd(), cleanPath);
+      console.log("[getBackgroundBase64] Resolving local disk path:", fullPath);
+      if (fs.existsSync(fullPath)) {
+        const buffer = fs.readFileSync(fullPath);
+        const ext = path.extname(cleanPath).toLowerCase().replace(".", "");
+        const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
+        return `data:${mime};base64,${buffer.toString("base64")}`;
+      } else {
+        console.warn("[getBackgroundBase64] Local disk path does not exist:", fullPath);
+      }
+
+      const publicPath = path.join(process.cwd(), "public", cleanPath);
+      console.log("[getBackgroundBase64] Resolving public path fallback:", publicPath);
+      if (fs.existsSync(publicPath)) {
+        const buffer = fs.readFileSync(publicPath);
+        const ext = path.extname(cleanPath).toLowerCase().replace(".", "");
+        const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
+        return `data:${mime};base64,${buffer.toString("base64")}`;
+      } else {
+        console.warn("[getBackgroundBase64] Public fallback path does not exist:", publicPath);
+      }
+    }
+  } catch (err) {
+    console.error("[getBackgroundBase64] Critical exception:", err);
+  }
+  return null;
+}
+
 
 export const runtime = "nodejs"; // Asegura entorno Node.js para poder leer archivos locales con fs
 
@@ -80,6 +149,7 @@ async function handleRender(req: NextRequest) {
   let bottomLine = "25/05/2026 · 21:15 · POL. CERRO DEL TELÉGRAFO";
   let localLogo = "/badges/fmp/rivas.png";
   let visitorLogo = "/badges/fmp/aluche.png";
+  let backgroundId = "";
 
   if (req.method === "POST") {
     try {
@@ -91,6 +161,7 @@ async function handleRender(req: NextRequest) {
       if (body.bottomLine) bottomLine = body.bottomLine;
       if (body.localLogo) localLogo = body.localLogo;
       if (body.visitorLogo) visitorLogo = body.visitorLogo;
+      if (body.backgroundId) backgroundId = body.backgroundId;
     } catch (e) {
       console.warn("No se pudo parsear el body JSON, usando defaults");
     }
@@ -103,12 +174,19 @@ async function handleRender(req: NextRequest) {
     bottomLine = searchParams.get("bottomLine") || bottomLine;
     localLogo = searchParams.get("localLogo") || localLogo;
     visitorLogo = searchParams.get("visitorLogo") || visitorLogo;
+    backgroundId = searchParams.get("backgroundId") || "";
   }
 
-  // Cargar plantilla base64
-  const plantillaBase64 = getLocalImageBase64("thumbnails/plantilla.png");
-  if (!plantillaBase64) {
+  // Cargar plantilla overlay (siempre es plantilla.png)
+  const overlayBase64 = getLocalImageBase64("thumbnails/plantilla.png");
+  if (!overlayBase64) {
     return new Response("Error: No se pudo cargar la plantilla base de miniaturas.", { status: 500 });
+  }
+
+  // Cargar fondo seleccionado si existe
+  let backgroundBase64: string | null = null;
+  if (backgroundId) {
+    backgroundBase64 = await getBackgroundBase64(backgroundId);
   }
 
   // Cargar escudos base64
@@ -177,13 +255,40 @@ async function handleRender(req: NextRequest) {
           display: "flex",
           flexDirection: "column",
           position: "relative",
-          backgroundImage: `url(${plantillaBase64})`,
-          backgroundSize: "100% 100%",
-          backgroundRepeat: "no-repeat",
+          backgroundColor: "#0d0e15",
           fontFamily: "Outfit",
           overflow: "hidden",
         }}
       >
+        {/* Selected background image (rendered behind the overlay) */}
+        {backgroundBase64 && (
+          <img
+            src={backgroundBase64}
+            alt="Fondo"
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              width: "1280px",
+              height: "720px",
+              objectFit: "cover",
+            }}
+          />
+        )}
+
+        {/* Plantilla overlay (siempre visible sobre el fondo seleccionado) */}
+        <img
+          src={overlayBase64}
+          alt="Overlay"
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: "1280px",
+            height: "720px",
+            objectFit: "fill",
+          }}
+        />
         {/* Título de Categoría / Título Corto */}
         <div
           style={{

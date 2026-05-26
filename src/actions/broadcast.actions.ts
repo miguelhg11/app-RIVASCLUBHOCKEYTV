@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { z } from "zod";
 import { requireAdmin, requireSession } from "@/src/lib/auth/guards";
 import { revalidateAllResourcePaths } from "./admin.actions";
@@ -10,7 +11,7 @@ import { sanitizeForLog } from "@/src/lib/logging/sanitize";
 import { getSupabaseServerClient } from "@/src/lib/supabase/server";
 import { assertCurrentUserHasAssignedResources } from "@/src/lib/user/queries";
 import { userHasAccessToRivasTeam } from "@/src/lib/federations/unified/permissions";
-import { createBroadcastSchema } from "@/src/lib/validation/broadcast";
+import { createBroadcastSchema, updateBroadcastSchema } from "@/src/lib/validation/broadcast";
 import {
   createYouTubeBroadcast,
   endYouTubeBroadcast,
@@ -18,6 +19,10 @@ import {
   listYouTubeChannelPlaylists,
   listYouTubeChannelStreams,
   listYouTubeChannelVideos,
+  deleteYouTubeBroadcast,
+  deleteYouTubeVideo,
+  updateYouTubeBroadcast,
+  uploadYouTubeBroadcastThumbnail,
 } from "@/src/lib/youtube/service";
 import { expirePendingBroadcasts } from "@/src/lib/broadcast/expiration";
 
@@ -34,6 +39,55 @@ export type EndBroadcastState = {
   error?: string;
   ok?: string;
 };
+
+async function applyThumbnailToYouTube(videoId: string, data: any) {
+  try {
+    const hostList = await headers();
+    const host = hostList.get("host") || "localhost:3000";
+    const protocol = host.startsWith("localhost") || host.startsWith("127.0.0.1") ? "http" : "https";
+    const baseUrl = `${protocol}://${host}`;
+
+    const shortTitle = data.thumbnailPayload ? JSON.parse(data.thumbnailPayload).shortTitle : "";
+    const competitionLine = data.thumbnailPayload ? JSON.parse(data.thumbnailPayload).competitionLine : "";
+    const bottomLine = data.thumbnailPayload ? JSON.parse(data.thumbnailPayload).bottomLine : "";
+
+    const renderUrl = `${baseUrl}/api/thumbnail/render`;
+    console.log("Fetching rendered thumbnail via POST from:", renderUrl);
+    const res = await fetch(renderUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        shortTitle,
+        competitionLine,
+        localName: data.homeTeamName || "",
+        visitorName: data.awayTeamName || "",
+        bottomLine,
+        localLogo: data.homeCrestUrl || "",
+        visitorLogo: data.awayCrestUrl || "",
+        backgroundId: data.thumbnailBackgroundId || "",
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`Failed to render thumbnail: ${res.statusText}`);
+    }
+
+    const arrayBuffer = await res.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    console.log("Uploading thumbnail to YouTube for videoId:", videoId);
+    await uploadYouTubeBroadcastThumbnail({
+      videoId,
+      imageBuffer: buffer,
+      mimeType: "image/png",
+    });
+    console.log("Thumbnail applied successfully to YouTube.");
+  } catch (err) {
+    console.error("Error applying thumbnail to YouTube:", err);
+  }
+}
 
 export async function createBroadcastAction(_prev: CreateBroadcastState, formData: FormData): Promise<CreateBroadcastState> {
   const session = await requireSession();
@@ -56,10 +110,13 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
     federationTeamKey: formData.get("federationTeamKey") || undefined,
     thumbnailPayload: formData.get("thumbnailPayload") || undefined,
     thumbnailOverrides: formData.get("thumbnailOverrides") || undefined,
+    thumbnailBackgroundId: formData.get("thumbnailBackgroundId") || undefined,
   });
 
   if (!parsed.success) {
-    return { error: "Datos de formulario no validos." };
+    const errorDetails = parsed.error.issues.map(i => `${i.path.join(".")}: ${i.message}`).join(", ");
+    console.error("Validation error when creating broadcast:", errorDetails);
+    return { error: `Datos de formulario no validos. Detalles: ${errorDetails}` };
   }
 
   const scheduledDate = new Date(parsed.data.scheduledStart);
@@ -128,12 +185,24 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
     return { error: `YouTube fallo al crear el directo: ${message}` };
   }
 
+  if (youtubeResult.videoId) {
+    await applyThumbnailToYouTube(youtubeResult.videoId, {
+      homeTeamName: parsed.data.homeTeamName,
+      awayTeamName: parsed.data.awayTeamName,
+      homeCrestUrl: parsed.data.homeCrestUrl,
+      awayCrestUrl: parsed.data.awayCrestUrl,
+      thumbnailPayload: parsed.data.thumbnailPayload,
+      thumbnailBackgroundId: parsed.data.thumbnailBackgroundId,
+    });
+  }
+
   const insertPayload: any = {
     created_by: session.userId,
     season_id: season.id,
     team_id: parsed.data.teamId,
     stream_key_id: parsed.data.streamKeyId,
     playlist_id: parsed.data.playlistId,
+    thumbnail_background_id: parsed.data.thumbnailBackgroundId || null,
     title,
     description: parsed.data.description ?? null,
     scheduled_start: scheduledStartIso,
@@ -201,7 +270,7 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
       message: "Error insertando broadcast",
       metadata: sanitizeForLog({ reason: insertError?.message }),
     });
-    return { error: "No se pudo guardar el broadcast." };
+    return { error: `No se pudo guardar el broadcast en base de datos. Detalles: ${insertError?.message || "Registro no devuelto"}` };
   }
 
   await supabase.from("operation_logs").insert({
@@ -222,9 +291,27 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
 }
 
 export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Promise<SyncBroadcastState> {
-  const session = await requireAdmin();
+  const session = await requireSession();
   const supabase = getSupabaseServerClient();
   const startedAt = new Date().toISOString();
+
+  try {
+    const { data: latestRun } = await supabase
+      .from("youtube_sync_runs")
+      .select("finished_at,status")
+      .order("started_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (latestRun?.finished_at && latestRun.status === "ok") {
+      const seconds = (Date.now() - new Date(latestRun.finished_at).getTime()) / 1000;
+      if (seconds < 45) {
+        return { ok: "Sync reciente detectada. Mostrando datos actualizados." };
+      }
+    }
+  } catch {
+    // no-op: continue with sync
+  }
 
   const { data: runRow, error: runStartError } = await supabase
     .from("youtube_sync_runs")
@@ -232,7 +319,7 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
       started_at: startedAt,
       status: "running",
       triggered_by: session.userId,
-      trigger_source: "admin",
+      trigger_source: session.role === "admin" ? "admin" : "user",
       resource_type: "all",
       metadata: { source: "syncChannelBroadcastsAction" },
     })
@@ -371,6 +458,39 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
       externalUpserted += 1;
     }
 
+    // 0.5. Check for broadcasts that exist locally but were deleted from YouTube
+    const youtubeBroadcastIds = new Set(channelBroadcasts.map((cb) => cb.youtubeBroadcastId));
+    const { data: localActiveBroadcasts } = await supabase
+      .from("broadcasts")
+      .select("id, youtube_broadcast_id, title")
+      .is("deleted_at", null)
+      .neq("youtube_life_cycle_status", "complete");
+
+    if (localActiveBroadcasts) {
+      for (const localBc of localActiveBroadcasts) {
+        if (localBc.youtube_broadcast_id && !youtubeBroadcastIds.has(localBc.youtube_broadcast_id)) {
+          console.log(`Local broadcast '${localBc.title}' (ID: ${localBc.id}) not found on YouTube. Marking as deleted.`);
+          await supabase
+            .from("broadcasts")
+            .update({
+              deleted_at: new Date().toISOString(),
+              youtube_life_cycle_status: "complete",
+              youtube_last_error: "Eliminado o cancelado desde YouTube Studio.",
+            })
+            .eq("id", localBc.id);
+
+          await supabase.from("operation_logs").insert({
+            user_id: session.userId,
+            broadcast_id: localBc.id,
+            operation_type: "sync_delete_broadcast",
+            status: "ok",
+            message: `Programación eliminada localmente tras ser borrada en YouTube Studio: ${localBc.title}`,
+            metadata: sanitizeForLog({ id: localBc.id, youtubeBroadcastId: localBc.youtube_broadcast_id }),
+          });
+        }
+      }
+    }
+
     for (const video of channelVideos) {
       try {
         const { error: videoError } = await supabase.from("youtube_channel_videos").upsert(
@@ -473,19 +593,24 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
 }
 
 export async function endBroadcastAction(_prev: EndBroadcastState, formData: FormData): Promise<EndBroadcastState> {
-  const session = await requireAdmin();
+  const session = await requireSession();
   const id = String(formData.get("id") || "").trim();
   if (!id) return { error: "Falta identificador del broadcast." };
 
   const supabase = getSupabaseServerClient();
   const { data: row } = await supabase
     .from("broadcasts")
-    .select("id,title,youtube_broadcast_id")
+    .select("id,title,youtube_broadcast_id,created_by")
     .eq("id", id)
     .maybeSingle();
 
   if (!row?.youtube_broadcast_id) {
     return { error: "El broadcast no tiene youtube_broadcast_id." };
+  }
+
+  const isAdmin = session.role === "admin";
+  if (!isAdmin && row.created_by !== session.userId) {
+    return { error: "No tienes permisos para finalizar esta emision." };
   }
 
   try {
@@ -499,7 +624,7 @@ export async function endBroadcastAction(_prev: EndBroadcastState, formData: For
         actual_end_time: new Date().toISOString(),
         ended_by: session.userId,
         ended_at: new Date().toISOString(),
-        end_reason: "manual_admin",
+        end_reason: isAdmin ? "manual_admin" : "manual_owner",
         last_youtube_sync_at: new Date().toISOString(),
         youtube_last_error: null,
       })
@@ -510,7 +635,7 @@ export async function endBroadcastAction(_prev: EndBroadcastState, formData: For
       broadcast_id: id,
       operation_type: "end_broadcast",
       status: "ok",
-      message: "Broadcast finalizado desde admin",
+      message: isAdmin ? "Broadcast finalizado desde admin" : "Broadcast finalizado por creador",
       metadata: sanitizeForLog({ youtubeBroadcastId: row.youtube_broadcast_id, title: row.title }),
     });
 
@@ -693,3 +818,317 @@ export async function assignExternalBroadcastAction(
   return { ok: "Directo asignado y vinculado exitosamente." };
 }
 
+export type DeleteBroadcastState = {
+  error?: string;
+  ok?: string;
+};
+
+export type DeleteChannelContentState = {
+  error?: string;
+  ok?: string;
+};
+
+export async function deleteChannelContentAction(
+  _prev: DeleteChannelContentState,
+  formData: FormData,
+): Promise<DeleteChannelContentState> {
+  const session = await requireAdmin();
+  const youtubeVideoId = String(formData.get("youtubeVideoId") || "").trim();
+  if (!youtubeVideoId) return { error: "Falta youtubeVideoId." };
+
+  const supabase = getSupabaseServerClient();
+
+  let youtubeDeletedMessage = "Contenido eliminado correctamente en YouTube y app.";
+  try {
+    await deleteYouTubeVideo({ youtubeVideoId });
+  } catch (error) {
+    const errObj = error as any;
+    const message = errObj.message || (errObj.errors?.[0]?.message) || String(error);
+    const code = errObj.code || errObj.status;
+    const isNotFound = code === 404 || 
+                       String(code) === "404" ||
+                       message.toLowerCase().includes("cannot be found") || 
+                       message.toLowerCase().includes("not found");
+
+    if (isNotFound) {
+      console.warn(`Video ${youtubeVideoId} not found on YouTube, proceeding with local cleanup.`, error);
+      youtubeDeletedMessage = "El video no existía en YouTube. Se ha limpiado correctamente de la app.";
+    } else {
+      return { error: `No se pudo borrar en YouTube: ${message}` };
+    }
+  }
+
+  await supabase
+    .from("youtube_channel_videos")
+    .delete()
+    .eq("youtube_video_id", youtubeVideoId);
+
+  await supabase
+    .from("broadcasts")
+    .update({
+      deleted_at: new Date().toISOString(),
+      youtube_life_cycle_status: "complete",
+      youtube_last_error: "Eliminado desde Buscador de contenidos.",
+    })
+    .eq("youtube_video_id", youtubeVideoId)
+    .is("deleted_at", null);
+
+  await supabase.from("operation_logs").insert({
+    user_id: session.userId,
+    operation_type: "delete_channel_content",
+    status: "ok",
+    message: "Contenido eliminado desde buscador de contenidos",
+    metadata: sanitizeForLog({ youtubeVideoId }),
+  });
+
+  await revalidateAllResourcePaths();
+  revalidatePath("/admin/event-links");
+
+  return { ok: youtubeDeletedMessage };
+}
+
+export async function deleteBroadcastAction(_prev: DeleteBroadcastState, formData: FormData): Promise<DeleteBroadcastState> {
+  const session = await requireSession();
+  const id = String(formData.get("id") || "").trim();
+  if (!id) return { error: "Falta identificador del broadcast." };
+
+  const supabase = getSupabaseServerClient();
+  const { data: row } = await supabase
+    .from("broadcasts")
+    .select("id,title,youtube_broadcast_id,created_by")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (!row) {
+    return { error: "No se encontró el broadcast." };
+  }
+
+  if (session.role !== "admin" && (session.role as string) !== "superadmin" && row.created_by !== session.userId) {
+    return { error: "No tienes permisos para eliminar esta programación." };
+  }
+
+  // 1. Delete from YouTube
+  if (row.youtube_broadcast_id) {
+    try {
+      await deleteYouTubeBroadcast({ youtubeBroadcastId: row.youtube_broadcast_id });
+    } catch (error) {
+      console.error(`Failed to delete broadcast ${row.youtube_broadcast_id} from YouTube:`, error);
+      // Proceed to soft delete locally anyway so resources are freed up
+    }
+  }
+
+  // 2. Soft delete locally
+  const { error: updateError } = await supabase
+    .from("broadcasts")
+    .update({
+      deleted_at: new Date().toISOString(),
+      youtube_life_cycle_status: "complete", // Mark as complete to avoid active syncs
+    })
+    .eq("id", id);
+
+  if (updateError) {
+    return { error: `No se pudo eliminar el broadcast localmente: ${updateError.message}` };
+  }
+
+  await supabase.from("operation_logs").insert({
+    user_id: session.userId,
+    broadcast_id: id,
+    operation_type: "delete_broadcast",
+    status: "ok",
+    message: "Broadcast eliminado por el administrador",
+    metadata: sanitizeForLog({ youtubeBroadcastId: row.youtube_broadcast_id, title: row.title }),
+  });
+
+  await revalidateAllResourcePaths();
+
+  return { ok: "Broadcast eliminado correctamente." };
+}
+
+export type UpdateBroadcastState = {
+  error?: string;
+  ok?: boolean;
+};
+
+export async function updateBroadcastAction(_prev: UpdateBroadcastState, formData: FormData): Promise<UpdateBroadcastState> {
+  const session = await requireSession();
+
+  const parsed = updateBroadcastSchema.safeParse({
+    id: formData.get("id"),
+    teamId: formData.get("teamId"),
+    streamKeyId: formData.get("streamKeyId"),
+    playlistId: formData.get("playlistId"),
+    competitionName: formData.get("competitionName"),
+    homeTeamName: formData.get("homeTeamName"),
+    awayTeamName: formData.get("awayTeamName"),
+    homeCrestUrl: formData.get("homeCrestUrl") || undefined,
+    awayCrestUrl: formData.get("awayCrestUrl") || undefined,
+    venue: formData.get("venue") || undefined,
+    scheduledStart: formData.get("scheduledStart"),
+    description: formData.get("description") || undefined,
+    federationSource: formData.get("federationSource") || undefined,
+    federationMatchId: formData.get("federationMatchId") || undefined,
+    federationTeamKey: formData.get("federationTeamKey") || undefined,
+    thumbnailPayload: formData.get("thumbnailPayload") || undefined,
+    thumbnailOverrides: formData.get("thumbnailOverrides") || undefined,
+    thumbnailBackgroundId: formData.get("thumbnailBackgroundId") || null,
+  });
+
+  if (!parsed.success) {
+    const firstIssue = parsed.error.issues[0]?.message;
+    return { error: firstIssue ? `Datos no válidos: ${firstIssue}` : "Datos de formulario no validos." };
+  }
+
+  const scheduledDate = new Date(parsed.data.scheduledStart);
+  if (Number.isNaN(scheduledDate.getTime())) {
+    return { error: "Fecha/hora no valida." };
+  }
+  const scheduledStartIso = scheduledDate.toISOString();
+
+  const supabase = getSupabaseServerClient();
+
+  const { data: existing, error: fetchError } = await supabase
+    .from("broadcasts")
+    .select("id, youtube_broadcast_id, created_by")
+    .eq("id", parsed.data.id)
+    .maybeSingle();
+
+  if (fetchError || !existing) {
+    return { error: "No se encontró el broadcast a actualizar." };
+  }
+
+  const isAdmin = session.role === "admin" || (session.role as string) === "superadmin";
+
+  if (!isAdmin && existing.created_by !== session.userId) {
+    return { error: "No tienes permisos para actualizar esta programación." };
+  }
+
+  // Check resource permissions for non-admin users
+  if (!isAdmin) {
+    try {
+      await assertCurrentUserHasAssignedResources({
+        teamId: parsed.data.teamId,
+        streamKeyId: parsed.data.streamKeyId,
+        playlistId: parsed.data.playlistId,
+      });
+    } catch {
+      return { error: "No tienes permisos para uno o mas recursos seleccionados." };
+    }
+  }
+
+  // Check federation team key access
+  if (parsed.data.federationTeamKey) {
+    const hasAccess = await userHasAccessToRivasTeam(session.email ?? "", isAdmin, parsed.data.federationTeamKey);
+    if (!hasAccess) {
+      return { error: "No tienes permisos para programar directos de este equipo federado." };
+    }
+  }
+
+  const [{ data: streamKey }, { data: playlist }] = await Promise.all([
+    supabase.from("stream_keys").select("id,name,youtube_live_stream_id,rtmp_url,stream_key").eq("id", parsed.data.streamKeyId).maybeSingle(),
+    supabase.from("playlists").select("id,name,youtube_playlist_id").eq("id", parsed.data.playlistId).maybeSingle(),
+  ]);
+
+  if (!streamKey || !playlist) {
+    return { error: "No se encontraron los recursos asociados." };
+  }
+
+  const title = `${parsed.data.homeTeamName} vs ${parsed.data.awayTeamName} | ${parsed.data.competitionName}`;
+
+  // 1. Update YouTube snippet
+  if (existing.youtube_broadcast_id) {
+    try {
+      await updateYouTubeBroadcast({
+        youtubeBroadcastId: existing.youtube_broadcast_id,
+        title,
+        description: parsed.data.description ?? "",
+        scheduledStart: scheduledStartIso,
+      });
+
+      await applyThumbnailToYouTube(existing.youtube_broadcast_id, {
+        homeTeamName: parsed.data.homeTeamName,
+        awayTeamName: parsed.data.awayTeamName,
+        homeCrestUrl: parsed.data.homeCrestUrl,
+        awayCrestUrl: parsed.data.awayCrestUrl,
+        thumbnailPayload: parsed.data.thumbnailPayload,
+        thumbnailBackgroundId: parsed.data.thumbnailBackgroundId,
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Error desconocido YouTube";
+      await supabase.from("operation_logs").insert({
+        user_id: session.userId,
+        broadcast_id: parsed.data.id,
+        operation_type: "update_broadcast",
+        status: "failed",
+        message: "Error actualizando en YouTube",
+        metadata: sanitizeForLog({ reason: message }),
+      });
+      return { error: `Fallo al actualizar en YouTube: ${message}` };
+    }
+  }
+
+  // 2. Update local DB
+  const updatePayload: any = {
+    team_id: parsed.data.teamId,
+    stream_key_id: parsed.data.streamKeyId,
+    playlist_id: parsed.data.playlistId,
+    thumbnail_background_id: parsed.data.thumbnailBackgroundId || null,
+    title,
+    description: parsed.data.description ?? null,
+    scheduled_start: scheduledStartIso,
+    competition_name: parsed.data.competitionName,
+    venue: parsed.data.venue ?? null,
+    home_team_name: parsed.data.homeTeamName,
+    away_team_name: parsed.data.awayTeamName,
+    home_crest_url: parsed.data.homeCrestUrl ?? null,
+    away_crest_url: parsed.data.awayCrestUrl ?? null,
+    federation_source: parsed.data.federationSource ?? "manual",
+    federation_match_id: parsed.data.federationMatchId ?? null,
+    youtube_playlist_id: playlist.youtube_playlist_id,
+    youtube_bound_stream_id: streamKey.youtube_live_stream_id,
+  };
+
+  if (parsed.data.thumbnailPayload) {
+    try {
+      updatePayload.thumbnail_payload = JSON.parse(parsed.data.thumbnailPayload);
+    } catch (_) {}
+  }
+  if (parsed.data.thumbnailOverrides) {
+    try {
+      updatePayload.thumbnail_overrides = JSON.parse(parsed.data.thumbnailOverrides);
+    } catch (_) {}
+  }
+
+  const { error: updateError } = await supabase
+    .from("broadcasts")
+    .update(updatePayload)
+    .eq("id", parsed.data.id);
+
+  if (updateError) {
+    await supabase.from("operation_logs").insert({
+      user_id: session.userId,
+      broadcast_id: parsed.data.id,
+      operation_type: "update_broadcast",
+      status: "failed",
+      message: "Error actualizando fila en DB",
+      metadata: sanitizeForLog({ reason: updateError.message }),
+    });
+    return { error: `No se pudo actualizar en base de datos: ${updateError.message}` };
+  }
+
+  await supabase.from("operation_logs").insert({
+    user_id: session.userId,
+    broadcast_id: parsed.data.id,
+    operation_type: "update_broadcast",
+    status: "ok",
+    message: "Broadcast editado por administrador",
+    metadata: sanitizeForLog({
+      youtubeBroadcastId: existing.youtube_broadcast_id,
+      streamKeyId: parsed.data.streamKeyId,
+      playlistId: parsed.data.playlistId,
+    }),
+  });
+
+  await revalidateAllResourcePaths();
+
+  return { ok: true };
+}

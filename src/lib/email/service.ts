@@ -1,9 +1,15 @@
 import fs from "node:fs";
 import path from "node:path";
+import nodemailer from "nodemailer";
 
+const NODE_ENV = process.env.NODE_ENV ?? "development";
+const EMAIL_PROVIDER = (process.env.EMAIL_PROVIDER ?? "auto").toLowerCase();
 const RESEND_API_KEY = process.env.RESEND_API_KEY ?? "";
 const EMAIL_FROM = process.env.EMAIL_FROM ?? "onboarding@resend.dev";
-const APP_BASE_URL = process.env.APP_BASE_URL ?? "http://localhost:3000";
+const APP_BASE_URL = process.env.APP_BASE_URL ?? "https://rivasyoutubelivehandoff.vercel.app";
+const GMAIL_USER = process.env.GMAIL_USER ?? "";
+const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD ?? "";
+const SMTP_TLS_REJECT_UNAUTHORIZED = (process.env.SMTP_TLS_REJECT_UNAUTHORIZED ?? "true").toLowerCase() !== "false";
 
 async function logEmailLocally(to: string, subject: string, html: string) {
   const logDir = path.join(process.cwd(), "scratch");
@@ -17,6 +23,58 @@ async function logEmailLocally(to: string, subject: string, html: string) {
 }
 
 export async function sendEmail(to: string, subject: string, html: string): Promise<boolean> {
+  const canUseResend = Boolean(RESEND_API_KEY);
+  const canUseGmail = Boolean(GMAIL_USER && GMAIL_APP_PASSWORD);
+
+  const useResend = EMAIL_PROVIDER === "resend" || (EMAIL_PROVIDER === "auto" && canUseResend);
+  const useGmail = EMAIL_PROVIDER === "gmail" || (EMAIL_PROVIDER === "auto" && !canUseResend && canUseGmail);
+
+  if (useResend && !canUseResend) {
+    console.error("EMAIL_PROVIDER=resend pero falta RESEND_API_KEY");
+    if (NODE_ENV === "production") return false;
+    await logEmailLocally(to, subject, html);
+    return false;
+  }
+
+  if (useGmail && !canUseGmail) {
+    console.error("EMAIL_PROVIDER=gmail pero faltan GMAIL_USER o GMAIL_APP_PASSWORD");
+    if (NODE_ENV === "production") return false;
+    await logEmailLocally(to, subject, html);
+    return false;
+  }
+
+  if (useGmail) {
+    try {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: GMAIL_USER,
+          pass: GMAIL_APP_PASSWORD,
+        },
+        tls: {
+          rejectUnauthorized: SMTP_TLS_REJECT_UNAUTHORIZED,
+        },
+      });
+
+      await transporter.sendMail({
+      });
+
+      const info = await transporter.sendMail({
+        from: EMAIL_FROM,
+        to: to,
+        subject: subject,
+        html: html,
+      });
+
+      console.log(`[EMAIL SENT VIA GMAIL] Message ID: ${info.messageId} to ${to}`);
+      return true;
+    } catch (error) {
+      console.error("Failed to send email via Gmail:", error);
+      await logEmailLocally(to, subject, `[GMAIL SEND FAILED: ${error instanceof Error ? error.message : String(error)}]\n\n` + html);
+      return false;
+    }
+  }
+
   if (!RESEND_API_KEY) {
     await logEmailLocally(to, subject, html);
     return true;
