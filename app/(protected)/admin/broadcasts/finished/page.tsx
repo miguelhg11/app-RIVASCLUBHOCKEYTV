@@ -17,7 +17,28 @@ export default async function AdminFinishedBroadcastsPage() {
       {rows.length === 0 ? (
         <div className="glass-panel rounded-xl p-8 text-center text-text-muted text-sm">No hay emisiones finalizadas registradas.</div>
       ) : (
-        <div className="overflow-auto glass-panel rounded-xl p-4">
+        <div className="glass-panel rounded-xl p-4">
+          <div className="space-y-3 md:hidden">
+            {rows.map((row) => (
+              <details key={row.id} className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                <summary className="list-none cursor-pointer">
+                  <p className="font-semibold text-white">{row.title}</p>
+                  <p className="mt-1 text-xs text-text-muted">{new Date(row.scheduledStart).toLocaleString()} · {row.teamName}</p>
+                </summary>
+                <div className="mt-3 border-t border-white/10 pt-3">
+                  <p className="text-xs text-text-muted mb-2">Creador: {row.creatorName || "-"}</p>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {row.youtubeWatchUrl ? <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" /> : null}
+                    {(row.youtubeShareUrl || row.youtubeWatchUrl) ? (
+                      <ShareLinkButton href={row.youtubeShareUrl || row.youtubeWatchUrl || ""} title={row.title} />
+                    ) : null}
+                    <DeleteBroadcastButton id={row.id} />
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+          <div className="hidden overflow-auto md:block">
           <table className="min-w-full text-sm">
             <thead>
               <tr className="border-b border-white/10 text-left text-text-muted">
@@ -49,6 +70,7 @@ export default async function AdminFinishedBroadcastsPage() {
               ))}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

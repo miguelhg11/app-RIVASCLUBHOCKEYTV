@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @next/next/no-img-element, react-hooks/set-state-in-effect */
 "use client";
 
 import { useActionState, useEffect, useMemo, useRef, useState, DragEvent, ChangeEvent } from "react";
@@ -84,47 +84,58 @@ export function NewBroadcastForm({
   const [loadingMatches, setLoadingMatches] = useState(true);
   const [matchError, setMatchError] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [reloadTick, setReloadTick] = useState(0);
 
   const [competitionName, setCompetitionName] = useState("");
   const [scheduledStart, setScheduledStart] = useState("");
   const [datePart, setDatePart] = useState("");
-  const [hourPart, setHourPart] = useState("");
-  const [minutePart, setMinutePart] = useState("");
+  const [timePart, setTimePart] = useState("");
   const [homeTeamName, setHomeTeamName] = useState("");
   const [awayTeamName, setAwayTeamName] = useState("");
   const [venue, setVenue] = useState("");
   const [description, setDescription] = useState("");
 
-  // Sync scheduledStart to split date/time fields
-  useEffect(() => {
-    if (scheduledStart) {
-      const parts = scheduledStart.split("T");
-      if (parts[0]) {
-        setDatePart(parts[0]);
-      }
-      if (parts[1]) {
-        const timeParts = parts[1].split(":");
-        setHourPart(timeParts[0] || "");
-        setMinutePart(timeParts[1] || "");
-      }
-    } else {
-      setDatePart("");
-      setHourPart("");
-      setMinutePart("");
-    }
-  }, [scheduledStart]);
-
-  const handleDateTimeChange = (date: string, hour: string, minute: string) => {
+  const handleDateTimeChange = (date: string, time: string) => {
     setDatePart(date);
-    setHourPart(hour);
-    setMinutePart(minute);
-    if (date) {
-      const h = hour.padStart(2, "0") || "00";
-      const m = minute.padStart(2, "0") || "00";
-      setScheduledStart(`${date}T${h}:${m}`);
+    setTimePart(time);
+    if (date && time && time.length === 5) {
+      setScheduledStart(`${date}T${time}`);
     } else {
       setScheduledStart("");
     }
+  };
+
+  const sanitizeTimeInput = (value: string) => {
+    return value.replace(/[^0-9:]/g, "").slice(0, 5);
+  };
+
+  const normalizeTimeOnBlur = (value: string) => {
+    if (!value) return "";
+    
+    let val = value;
+    if (val.length === 4 && !val.includes(":")) {
+      val = val.slice(0, 2) + ":" + val.slice(2);
+    }
+    
+    let parts = val.split(":");
+    let h = parts[0] || "";
+    let m = parts[1] || "";
+    
+    if (h) {
+      const hNum = Math.min(23, Math.max(0, Number(h)));
+      h = String(hNum).padStart(2, "0");
+    } else {
+      h = "00";
+    }
+    
+    if (m) {
+      const mNum = Math.min(59, Math.max(0, Number(m)));
+      m = String(mNum).padStart(2, "0");
+    } else {
+      m = "00";
+    }
+    
+    return `${h}:${m}`;
   };
 
   const [selectedMatchId, setSelectedMatchId] = useState("");
@@ -172,9 +183,6 @@ export function NewBroadcastForm({
 
   // --- Backgrounds Gallery States ---
   const defaultBg = useMemo(() => {
-    const markedDefault = thumbnailBackgrounds.find((bg) => bg.is_default);
-    if (markedDefault) return markedDefault;
-
     const plantillaFallback = thumbnailBackgrounds.find((bg) => {
       const name = bg.name.toLowerCase();
       const path = (bg.url_path || "").toLowerCase();
@@ -182,10 +190,13 @@ export function NewBroadcastForm({
     });
     if (plantillaFallback) return plantillaFallback;
 
+    const markedDefault = thumbnailBackgrounds.find((bg) => bg.is_default);
+    if (markedDefault) return markedDefault;
+
     return thumbnailBackgrounds[0] || null;
   }, [thumbnailBackgrounds]);
 
-  const [selectedBackgroundId, setSelectedBackgroundId] = useState(() => defaultBg?.id ?? "");
+  const [selectedBackgroundId, setSelectedBackgroundId] = useState("");
   const [backgroundPickerOpen, setBackgroundPickerOpen] = useState(false);
   const [backgroundSearch, setBackgroundSearch] = useState("");
   const [agendaNowTs] = useState(() => Date.now());
@@ -366,18 +377,6 @@ export function NewBroadcastForm({
     return thumbnailBackgrounds.filter(bg => bg.name.toLowerCase().includes(search));
   }, [thumbnailBackgrounds, backgroundSearch]);
 
-  useEffect(() => {
-    if (thumbnailBackgrounds.length === 0) {
-      if (selectedBackgroundId) setSelectedBackgroundId("");
-      return;
-    }
-
-    const hasSelection = thumbnailBackgrounds.some((bg) => bg.id === selectedBackgroundId);
-    if (!hasSelection) {
-      setSelectedBackgroundId(defaultBg?.id ?? "");
-    }
-  }, [thumbnailBackgrounds, selectedBackgroundId, defaultBg]);
-
   const getBackgroundPreviewSrc = (bg: { id: string; url_path: string; base64_data: string | null }) => {
     if (bg.base64_data) return bg.base64_data;
 
@@ -502,9 +501,18 @@ export function NewBroadcastForm({
       setCompetitionName(selected.competitionName);
       setHomeTeamName(selected.localTeam);
       setAwayTeamName(selected.visitorTeam);
-      setVenue(selected.location);
-      if (selected.datetimeIso) setScheduledStart(toLocalDateTimeInput(selected.datetimeIso));
-      else setScheduledStart("");
+      setVenue(selected.location || "");
+      if (selected.datetimeIso) {
+        const localDt = toLocalDateTimeInput(selected.datetimeIso); // "YYYY-MM-DDTHH:mm"
+        const [d, t] = localDt.split("T");
+        setDatePart(d || "");
+        setTimePart(t || "");
+        setScheduledStart(localDt);
+      } else {
+        setDatePart("");
+        setTimePart("");
+        setScheduledStart("");
+      }
 
       const letter = getRivasLetter(selected);
       const teamLabel = letter ? `${selected.categoryLabel} ${letter}` : selected.categoryLabel;
@@ -591,7 +599,7 @@ export function NewBroadcastForm({
         if (cancelled) return;
         if (!response.ok) {
           const errorJson = await response.json().catch(() => ({}));
-          setMatchError(errorJson.error || "No se han podido cargar los partidos. Puedes introducir los datos manualmente.");
+          setMatchError(errorJson.error || "Las webs de las federaciones (FMP/RFEP) no responden o van demasiado lentas en este momento. La app no tiene la culpa. Puedes volver a intentarlo o introducir los datos manualmente abajo.");
           setLoadingMatches(false);
           return;
         }
@@ -610,14 +618,14 @@ export function NewBroadcastForm({
           setMatchError("No se han encontrado partidos de Hockey Rivas en los próximos 7 días.");
         }
       } catch {
-        if (!cancelled) setMatchError("No se han podido cargar los partidos. Puedes introducir los datos manualmente.");
+        if (!cancelled) setMatchError("Las webs de las federaciones (FMP/RFEP) no responden o van demasiado lentas en este momento. La app no tiene la culpa. Puedes volver a intentarlo o introducir los datos manualmente abajo.");
       } finally {
         if (!cancelled) setLoadingMatches(false);
       }
     }
     load();
     return () => { cancelled = true; };
-  }, [mode, initialMatchId, fillFromMatch]);
+  }, [mode, initialMatchId, fillFromMatch, reloadTick]);
 
   function applyImportedMatch(matchId: string) {
     const selected = matches.find((m) => m.id === matchId);
@@ -837,7 +845,21 @@ export function NewBroadcastForm({
           </div>
 
           {matchError && !loadingMatches && (
-            <p className="mt-3 text-xs font-medium text-rose-400 bg-accent-red/10 border border-rose-900/30 rounded-lg p-2.5">⚠ {matchError}</p>
+            <div className="mt-3 rounded-lg border border-rose-900/30 bg-[#2d1215] p-3.5 text-xs font-medium text-rose-300">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <span className="leading-relaxed flex-1">⚠ {matchError}</span>
+                <button
+                  type="button"
+                  onClick={() => setReloadTick((t) => t + 1)}
+                  className="flex items-center justify-center gap-1.5 shrink-0 rounded-lg bg-accent-red/20 px-3.5 py-2 text-xs font-semibold text-rose-300 ring-1 ring-inset ring-rose-500/30 hover:bg-accent-red/35 transition-all"
+                >
+                  <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 7.89M9 11l3-3 3 3" />
+                  </svg>
+                  Reintentar
+                </button>
+              </div>
+            </div>
           )}
 
           {loadingMatches && (
@@ -970,7 +992,7 @@ export function NewBroadcastForm({
                 <div className="flex-grow">
                   <CustomDatePicker
                     value={datePart}
-                    onChange={(date) => handleDateTimeChange(date, hourPart, minutePart)}
+                    onChange={(date) => handleDateTimeChange(date, timePart)}
                     placeholder="Fecha del partido"
                   />
                 </div>
@@ -981,30 +1003,20 @@ export function NewBroadcastForm({
                   </svg>
                   <input
                     type="text"
-                    maxLength={2}
-                    placeholder="HH"
-                    value={hourPart}
+                    maxLength={5}
+                    placeholder="HH:MM"
+                    value={timePart}
                     onChange={(e) => {
-                      const val = e.target.value.replace(/[^0-9]/g, "");
-                      if (val === "" || (parseInt(val) >= 0 && parseInt(val) <= 23)) {
-                        handleDateTimeChange(datePart, val, minutePart);
+                      const val = sanitizeTimeInput(e.target.value);
+                      handleDateTimeChange(datePart, val);
+                    }}
+                    onBlur={() => {
+                      const normalized = normalizeTimeOnBlur(timePart);
+                      if (normalized !== timePart) {
+                        handleDateTimeChange(datePart, normalized);
                       }
                     }}
-                    className="w-8 bg-transparent text-center text-sm font-semibold text-white focus:outline-none placeholder-white/20 border-b border-white/10 focus:border-accent-cyan"
-                  />
-                  <span className="text-white/50 font-bold">:</span>
-                  <input
-                    type="text"
-                    maxLength={2}
-                    placeholder="MM"
-                    value={minutePart}
-                    onChange={(e) => {
-                      const val = e.target.value.replace(/[^0-9]/g, "");
-                      if (val === "" || (parseInt(val) >= 0 && parseInt(val) <= 59)) {
-                        handleDateTimeChange(datePart, hourPart, val);
-                      }
-                    }}
-                    className="w-8 bg-transparent text-center text-sm font-semibold text-white focus:outline-none placeholder-white/20 border-b border-white/10 focus:border-accent-cyan"
+                    className="w-16 bg-transparent text-center text-sm font-semibold text-white focus:outline-none placeholder-white/20 border-b border-white/10 focus:border-accent-cyan"
                   />
                 </div>
               </div>
@@ -1337,7 +1349,7 @@ export function NewBroadcastForm({
               <div>
                 <span className="block font-bold text-white uppercase tracking-wider text-xs">Fondo de miniatura</span>
                 <span className="text-xs text-text-muted mt-0.5">
-                  {thumbnailBackgrounds.find(bg => bg.id === selectedBackgroundId)?.name || "Fondo por defecto"}
+                  {thumbnailBackgrounds.find(bg => bg.id === selectedBackgroundId)?.name || "plantilla.png (por defecto)"}
                 </span>
               </div>
               <button
@@ -1643,7 +1655,9 @@ export function NewBroadcastForm({
               ) : (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                   {filteredBackgrounds.map((bg) => {
-                    const isSelected = selectedBackgroundId === bg.id;
+                    const isSelected = selectedBackgroundId
+                      ? selectedBackgroundId === bg.id
+                      : defaultBg?.id === bg.id;
 
                     return (
                       <div

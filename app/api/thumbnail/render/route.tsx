@@ -5,7 +5,33 @@ import path from "node:path";
 import { RIVAS_THUMBNAIL_STYLE } from "@/src/lib/thumbnails/rivas-thumbnail-style";
 import { createClient } from "@supabase/supabase-js";
 
-async function getBackgroundBase64(id: string): Promise<string | null> {
+function getMimeFromPath(filePath: string) {
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg";
+  if (ext === ".webp") return "image/webp";
+  return "image/png";
+}
+
+async function filePathToDataUrl(filePath: string): Promise<string | null> {
+  if (!fs.existsSync(filePath)) return null;
+  const buffer = fs.readFileSync(filePath);
+  const mime = getMimeFromPath(filePath);
+  return `data:${mime};base64,${buffer.toString("base64")}`;
+}
+
+async function urlToDataUrl(url: string): Promise<string | null> {
+  try {
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) return null;
+    const arrayBuffer = await res.arrayBuffer();
+    const contentType = res.headers.get("content-type") || "image/png";
+    return `data:${contentType};base64,${Buffer.from(arrayBuffer).toString("base64")}`;
+  } catch {
+    return null;
+  }
+}
+
+async function getBackgroundBase64(id: string, origin: string): Promise<string | null> {
   if (!id) return null;
   console.log("[getBackgroundBase64] Fetching background ID:", id);
   try {
@@ -40,31 +66,37 @@ async function getBackgroundBase64(id: string): Promise<string | null> {
     }
 
     if (data.url_path) {
-      let cleanPath = data.url_path;
-      if (cleanPath.startsWith("/")) {
-        cleanPath = cleanPath.slice(1);
+      const rawPath = data.url_path.trim();
+      if (rawPath.startsWith("data:image/")) {
+        return rawPath;
       }
+
+      if (rawPath.startsWith("http://") || rawPath.startsWith("https://")) {
+        const remote = await urlToDataUrl(rawPath);
+        if (remote) return remote;
+      }
+
+      const cleanPath = rawPath.startsWith("/") ? rawPath.slice(1) : rawPath;
+      const cleanPublicPath = cleanPath.startsWith("public/") ? cleanPath.slice("public/".length) : cleanPath;
+
       const fullPath = path.join(process.cwd(), cleanPath);
       console.log("[getBackgroundBase64] Resolving local disk path:", fullPath);
-      if (fs.existsSync(fullPath)) {
-        const buffer = fs.readFileSync(fullPath);
-        const ext = path.extname(cleanPath).toLowerCase().replace(".", "");
-        const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
-        return `data:${mime};base64,${buffer.toString("base64")}`;
-      } else {
+      const fromDisk = await filePathToDataUrl(fullPath);
+      if (fromDisk) return fromDisk;
+      else {
         console.warn("[getBackgroundBase64] Local disk path does not exist:", fullPath);
       }
 
-      const publicPath = path.join(process.cwd(), "public", cleanPath);
+      const publicPath = path.join(process.cwd(), "public", cleanPublicPath);
       console.log("[getBackgroundBase64] Resolving public path fallback:", publicPath);
-      if (fs.existsSync(publicPath)) {
-        const buffer = fs.readFileSync(publicPath);
-        const ext = path.extname(cleanPath).toLowerCase().replace(".", "");
-        const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
-        return `data:${mime};base64,${buffer.toString("base64")}`;
-      } else {
+      const fromPublic = await filePathToDataUrl(publicPath);
+      if (fromPublic) return fromPublic;
+      else {
         console.warn("[getBackgroundBase64] Public fallback path does not exist:", publicPath);
       }
+
+      const fromBackgroundApi = await urlToDataUrl(`${origin}/api/thumbnail/background?id=${encodeURIComponent(id)}`);
+      if (fromBackgroundApi) return fromBackgroundApi;
     }
   } catch (err) {
     console.error("[getBackgroundBase64] Critical exception:", err);
@@ -177,17 +209,20 @@ async function handleRender(req: NextRequest) {
     backgroundId = searchParams.get("backgroundId") || "";
   }
 
-  // Cargar plantilla overlay (siempre es plantilla.png)
-  const overlayBase64 = getLocalImageBase64("thumbnails/plantilla.png");
-  if (!overlayBase64) {
+  // Cargar plantilla base por defecto
+  const defaultTemplateBase64 = getLocalImageBase64("thumbnails/plantilla.png");
+  if (!defaultTemplateBase64) {
     return new Response("Error: No se pudo cargar la plantilla base de miniaturas.", { status: 500 });
   }
 
   // Cargar fondo seleccionado si existe
   let backgroundBase64: string | null = null;
   if (backgroundId) {
-    backgroundBase64 = await getBackgroundBase64(backgroundId);
+    const origin = new URL(req.url).origin;
+    backgroundBase64 = await getBackgroundBase64(backgroundId, origin);
   }
+
+  const canvasBaseImage = backgroundBase64 || defaultTemplateBase64;
 
   // Cargar escudos base64
   let localLogoData: string | null = null;
@@ -260,26 +295,10 @@ async function handleRender(req: NextRequest) {
           overflow: "hidden",
         }}
       >
-        {/* Selected background image (rendered behind the overlay) */}
-        {backgroundBase64 && (
-          <img
-            src={backgroundBase64}
-            alt="Fondo"
-            style={{
-              position: "absolute",
-              left: 0,
-              top: 0,
-              width: "1280px",
-              height: "720px",
-              objectFit: "cover",
-            }}
-          />
-        )}
-
-        {/* Plantilla overlay (siempre visible sobre el fondo seleccionado) */}
+        {/* Base del canvas: fondo seleccionado o plantilla por defecto */}
         <img
-          src={overlayBase64}
-          alt="Overlay"
+          src={canvasBaseImage}
+          alt="Base"
           style={{
             position: "absolute",
             left: 0,

@@ -237,7 +237,47 @@ export function EventLinksList({ videos, playlists }: Props) {
             No se encontraron partidos o vídeos que coincidan con la búsqueda.
           </div>
         ) : (
-          <div className="mt-3 overflow-auto">
+          <>
+          <div className="mt-3 space-y-3 md:hidden">
+            {filteredVideos.map((row) => {
+              const publishedDate = new Date(row.publishedAt);
+              const matchedPlaylists = playlists.filter((pl) => row.playlistIds.includes(pl.youtube_playlist_id));
+
+              return (
+                <details key={row.id} className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                  <summary className="list-none cursor-pointer">
+                    <p className="font-semibold text-white">{row.title}</p>
+                    <p className="mt-1 text-xs text-text-muted">{publishedDate.toLocaleDateString()} · {publishedDate.toLocaleTimeString()}</p>
+                  </summary>
+                  <div className="mt-3 border-t border-white/10 pt-3 space-y-2">
+                    <p className="text-xs text-text-muted">Tipo: {row.videoType === "live" ? "Directo" : row.videoType === "short" ? "Short" : "Video"}</p>
+                    <div className="flex flex-wrap gap-1">
+                      {matchedPlaylists.length === 0 ? (
+                        <span className="text-xs text-text-muted/50">Sin listas</span>
+                      ) : (
+                        matchedPlaylists.map((pl) => (
+                          <span key={pl.id} className="inline-flex items-center rounded bg-white/5 px-1.5 py-0.5 text-[10px] text-text-muted">
+                            {pl.name}
+                          </span>
+                        ))
+                      )}
+                    </div>
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
+                      <button
+                        onClick={() => handleCopyLink(row.youtubeWatchUrl, row.id)}
+                        className="btn-ghost px-2.5 py-1 text-xs text-accent-cyan"
+                      >
+                        {copiedId === row.id ? "¡Copiado!" : "Copiar Enlace"}
+                      </button>
+                      <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" />
+                      <DeleteChannelContentForm youtubeVideoId={row.youtubeVideoId} />
+                    </div>
+                  </div>
+                </details>
+              );
+            })}
+          </div>
+          <div className="mt-3 hidden overflow-auto md:block">
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 text-left text-text-muted">
@@ -315,6 +355,7 @@ export function EventLinksList({ videos, playlists }: Props) {
               </tbody>
             </table>
           </div>
+          </>
         )}
       </section>
     </div>

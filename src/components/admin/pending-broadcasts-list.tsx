@@ -113,7 +113,44 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
             No hay programaciones pendientes que coincidan con los filtros seleccionados.
           </div>
         ) : (
-          <div className="mt-3 overflow-auto">
+          <>
+          <div className="mt-3 space-y-3 md:hidden">
+            {filteredBroadcasts.map((row) => {
+              const canEnd = row.youtubeLifeCycleStatus === "live" || row.youtubeLifeCycleStatus === "testing" || row.youtubeLifeCycleStatus === "ready";
+              const scheduledDate = new Date(row.scheduledStart);
+              const expiresTime = scheduledDate.getTime() + 24 * 60 * 60 * 1000;
+              const msLeft = expiresTime - now;
+              const hoursLeft = Math.max(0, Math.floor(msLeft / (60 * 60 * 1000)));
+              const isExpired = msLeft <= 0;
+
+              return (
+                <details key={row.id} className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                  <summary className="list-none cursor-pointer">
+                    <p className="font-semibold text-white">{row.title}</p>
+                    <p className="mt-1 text-xs text-text-muted">{scheduledDate.toLocaleString()} · {row.teamDisplayName || row.teamName}</p>
+                  </summary>
+                  <div className="mt-3 border-t border-white/10 pt-3 space-y-2 text-xs text-text-muted">
+                    <p>Creador: {row.creatorName || "-"} ({row.creatorEmail})</p>
+                    <p>Estado live: {row.youtubeLifeCycleStatus} · Sync: {row.youtubeSyncStatus}</p>
+                    <p>{isExpired ? "Expirando..." : `Expira en ${hoursLeft}h`}</p>
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
+                      {row.youtubeWatchUrl ? <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" /> : null}
+                      {row.youtubeShareUrl ? <YouTubeShareButton href={row.youtubeShareUrl} size="sm" /> : null}
+                      <Link
+                        href={`/dashboard/broadcasts/${row.id}/edit`}
+                        className="rounded border border-accent-cyan bg-accent-cyan/5 px-2.5 py-1 text-xs font-semibold text-accent-cyan hover:bg-accent-cyan/15 transition-all"
+                      >
+                        Editar
+                      </Link>
+                      <EndBroadcastForm id={row.id} disabled={!canEnd} />
+                      <DeleteBroadcastButton id={row.id} />
+                    </div>
+                  </div>
+                </details>
+              );
+            })}
+          </div>
+          <div className="mt-3 hidden overflow-auto md:block">
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 text-left text-text-muted">
@@ -197,6 +234,7 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
               </tbody>
             </table>
           </div>
+          </>
         )}
       </section>
 
@@ -218,7 +256,34 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
             No hay emisiones externas sin asignar.
           </div>
         ) : (
-          <div className="mt-3 overflow-auto">
+          <>
+          <div className="mt-3 space-y-3 md:hidden">
+            {unassignedBroadcasts.map((row) => {
+              const scheduledDate = row.scheduledStart ? new Date(row.scheduledStart) : null;
+              return (
+                <details key={row.id} className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                  <summary className="list-none cursor-pointer">
+                    <p className="font-semibold text-white">{row.title}</p>
+                    <p className="mt-1 text-xs text-text-muted">{scheduledDate ? scheduledDate.toLocaleString() : "Sin fecha"}</p>
+                  </summary>
+                  <div className="mt-3 border-t border-white/10 pt-3 space-y-2 text-xs text-text-muted">
+                    <p>Estado: {row.youtubeLifeCycleStatus}</p>
+                    <div className="flex flex-wrap items-center gap-2 pt-1">
+                      {row.youtubeWatchUrl ? <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" /> : null}
+                      {row.youtubeShareUrl ? <YouTubeShareButton href={row.youtubeShareUrl} size="sm" /> : null}
+                      <Link
+                        href={`/admin/broadcasts/assign/${row.id}`}
+                        className="inline-flex items-center rounded-md bg-accent-cyan/10 px-2.5 py-1 text-xs font-semibold text-accent-cyan ring-1 ring-inset ring-accent-cyan/20 hover:bg-accent-cyan/20 transition-all"
+                      >
+                        Asignar Equipo
+                      </Link>
+                    </div>
+                  </div>
+                </details>
+              );
+            })}
+          </div>
+          <div className="mt-3 hidden overflow-auto md:block">
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 text-left text-text-muted">
@@ -267,6 +332,7 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
               </tbody>
             </table>
           </div>
+          </>
         )}
       </section>
     </div>

@@ -988,7 +988,7 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
 
   const { data: existing, error: fetchError } = await supabase
     .from("broadcasts")
-    .select("id, youtube_broadcast_id, created_by")
+    .select("id, youtube_broadcast_id, youtube_video_id, created_by")
     .eq("id", parsed.data.id)
     .maybeSingle();
 
@@ -1044,14 +1044,16 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
         scheduledStart: scheduledStartIso,
       });
 
-      await applyThumbnailToYouTube(existing.youtube_broadcast_id, {
-        homeTeamName: parsed.data.homeTeamName,
-        awayTeamName: parsed.data.awayTeamName,
-        homeCrestUrl: parsed.data.homeCrestUrl,
-        awayCrestUrl: parsed.data.awayCrestUrl,
-        thumbnailPayload: parsed.data.thumbnailPayload,
-        thumbnailBackgroundId: parsed.data.thumbnailBackgroundId,
-      });
+      if (existing.youtube_video_id) {
+        await applyThumbnailToYouTube(existing.youtube_video_id, {
+          homeTeamName: parsed.data.homeTeamName,
+          awayTeamName: parsed.data.awayTeamName,
+          homeCrestUrl: parsed.data.homeCrestUrl,
+          awayCrestUrl: parsed.data.awayCrestUrl,
+          thumbnailPayload: parsed.data.thumbnailPayload,
+          thumbnailBackgroundId: parsed.data.thumbnailBackgroundId,
+        });
+      }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Error desconocido YouTube";
       await supabase.from("operation_logs").insert({

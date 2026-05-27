@@ -67,7 +67,27 @@ export default async function FinishedEventsPage({ searchParams }: { searchParam
             No se encontraron eventos finalizados ni grabaciones para tus equipos en esta temporada.
           </div>
         ) : (
-          <div className="overflow-auto">
+          <>
+          <div className="space-y-3 md:hidden">
+            {finishedEvents.map((event) => {
+              const date = new Date(event.scheduledStart);
+              return (
+                <details key={event.id} className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
+                  <summary className="cursor-pointer list-none">
+                    <p className="font-semibold text-white">{event.title}</p>
+                    <p className="mt-1 text-xs text-text-muted">{date.toLocaleString()} · {event.teamName}</p>
+                  </summary>
+                  <div className="mt-3 border-t border-white/10 pt-3 space-y-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      {event.youtubeWatchUrl ? <YouTubeWatchButton href={event.youtubeWatchUrl} size="sm" /> : null}
+                      {event.canDelete ? <DeleteBroadcastButton id={event.id} /> : <span className="text-xs text-text-muted/50">Sin acciones</span>}
+                    </div>
+                  </div>
+                </details>
+              );
+            })}
+          </div>
+          <div className="hidden overflow-auto md:block">
             <table className="min-w-full text-sm">
               <thead>
                 <tr className="border-b border-white/10 text-left text-text-muted">
@@ -102,6 +122,7 @@ export default async function FinishedEventsPage({ searchParams }: { searchParam
               </tbody>
             </table>
           </div>
+          </>
         )}
       </section>
 

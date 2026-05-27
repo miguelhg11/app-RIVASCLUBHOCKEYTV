@@ -15,17 +15,21 @@ Aplicación funcional y robusta con todas las fases base completadas:
 - Generación de reportes PDF para administradores.
 - **Nuevo**: Sincronización y asignación manual de emisiones externas creadas en YouTube Studio a equipos-usuarios locales.
 - **Nuevo**: Alertas visuales con pulsadores animados (`live-dot`) en la cabecera y panel de administración cuando hay directos externos sin asignar.
+- **Nuevo**: Casilla única vacía de hora (`HH:MM`) en programación manual que permite borrar y editar con libertad, normalizándose en el `onBlur`.
+- **Nuevo**: Corrección en el envío de emails de bienvenida y restablecimiento de contraseña en Vercel al incluir las variables de Gmail en el script de entorno.
+- **Nuevo**: Redirección unificada para que todos los usuarios (incluido el administrador) inicien en el panel principal (`/dashboard`).
+- **Nuevo**: Menú desplegable en móvil se cierra automáticamente al pulsar sobre cualquiera de sus enlaces o botones de navegación.
 
 ## Punto exacto actual
 
 - El esquema de Supabase está **100% alineado** y validado con `check:supabase-schema` en verde.
-- No hay warnings ni errores de compilación (`npm run build`), tipado (`typecheck`) ni formateo (`lint`) tras resolver incompatibilidades de pureza con hooks de React 19 / Next.js 16.
-- En modo Mock (`YOUTUBE_MOCK_MODE=true`), al hacer clic en "Sincronizar", se insertan automáticamente directos externos y claves de emisión simulados.
-- Se ha probado y cerrado técnicamente el flujo de asignación del directo externo a un equipo, que crea el broadcast local y asocia los IDs de YouTube.
+- No hay warnings ni errores de compilación (`npm run build`), tipado (`typecheck`) ni formateo (`lint`).
+- La aplicación se encuentra desplegada y funcionando en producción en Vercel con todos los cambios y variables de Gmail configuradas correctamente.
+- Se ha limpiado el módulo experimental de manuales a petición del usuario, dejando la aplicación en su estado óptimo de producción.
 
 ## Objetivo vigente
 
-Mantener la sincronización con la API de YouTube y realizar pruebas de campo con datos reales de producción antes del despliegue final.
+Monitorear el uso de producción del sistema con retransmisiones en vivo reales, y dar soporte de uso técnico al administrador y emisores.
 
 ## Lo ya implementado
 
@@ -34,14 +38,16 @@ Mantener la sincronización con la API de YouTube y realizar pruebas de campo co
 - Generador de miniaturas dinámicas con escudos y fondo.
 - Integración de Scraping FMP con POST a Sidgad (evitando Playwright) y persistencia en caché en Supabase (`app_settings`).
 - Módulo de reportes PDF descargables para administradores.
-- **Asignador de Directos Externos**: Flujo completo de autodetección de nombres de equipo, selección de stream keys coincidentes e inserción local vinculada a YouTube.
-- **Alertas en Admin**: Indicadores de tipo pulse que advierten de directos sin asignar en la cabecera y el botón de programaciones del panel de control.
+- **Asignador de Directos Externos**: Flujo completo de asignación manual de directos creados en YouTube Studio.
+- **Reloj Manual HH:MM**: Input libre y sin bloqueos de hora en la creación y edición.
+- **Emails SMTP Gmail**: Integración de credenciales Gmail en el entorno de Vercel y validación local de envíos.
+- **Usabilidad Móvil**: Autocierre del menú de navegación móvil al pulsar cualquier opción.
 
 ## Siguiente paso (inmediato)
 
-1. Confirmar con el usuario el estado del OAuth Consent Screen en la consola de Google Developer (verificar si sigue en modo "Testing" o "Production" para asegurar la duración de los tokens).
-2. Probar la aplicación con la API real de YouTube desactivando el modo Mock (`YOUTUBE_MOCK_MODE=false`) en un entorno de desarrollo.
-3. Validación en vivo del flujo completo de asignación de directos con partidos reales en YouTube Studio.
+1. Verificar que los delegados de pista estén recibiendo correctamente los emails de bienvenida con sus contraseñas temporales al ser creados desde el panel de Admin en producción.
+2. Hacer una prueba de retransmisión completa de un partido usando OBS/Larix Broadcaster para comprobar el flujo de inicio, visualización y detención del directo desde la app móvil.
+3. Monitorear los logs en el panel de administración ante cualquier comportamiento inesperado.
 
 ## Comandos útiles
 

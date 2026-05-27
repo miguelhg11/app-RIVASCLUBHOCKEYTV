@@ -1,8 +1,12 @@
-import { sendWelcomeEmail, sendAdminPasswordResetEmail, sendSelfResetPasswordEmail } from "../src/lib/email/service";
+import { loadEnvConfig } from "@next/env";
+// Load Next.js environment before importing the email service
+loadEnvConfig(process.cwd());
+
 import fs from "node:fs";
 import path from "node:path";
 
 async function run() {
+  const { sendWelcomeEmail, sendAdminPasswordResetEmail, sendSelfResetPasswordEmail } = await import("../src/lib/email/service");
   console.log("Running email service verification tests...");
 
   // Clean log file if it exists so we start fresh

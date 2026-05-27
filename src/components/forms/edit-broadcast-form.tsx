@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @next/next/no-img-element, react-hooks/set-state-in-effect */
 "use client";
 
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
@@ -59,40 +59,56 @@ export function EditBroadcastForm({
   const [venue, setVenue] = useState(broadcast.venue || "");
   const [description, setDescription] = useState(broadcast.description || "");
   const [scheduledStart, setScheduledStart] = useState(defaultScheduledStart);
-  const [datePart, setDatePart] = useState("");
-  const [hourPart, setHourPart] = useState("");
-  const [minutePart, setMinutePart] = useState("");
+  const [datePart, setDatePart] = useState(() => {
+    if (!defaultScheduledStart) return "";
+    return defaultScheduledStart.split("T")[0] || "";
+  });
+  const [timePart, setTimePart] = useState(() => {
+    if (!defaultScheduledStart) return "";
+    return (defaultScheduledStart.split("T")[1] || "").slice(0, 5);
+  });
 
-  // Sync scheduledStart to split date/time fields
-  useEffect(() => {
-    if (scheduledStart) {
-      const parts = scheduledStart.split("T");
-      if (parts[0]) {
-        setDatePart(parts[0]);
-      }
-      if (parts[1]) {
-        const timeParts = parts[1].split(":");
-        setHourPart(timeParts[0] || "");
-        setMinutePart(timeParts[1] || "");
-      }
-    } else {
-      setDatePart("");
-      setHourPart("");
-      setMinutePart("");
-    }
-  }, [scheduledStart]);
-
-  const handleDateTimeChange = (date: string, hour: string, minute: string) => {
+  const handleDateTimeChange = (date: string, time: string) => {
     setDatePart(date);
-    setHourPart(hour);
-    setMinutePart(minute);
-    if (date) {
-      const h = hour.padStart(2, "0") || "00";
-      const m = minute.padStart(2, "0") || "00";
-      setScheduledStart(`${date}T${h}:${m}`);
+    setTimePart(time);
+    if (date && time && time.length === 5) {
+      setScheduledStart(`${date}T${time}`);
     } else {
       setScheduledStart("");
     }
+  };
+
+  const sanitizeTimeInput = (value: string) => {
+    return value.replace(/[^0-9:]/g, "").slice(0, 5);
+  };
+
+  const normalizeTimeOnBlur = (value: string) => {
+    if (!value) return "";
+    
+    let val = value;
+    if (val.length === 4 && !val.includes(":")) {
+      val = val.slice(0, 2) + ":" + val.slice(2);
+    }
+    
+    let parts = val.split(":");
+    let h = parts[0] || "";
+    let m = parts[1] || "";
+    
+    if (h) {
+      const hNum = Math.min(23, Math.max(0, Number(h)));
+      h = String(hNum).padStart(2, "0");
+    } else {
+      h = "00";
+    }
+    
+    if (m) {
+      const mNum = Math.min(59, Math.max(0, Number(m)));
+      m = String(mNum).padStart(2, "0");
+    } else {
+      m = "00";
+    }
+    
+    return `${h}:${m}`;
   };
 
   // Crests
@@ -113,15 +129,15 @@ export function EditBroadcastForm({
 
   // Background gallery
   const defaultBg = useMemo(() => {
-    const markedDefault = thumbnailBackgrounds.find((bg) => bg.is_default);
-    if (markedDefault) return markedDefault;
-
     const plantillaFallback = thumbnailBackgrounds.find((bg) => {
       const name = bg.name.toLowerCase();
       const path = (bg.url_path || "").toLowerCase();
       return name.includes("plantilla") || path.includes("/thumbnails/plantilla") || path.includes("plantilla.png");
     });
     if (plantillaFallback) return plantillaFallback;
+
+    const markedDefault = thumbnailBackgrounds.find((bg) => bg.is_default);
+    if (markedDefault) return markedDefault;
 
     return thumbnailBackgrounds[0] || null;
   }, [thumbnailBackgrounds]);
@@ -276,18 +292,6 @@ export function EditBroadcastForm({
     return thumbnailBackgrounds.filter((bg) => bg.name.toLowerCase().includes(search));
   }, [thumbnailBackgrounds, backgroundSearch]);
 
-  useEffect(() => {
-    if (thumbnailBackgrounds.length === 0) {
-      if (selectedBackgroundId) setSelectedBackgroundId("");
-      return;
-    }
-
-    const hasSelection = thumbnailBackgrounds.some((bg) => bg.id === selectedBackgroundId);
-    if (!hasSelection) {
-      setSelectedBackgroundId(defaultBg?.id ?? "");
-    }
-  }, [thumbnailBackgrounds, selectedBackgroundId, defaultBg]);
-
   const getBackgroundPreviewSrc = (bg: { id: string; url_path: string; base64_data: string | null }) => {
     if (bg.base64_data) return bg.base64_data;
 
@@ -379,7 +383,7 @@ export function EditBroadcastForm({
             <div className="flex-grow">
               <CustomDatePicker
                 value={datePart}
-                onChange={(date) => handleDateTimeChange(date, hourPart, minutePart)}
+                onChange={(date) => handleDateTimeChange(date, timePart)}
                 placeholder="Fecha del partido"
               />
             </div>
@@ -390,30 +394,20 @@ export function EditBroadcastForm({
               </svg>
               <input
                 type="text"
-                maxLength={2}
-                placeholder="HH"
-                value={hourPart}
+                maxLength={5}
+                placeholder="HH:MM"
+                value={timePart}
                 onChange={(e) => {
-                  const val = e.target.value.replace(/[^0-9]/g, "");
-                  if (val === "" || (parseInt(val) >= 0 && parseInt(val) <= 23)) {
-                    handleDateTimeChange(datePart, val, minutePart);
+                  const val = sanitizeTimeInput(e.target.value);
+                  handleDateTimeChange(datePart, val);
+                }}
+                onBlur={() => {
+                  const normalized = normalizeTimeOnBlur(timePart);
+                  if (normalized !== timePart) {
+                    handleDateTimeChange(datePart, normalized);
                   }
                 }}
-                className="w-8 bg-transparent text-center text-sm font-semibold text-white focus:outline-none placeholder-white/20 border-b border-white/10 focus:border-accent-cyan"
-              />
-              <span className="text-white/50 font-bold">:</span>
-              <input
-                type="text"
-                maxLength={2}
-                placeholder="MM"
-                value={minutePart}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/[^0-9]/g, "");
-                  if (val === "" || (parseInt(val) >= 0 && parseInt(val) <= 59)) {
-                    handleDateTimeChange(datePart, hourPart, val);
-                  }
-                }}
-                className="w-8 bg-transparent text-center text-sm font-semibold text-white focus:outline-none placeholder-white/20 border-b border-white/10 focus:border-accent-cyan"
+                className="w-16 bg-transparent text-center text-sm font-semibold text-white focus:outline-none placeholder-white/20 border-b border-white/10 focus:border-accent-cyan"
               />
             </div>
           </div>
@@ -584,7 +578,7 @@ export function EditBroadcastForm({
           <div>
             <span className="block font-bold text-white uppercase tracking-wider text-xs">Fondo de miniatura</span>
             <span className="text-xs text-text-muted mt-0.5">
-              {thumbnailBackgrounds.find((bg) => bg.id === selectedBackgroundId)?.name || "Fondo por defecto"}
+              {thumbnailBackgrounds.find((bg) => bg.id === selectedBackgroundId)?.name || "plantilla.png (por defecto)"}
             </span>
           </div>
           <button
@@ -815,7 +809,9 @@ export function EditBroadcastForm({
 
             <div className="flex-1 overflow-y-auto p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {filteredBackgrounds.map((bg) => {
-                const isSelected = bg.id === selectedBackgroundId;
+                const isSelected = selectedBackgroundId
+                  ? bg.id === selectedBackgroundId
+                  : defaultBg?.id === bg.id;
                 return (
                   <button
                     key={bg.id}

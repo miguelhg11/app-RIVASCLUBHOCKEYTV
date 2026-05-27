@@ -8,6 +8,8 @@ import { getSelectedSeason, listAllSeasons } from "@/src/lib/seasons/utils";
 import { countUnassignedExternalBroadcasts } from "@/src/lib/broadcast/queries";
 import { countLiveBroadcastsForSession } from "@/src/lib/broadcast/queries";
 import { RealtimeSyncPulse } from "@/src/components/sync/realtime-sync-pulse";
+import { MobileMenuAutoClose } from "@/src/components/navigation/mobile-menu-auto-close";
+import { BackButtonInterceptor } from "@/src/components/navigation/back-button-interceptor";
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const session = await requireSession();
@@ -99,7 +101,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
                   Salir
                 </button>
               </form>
-              <details className="relative">
+              <details id="mobile-main-menu" className="relative">
                 <summary className="list-none cursor-pointer rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white">
                   Menu
                 </summary>
@@ -138,6 +140,8 @@ export default async function ProtectedLayout({ children }: { children: React.Re
       </header>
 
       <main className="relative z-10 mx-auto w-full max-w-6xl px-4 pb-12 pt-6">
+        <BackButtonInterceptor />
+        <MobileMenuAutoClose detailsId="mobile-main-menu" />
         <RealtimeSyncPulse />
         {children}
       </main>

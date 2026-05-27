@@ -37,10 +37,6 @@ export async function loginAction(_prev: LoginActionState, formData: FormData): 
   });
   await updateLastLogin(user.id);
 
-  if (user.role === ROLES.admin) {
-    redirect("/admin");
-  }
-
   redirect("/dashboard");
 }
 

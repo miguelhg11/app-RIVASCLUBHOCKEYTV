@@ -5,6 +5,13 @@ import { createClient } from "@supabase/supabase-js";
 
 export const runtime = "nodejs";
 
+function getMimeFromPath(filePath: string) {
+  const ext = path.extname(filePath).toLowerCase();
+  if (ext === ".jpg" || ext === ".jpeg") return "image/jpeg";
+  if (ext === ".webp") return "image/webp";
+  return "image/png";
+}
+
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
@@ -42,17 +49,46 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // 2. If url_path starts with /docs/ or docs/, read from local disk
+    // 2. If url_path is data URL, return it directly
+    if (data.url_path?.startsWith("data:image/")) {
+      const base64Clean = data.url_path.replace(/^data:image\/\w+;base64,/, "");
+      const buffer = Buffer.from(base64Clean, "base64");
+      const mime = data.url_path.match(/^data:(image\/\w+);base64,/)?.[1] || "image/png";
+      return new Response(buffer, {
+        headers: {
+          "Content-Type": mime,
+          "Cache-Control": "public, max-age=31536000, immutable",
+        },
+      });
+    }
+
+    // 3. If url_path is remote URL, fetch and proxy
+    if (data.url_path && (data.url_path.startsWith("http://") || data.url_path.startsWith("https://"))) {
+      const remoteRes = await fetch(data.url_path, { cache: "no-store" });
+      if (remoteRes.ok) {
+        const arrayBuffer = await remoteRes.arrayBuffer();
+        return new Response(arrayBuffer, {
+          headers: {
+            "Content-Type": remoteRes.headers.get("content-type") || "image/png",
+            "Cache-Control": "public, max-age=31536000, immutable",
+          },
+        });
+      }
+    }
+
+    // 4. Read from local disk
     if (data.url_path) {
       let cleanPath = data.url_path;
       if (cleanPath.startsWith("/")) {
         cleanPath = cleanPath.slice(1);
       }
+      if (cleanPath.startsWith("public/")) {
+        cleanPath = cleanPath.slice("public/".length);
+      }
       const fullPath = path.join(process.cwd(), cleanPath);
       if (fs.existsSync(fullPath)) {
         const buffer = fs.readFileSync(fullPath);
-        const ext = path.extname(cleanPath).toLowerCase().replace(".", "");
-        const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
+        const mime = getMimeFromPath(cleanPath);
         return new Response(buffer, {
           headers: {
             "Content-Type": mime,
@@ -65,8 +101,7 @@ export async function GET(req: NextRequest) {
       const publicPath = path.join(process.cwd(), "public", cleanPath);
       if (fs.existsSync(publicPath)) {
         const buffer = fs.readFileSync(publicPath);
-        const ext = path.extname(cleanPath).toLowerCase().replace(".", "");
-        const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
+        const mime = getMimeFromPath(cleanPath);
         return new Response(buffer, {
           headers: {
             "Content-Type": mime,

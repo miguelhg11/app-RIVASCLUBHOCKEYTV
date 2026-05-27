@@ -45,6 +45,7 @@ export async function sendEmail(to: string, subject: string, html: string): Prom
 
   if (useGmail) {
     try {
+      const gmailFrom = EMAIL_FROM || GMAIL_USER;
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -56,11 +57,8 @@ export async function sendEmail(to: string, subject: string, html: string): Prom
         },
       });
 
-      await transporter.sendMail({
-      });
-
       const info = await transporter.sendMail({
-        from: EMAIL_FROM,
+        from: gmailFrom,
         to: to,
         subject: subject,
         html: html,

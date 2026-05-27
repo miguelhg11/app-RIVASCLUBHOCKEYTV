@@ -41,7 +41,11 @@ const varsToSet = {
   FEDERATION_LOOKAHEAD_DAYS: env.FEDERATION_LOOKAHEAD_DAYS || "14",
   FEDERATION_CACHE_MINUTES: env.FEDERATION_CACHE_MINUTES || "60",
   RESEND_API_KEY: env.RESEND_API_KEY || "",
-  EMAIL_FROM: env.EMAIL_FROM || "onboarding@resend.dev"
+  EMAIL_FROM: env.EMAIL_FROM || "onboarding@resend.dev",
+  EMAIL_PROVIDER: env.EMAIL_PROVIDER || "gmail",
+  GMAIL_USER: env.GMAIL_USER || "",
+  GMAIL_APP_PASSWORD: env.GMAIL_APP_PASSWORD || "",
+  SMTP_TLS_REJECT_UNAUTHORIZED: env.SMTP_TLS_REJECT_UNAUTHORIZED || "false"
 };
 
 async function setVar(name, value) {
