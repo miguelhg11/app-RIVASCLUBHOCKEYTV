@@ -942,7 +942,7 @@ export function NewBroadcastForm({
                                 {match.competitionName}
                               </h3>
 
-                              <p className="mt-3 text-sm font-bold uppercase tracking-wide text-text-muted leading-snug line-clamp-1">
+                              <p className="mt-3 text-sm font-bold uppercase tracking-wide text-text-muted leading-snug line-clamp-2 md:line-clamp-1">
                                 {match.localTeam}
                                 <span className="mx-1.5 text-text-muted/50 font-bold">vs</span>
                                 {match.visitorTeam}
