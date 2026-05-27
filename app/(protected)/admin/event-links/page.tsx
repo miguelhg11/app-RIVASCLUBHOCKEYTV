@@ -2,6 +2,7 @@ import Link from "next/link";
 import { listCachedChannelVideosAdmin } from "@/src/lib/broadcast/queries";
 import { listPlaylists } from "@/src/lib/admin/queries";
 import { EventLinksList } from "@/src/components/admin/event-links-list";
+import { AutoSyncOnMount } from "@/src/components/ui/auto-sync-on-mount";
 
 export default async function AdminEventLinksPage() {
   const [videos, playlists] = await Promise.all([
@@ -11,6 +12,7 @@ export default async function AdminEventLinksPage() {
 
   return (
     <div className="space-y-6">
+      <AutoSyncOnMount />
       <div>
         <h1 className="font-display text-2xl font-bold tracking-wide text-white">
           BUSCADOR CONTENIDOS
@@ -30,3 +32,4 @@ export default async function AdminEventLinksPage() {
     </div>
   );
 }
+

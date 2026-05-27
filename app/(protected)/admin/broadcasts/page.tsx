@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SyncBroadcastsForm } from "@/src/components/admin/sync-broadcasts-form";
+import { AutoSyncOnMount } from "@/src/components/ui/auto-sync-on-mount";
 import { listPendingBroadcastsAdmin, listUnassignedExternalBroadcasts } from "@/src/lib/broadcast/queries";
 import { listUsers, listTeams } from "@/src/lib/admin/queries";
 import { PendingBroadcastsList } from "@/src/components/admin/pending-broadcasts-list";
@@ -15,6 +15,7 @@ export default async function AdminBroadcastsPage() {
 
   return (
     <div className="space-y-6">
+      <AutoSyncOnMount />
       <ReactiveSyncHandler />
       <div className="flex items-center justify-between">
         <div>
@@ -24,9 +25,6 @@ export default async function AdminBroadcastsPage() {
           <p className="mt-1 text-xs tracking-widest text-text-muted uppercase">
             Gestión y estado de emisiones pendientes de emisión
           </p>
-        </div>
-        <div>
-          <SyncBroadcastsForm />
         </div>
       </div>
 

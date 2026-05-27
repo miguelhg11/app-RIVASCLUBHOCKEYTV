@@ -1,7 +1,7 @@
 import { PlaylistCreateForm } from "@/src/components/admin/playlist-create-form";
 import { PlaylistEditForm } from "@/src/components/admin/playlist-edit-form";
 import { PlaylistDeleteForm } from "@/src/components/admin/playlist-delete-form";
-import { SyncBroadcastsForm } from "@/src/components/admin/sync-broadcasts-form";
+import { AutoSyncOnMount } from "@/src/components/ui/auto-sync-on-mount";
 import { listPlaylists } from "@/src/lib/admin/queries";
 
 export default async function AdminPlaylistsPage() {
@@ -9,10 +9,8 @@ export default async function AdminPlaylistsPage() {
 
   return (
     <div className="space-y-6">
+      <AutoSyncOnMount />
       <h1 className="font-display text-2xl font-bold tracking-wide text-white">Admin · Playlists</h1>
-      <div className="mt-4">
-        <SyncBroadcastsForm />
-      </div>
       <div className="mt-4">
         <PlaylistCreateForm />
       </div>
@@ -40,3 +38,4 @@ export default async function AdminPlaylistsPage() {
     </div>
   );
 }
+

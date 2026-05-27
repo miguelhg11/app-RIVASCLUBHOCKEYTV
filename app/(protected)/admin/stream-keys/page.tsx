@@ -1,7 +1,7 @@
 import { StreamKeyCreateForm } from "@/src/components/admin/stream-key-create-form";
 import { StreamKeyEditForm } from "@/src/components/admin/stream-key-edit-form";
 import { StreamKeyDeleteForm } from "@/src/components/admin/stream-key-delete-form";
-import { SyncBroadcastsForm } from "@/src/components/admin/sync-broadcasts-form";
+import { AutoSyncOnMount } from "@/src/components/ui/auto-sync-on-mount";
 import { TeamStreamKeyAssignmentForm } from "@/src/components/admin/team-stream-key-assignment-form";
 import { listStreamKeys, listTeams, listTeamStreamKeyAssignmentsMap } from "@/src/lib/admin/queries";
 
@@ -19,6 +19,7 @@ export default async function AdminStreamKeysPage() {
 
   return (
     <div className="space-y-6">
+      <AutoSyncOnMount />
       <div>
         <h1 className="font-display text-2xl font-bold tracking-wide text-white">
           STREAM KEYS
@@ -28,7 +29,7 @@ export default async function AdminStreamKeysPage() {
         </p>
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-4 lg:grid-cols-2">
         <div className="glass-panel rounded-xl p-5">
           <StreamKeyCreateForm />
         </div>
@@ -38,10 +39,8 @@ export default async function AdminStreamKeysPage() {
             streamKeys={keys.map((keyRow) => ({ id: keyRow.id, label: keyRow.name }))}
           />
         </div>
-        <div className="glass-panel rounded-xl p-5">
-          <SyncBroadcastsForm />
-        </div>
       </div>
+
 
       <section className="space-y-3">
         <h2 className="font-display text-sm font-semibold tracking-wider text-text-muted uppercase">

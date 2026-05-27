@@ -1102,6 +1102,7 @@ export async function revalidateAllResourcePaths() {
   revalidatePath("/admin/thumbnail-backgrounds");
   revalidatePath("/admin/broadcasts");
   revalidatePath("/admin/federations");
+  revalidatePath("/admin/event-links");
   revalidatePath("/admin/logs");
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/live");
