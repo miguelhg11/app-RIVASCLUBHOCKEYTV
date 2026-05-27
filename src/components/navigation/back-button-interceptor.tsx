@@ -15,16 +15,15 @@ export function BackButtonInterceptor() {
 
     if (pathname === "/dashboard") {
       // Main dashboard: Intercept back to show confirm exit dialog
-      window.history.pushState({ dashboard: true }, "", window.location.href);
+      window.history.pushState({ preventExit: true }, "", window.location.href);
 
       const handlePopState = (event: PopStateEvent) => {
         const confirmExit = window.confirm("¿Seguro que quieres salir de la aplicación?");
         if (confirmExit) {
-          // If confirmed, navigate to /login which handles session cleaning
-          router.push("/login");
+          window.location.href = "/login";
         } else {
-          // Re-push state to keep the interceptor active for the next back button click
-          window.history.pushState({ dashboard: true }, "", window.location.href);
+          // Re-push state to keep the interceptor active
+          window.history.pushState({ preventExit: true }, "", window.location.href);
         }
       };
 
@@ -33,7 +32,8 @@ export function BackButtonInterceptor() {
         window.removeEventListener("popstate", handlePopState);
       };
     } else {
-      // Any subpage (e.g. /dashboard/new, /admin, etc.): Intercept back to go up to /dashboard
+      // Rewrite history stack so the immediately preceding page is always /dashboard
+      window.history.replaceState({ parent: true }, "", "/dashboard");
       window.history.pushState({ subpage: true }, "", window.location.href);
 
       const handlePopState = (event: PopStateEvent) => {
