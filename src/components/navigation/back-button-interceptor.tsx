@@ -9,13 +9,12 @@ function getParentPath(pathname: string): string {
     return "/admin/broadcasts";
   }
 
-  // Level 3 -> Level 2 (Admin area)
+  // Level 3 -> Level 2 (Admin sub-pages)
   if (pathname.startsWith("/admin/") && pathname !== "/admin") {
     return "/admin";
   }
 
-  // Level 3 -> Level 2 (Dashboard area)
-  // Matches /dashboard/broadcasts/[id]/edit or [id]/success
+  // Level 3 -> Level 2 (Dashboard: broadcast detail pages)
   if (pathname.match(/^\/dashboard\/broadcasts\/[^/]+\/(edit|success)$/)) {
     return "/dashboard/broadcasts";
   }
@@ -46,21 +45,26 @@ export function BackButtonInterceptor() {
       return;
     }
 
-    // Push a dummy state with the current URL so we can intercept popstate without changing the address bar URL
+    // Push a dummy entry on top of the current stack so the browser
+    // MUST fire a popstate event before it can navigate away.
     window.history.pushState({ preventBack: pathname }, "", window.location.href);
 
-    const handlePopState = (event: PopStateEvent) => {
+    const handlePopState = () => {
       if (pathname === "/dashboard") {
-        // Main dashboard: Intercept back to show confirm exit dialog
+        // Root of the app: ask before exiting
         const confirmExit = window.confirm("¿Seguro que quieres salir de la aplicación?");
         if (confirmExit) {
           window.location.href = "/login";
         } else {
-          // Re-push blocker state to keep the interceptor active
+          // Re-insert blocker so the next back press also gets intercepted
           window.history.pushState({ preventBack: pathname }, "", window.location.href);
         }
       } else {
-        // Any subpage: Intercept back and navigate hierarchically up
+        // Subpage: push a FRESH blocker BEFORE navigating so the browser
+        // never runs out of intercepted states while Next.js loads the parent.
+        // This is the critical fix that prevents the app from exiting
+        // during the React navigation transition.
+        window.history.pushState({ preventBack: "transition" }, "", window.location.href);
         const parentPath = getParentPath(pathname);
         router.push(parentPath);
       }
