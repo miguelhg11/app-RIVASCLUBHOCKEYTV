@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getSession } from "@/src/lib/auth/session";
 import { ROLES } from "@/src/lib/auth/roles";
 import { getSupabaseServerClient } from "@/src/lib/supabase/server";
-import { getYouTubeLiveConcurrentViewers } from "@/src/lib/youtube/service";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 import fs from "node:fs";
