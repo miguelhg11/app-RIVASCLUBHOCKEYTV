@@ -7,7 +7,7 @@ import type { PlaylistRow } from "@/src/lib/admin/queries";
 import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
 import { DeleteChannelContentForm } from "@/src/components/admin/delete-channel-content-form";
 import { VisibilitySelect } from "./visibility-select";
-import { getTrackingUrl } from "@/src/lib/tracking/url";
+import { CopyTrackingLinkButton } from "@/src/components/ui/copy-tracking-link-button";
 
 type Props = {
   videos: CachedYouTubeVideoRow[];
@@ -199,12 +199,7 @@ export function EventLinksList({ videos, playlists }: Props) {
                       )}
                     </div>
                     <div className="flex flex-wrap items-center gap-2 pt-1">
-                      <button
-                        onClick={() => handleCopyLink(getTrackingUrl(row.youtubeVideoId, window.location.origin), row.id)}
-                        className="btn-ghost px-2.5 py-1 text-xs text-accent-cyan"
-                      >
-                        {copiedId === row.id ? "¡Copiado!" : "Copiar Enlace Tracking"}
-                      </button>
+                      <CopyTrackingLinkButton videoIdOrUuid={row.youtubeVideoId} iconOnly={false} />
                       <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" />
                       <DeleteChannelContentForm youtubeVideoId={row.youtubeVideoId} />
                     </div>
@@ -278,13 +273,8 @@ export function EventLinksList({ videos, playlists }: Props) {
                         </div>
                       </td>
                       <td className="px-3 py-4 text-right">
-                        <div className="flex justify-end gap-2.5">
-                          <button
-                            onClick={() => handleCopyLink(getTrackingUrl(row.youtubeVideoId, window.location.origin), row.id)}
-                            className="btn-ghost px-2.5 py-1 text-xs text-accent-cyan"
-                          >
-                            {copiedId === row.id ? "¡Copiado!" : "Copiar Enlace Tracking"}
-                          </button>
+                        <div className="flex justify-end items-center gap-2.5">
+                          <CopyTrackingLinkButton videoIdOrUuid={row.youtubeVideoId} iconOnly={false} />
                           <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" />
                           <DeleteChannelContentForm youtubeVideoId={row.youtubeVideoId} />
                         </div>

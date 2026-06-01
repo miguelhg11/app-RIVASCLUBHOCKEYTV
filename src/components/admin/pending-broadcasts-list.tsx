@@ -10,7 +10,7 @@ import type { UserRow, TeamRow } from "@/src/lib/admin/queries";
 import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
 import { YouTubeShareButton } from "@/src/components/ui/youtube-share-button";
 import { VisibilitySelect } from "./visibility-select";
-import { getTrackingUrl } from "@/src/lib/tracking/url";
+import { CopyTrackingLinkButton } from "@/src/components/ui/copy-tracking-link-button";
 
 function DeleteBroadcastButton({ id }: { id: string }) {
   const [state, formAction, pending] = useActionState(deleteBroadcastAction, {});
@@ -36,37 +36,7 @@ function DeleteBroadcastButton({ id }: { id: string }) {
   );
 }
 
-/**
- * Button that copies the transparent tracking URL to clipboard.
- * This is the link to share publicly — it silently captures viewer
- * geolocation before redirecting to YouTube.
- */
-function CopyTrackingLinkButton({ youtubeVideoId }: { youtubeVideoId: string }) {
-  const [copied, setCopied] = useState(false);
 
-  const handleCopy = () => {
-    const url = getTrackingUrl(youtubeVideoId, window.location.origin);
-    navigator.clipboard.writeText(url).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={handleCopy}
-      title="Copia el enlace de tracking para compartir — registra localización del espectador"
-      className={`rounded border px-2.5 py-1 text-xs font-semibold transition-all ${
-        copied
-          ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
-          : "border-accent-cyan/40 bg-accent-cyan/5 text-accent-cyan hover:bg-accent-cyan/15"
-      }`}
-    >
-      {copied ? "✓ ¡Copiado!" : "📍 Copiar Enlace"}
-    </button>
-  );
-}
 
 type Props = {
   initialBroadcasts: PendingBroadcastAdminRow[];
@@ -173,7 +143,7 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                     <p>{isExpired ? "Expirando..." : `Expira en ${hoursLeft}h`}</p>
                     <div className="flex flex-wrap items-center gap-2 pt-1">
                       {row.youtubeBroadcastId && (
-                        <CopyTrackingLinkButton youtubeVideoId={row.youtubeBroadcastId} />
+                        <CopyTrackingLinkButton videoIdOrUuid={row.youtubeBroadcastId} />
                       )}
                       {row.youtubeWatchUrl ? <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" /> : null}
                       {row.youtubeShareUrl ? <YouTubeShareButton href={row.youtubeShareUrl} size="sm" /> : null}
@@ -254,7 +224,7 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                       <td className="px-3 py-3 text-center">
                         <div className="flex flex-col items-center gap-1">
                           {row.youtubeBroadcastId && (
-                            <CopyTrackingLinkButton youtubeVideoId={row.youtubeBroadcastId} />
+                            <CopyTrackingLinkButton videoIdOrUuid={row.youtubeBroadcastId} />
                           )}
                           {row.youtubeWatchUrl ? (
                             <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" />

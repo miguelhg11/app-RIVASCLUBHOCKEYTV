@@ -4,6 +4,7 @@ import { SharePdfButton } from "@/src/components/admin/share-pdf-button";
 import { CopyPublicLinkButton } from "@/src/components/admin/copy-public-link-button";
 import { getWeeklyBroadcastRows } from "@/src/lib/reports/weekly";
 import { UpdateScheduleButton } from "./update-schedule-button";
+import { getTrackingUrl } from "@/src/lib/tracking/url";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -100,8 +101,8 @@ export default async function AdminReportsPage({ searchParams }: { searchParams:
                   <td className="px-2 py-2 text-text-muted">{row.timeLabel}</td>
                   <td className="px-2 py-2">
                     {row.watchUrl ? (
-                      <a href={row.watchUrl} target="_blank" rel="noreferrer" className="text-accent-cyan hover:underline break-all">
-                        {row.watchUrl}
+                      <a href={getTrackingUrl(row.watchUrl)} target="_blank" rel="noreferrer" className="text-accent-cyan hover:underline break-all">
+                        {getTrackingUrl(row.watchUrl)}
                       </a>
                     ) : (
                       "-"
