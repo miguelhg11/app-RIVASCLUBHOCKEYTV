@@ -148,12 +148,13 @@ export async function generateWeeklySchedule(): Promise<GenerateScheduleResult> 
       });
   }
 
-  // 5. Query all administrators to send the summary email
+  // 5. Query all active and non-deleted administrators to send the summary email
   const { data: admins } = await supabase
     .from("users")
     .select("email, name")
     .eq("role", "admin")
-    .eq("active", true);
+    .eq("active", true)
+    .is("deleted_at", null);
 
   if (admins && admins.length > 0) {
     const formattedFriday = friday.toLocaleDateString("es-ES", { day: "numeric", month: "long" });

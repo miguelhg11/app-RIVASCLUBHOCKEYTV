@@ -44,7 +44,7 @@ function decode(token: string): SessionPayload | null {
 }
 
 export async function setSessionCookie(payload: Omit<SessionPayload, "exp">) {
-  const exp = Date.now() + 1000 * 60 * 60 * 8;
+  const exp = Date.now() + 1000 * 60 * 60 * 24 * 30; // 30 days
   const token = encode({ ...payload, exp });
   const jar = await cookies();
   jar.set(SESSION_COOKIE, token, {

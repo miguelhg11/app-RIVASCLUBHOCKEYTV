@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { loginAction, type LoginActionState } from "@/src/actions/auth.actions";
 import { PasswordInput } from "@/src/components/ui/password-input";
 
@@ -8,9 +9,26 @@ const initialState: LoginActionState = {};
 
 export function LoginForm() {
   const [state, formAction, pending] = useActionState(loginAction, initialState);
+  const [email, setEmail] = useState("");
+
+  // Retrieve cached email on client-side mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedEmail = localStorage.getItem("last_login_email") || "";
+      setEmail(savedEmail);
+    }
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const formData = new FormData(e.currentTarget);
+    const emailVal = formData.get("email") as string;
+    if (emailVal) {
+      localStorage.setItem("last_login_email", emailVal.trim());
+    }
+  };
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} onSubmit={handleSubmit} className="space-y-4">
       <label className="block">
         <span className="mb-1.5 block text-xs font-semibold tracking-wider text-text-muted uppercase">
           Email
@@ -20,6 +38,8 @@ export function LoginForm() {
           name="email"
           type="email"
           autoComplete="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           className="glass-input w-full rounded-lg px-4 py-3 text-sm outline-none"
           placeholder="usuario@rivas.es"
         />
