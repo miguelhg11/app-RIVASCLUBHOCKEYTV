@@ -1,5 +1,6 @@
 import { getSupabaseServerClient } from "@/src/lib/supabase/server";
 import { sendEmail } from "@/src/lib/email/service";
+import { getTrackingUrl } from "@/src/lib/tracking/url";
 
 export type GenerateScheduleResult = {
   success: boolean;
@@ -190,7 +191,7 @@ export async function generateWeeklySchedule(): Promise<GenerateScheduleResult> 
                   <td style="padding: 10px; font-size: 13px; font-weight: bold;">${m.title}</td>
                   <td style="padding: 10px; font-size: 13px; color: #8a8b99;">${m.competition}</td>
                   <td style="padding: 10px; font-size: 13px;">
-                    <a href="${m.watchUrl}" style="color: #00e5ff; text-decoration: none;">Ver directo ↗</a>
+                    ${m.id ? `<a href="${getTrackingUrl(m.id, appUrl)}" style="color: #00e5ff; text-decoration: none;">Ver directo ↗</a>` : (m.watchUrl ? `<a href="${m.watchUrl}" style="color: #00e5ff; text-decoration: none;">Ver directo ↗</a>` : "-")}
                   </td>
                 </tr>
               `;

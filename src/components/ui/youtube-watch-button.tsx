@@ -1,6 +1,19 @@
+/**
+ * YouTubeWatchButton
+ *
+ * Opens the broadcast on YouTube via the tracking redirect (/r/<videoId>).
+ * The viewer lands directly on YouTube — the redirect is instantaneous and invisible.
+ * Geographic and device data are captured server-side for analytics.
+ *
+ * NEVER passes a direct youtube.com URL to the end user.
+ */
+"use client";
+
 import React from "react";
+import { extractYouTubeId } from "@/src/lib/tracking/url";
 
 type YouTubeWatchButtonProps = {
+  /** Any YouTube URL (watch, live, youtu.be, share) or bare video ID */
   href: string;
   className?: string;
   size?: "sm" | "md";
@@ -9,9 +22,16 @@ type YouTubeWatchButtonProps = {
 export function YouTubeWatchButton({ href, className = "", size = "md" }: YouTubeWatchButtonProps) {
   const logoHeight = size === "sm" ? "h-5" : "h-7";
 
+  // Convert any YouTube URL to our tracking redirect — silently
+  const videoId = extractYouTubeId(href);
+  const trackingHref =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/r/${videoId}`
+      : `/r/${videoId}`;
+
   return (
     <a
-      href={href}
+      href={trackingHref}
       target="_blank"
       rel="noreferrer"
       className={`inline-flex items-center justify-center transition-all active:scale-[0.9] hover:opacity-85 group cursor-pointer select-none ${className}`}

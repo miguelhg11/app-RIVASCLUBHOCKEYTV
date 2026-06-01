@@ -985,6 +985,23 @@ const PROVINCES_MAP: Record<string, string> = {
   "ES-ML": "Melilla"
 };
 
+const COUNTRIES_MAP: Record<string, string> = {
+  "ES": "España",
+  "US": "Estados Unidos",
+  "FR": "Francia",
+  "PT": "Portugal",
+  "IT": "Italia",
+  "DE": "Alemania",
+  "AD": "Andorra",
+  "AR": "Argentina",
+  "MX": "México",
+  "CO": "Colombia",
+  "GB": "Reino Unido",
+  "BR": "Brasil",
+  "CL": "Chile",
+  "UY": "Uruguay",
+};
+
 export async function getYouTubeVideoAnalytics(videoId: string): Promise<YouTubeVideoAnalyticsResult> {
   if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
     // Generate realistic Spanish mock data
@@ -1048,44 +1065,52 @@ export async function getYouTubeVideoAnalytics(videoId: string): Promise<YouTube
   const todayStr = new Date().toISOString().split("T")[0];
 
   try {
-    // 1. Query views, estimatedMinutesWatched by province
-    const geoQuery = await analytics.reports.query({
-      ids: "channel==MINE",
-      startDate: "2025-01-01",
-      endDate: todayStr,
-      metrics: "views,estimatedMinutesWatched",
-      dimensions: "province",
-      filters: `video==${videoId}`,
-    });
+    // Query absolute total metrics, country breakdown, and device breakdown in parallel
+    const [totalQuery, geoQuery, deviceQuery] = await Promise.all([
+      analytics.reports.query({
+        ids: "channel==MINE",
+        startDate: "2025-01-01",
+        endDate: todayStr,
+        metrics: "views,estimatedMinutesWatched",
+        filters: `video==${videoId}`,
+      }),
+      analytics.reports.query({
+        ids: "channel==MINE",
+        startDate: "2025-01-01",
+        endDate: todayStr,
+        metrics: "views,estimatedMinutesWatched",
+        dimensions: "country",
+        filters: `video==${videoId}`,
+      }),
+      analytics.reports.query({
+        ids: "channel==MINE",
+        startDate: "2025-01-01",
+        endDate: todayStr,
+        metrics: "views",
+        dimensions: "deviceType",
+        filters: `video==${videoId}`,
+      }),
+    ]);
 
-    // 2. Query views by deviceType
-    const deviceQuery = await analytics.reports.query({
-      ids: "channel==MINE",
-      startDate: "2025-01-01",
-      endDate: todayStr,
-      metrics: "views",
-      dimensions: "deviceType",
-      filters: `video==${videoId}`,
-    });
+    // Extract absolute totals (independent of dimensions matching or thresholds)
+    const totalRows = totalQuery.data.rows ?? [];
+    const totalViews = Number(totalRows[0]?.[0] || 0);
+    const totalMinutes = Number(totalRows[0]?.[1] || 0);
 
-    let totalViews = 0;
-    let totalMinutes = 0;
-    
     const geoRows = geoQuery.data.rows ?? [];
+    let geoTotalViews = 0;
     const rawProvinces = geoRows.map((row) => {
       const code = String(row[0] || "");
       const views = Number(row[1] || 0);
-      const minutes = Number(row[2] || 0);
-      totalViews += views;
-      totalMinutes += minutes;
+      geoTotalViews += views;
 
-      const name = PROVINCES_MAP[code] || (code.startsWith("ES-") ? `Provincia ${code}` : `Región Extranjera (${code})`);
+      const name = COUNTRIES_MAP[code] || `Región (${code})`;
       return { code, name, views };
     });
 
     const provincias = rawProvinces.map((prov) => ({
       ...prov,
-      percentage: totalViews > 0 ? Math.round((prov.views / totalViews) * 100) : 0
+      percentage: geoTotalViews > 0 ? Math.round((prov.views / geoTotalViews) * 100) : 0
     })).sort((a, b) => b.views - a.views);
 
     const deviceRows = deviceQuery.data.rows ?? [];

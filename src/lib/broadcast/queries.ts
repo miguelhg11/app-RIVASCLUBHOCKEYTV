@@ -117,7 +117,7 @@ export async function listMyBroadcasts() {
 
   const { data } = await supabase
     .from("broadcasts")
-    .select("id,title,scheduled_start,youtube_watch_url,youtube_share_url,youtube_sync_status,youtube_life_cycle_status,created_by")
+    .select("id,title,scheduled_start,youtube_watch_url,youtube_share_url,youtube_sync_status,youtube_life_cycle_status,created_by,youtube_broadcast_id")
     .is("deleted_at", null)
     .eq("created_by", session.userId)
     .order("scheduled_start", { ascending: false })
