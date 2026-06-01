@@ -18,6 +18,7 @@ export function UserEditForm({
   email,
   phone,
   role,
+  canPublishPublic,
   allTeams,
   assignedTeamIds,
 }: {
@@ -26,6 +27,7 @@ export function UserEditForm({
   email: string;
   phone: string | null;
   role: "admin" | "user";
+  canPublishPublic: boolean;
   allTeams: ResourceItem[];
   assignedTeamIds: string[];
 }) {
@@ -94,6 +96,18 @@ export function UserEditForm({
                     <option value="user">Usuario estándar</option>
                     <option value="admin">Administrador</option>
                   </select>
+                </div>
+                <div className="flex items-center pt-2">
+                  <label className="flex items-center gap-2 text-xs text-text-muted hover:text-white cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      name="canPublishPublic"
+                      value="true"
+                      defaultChecked={canPublishPublic}
+                      className="rounded border-white/8 bg-black/30 text-cyan-500 focus:ring-0 focus:ring-offset-0"
+                    />
+                    <span>Permitir emitir en público</span>
+                  </label>
                 </div>
               </div>
 

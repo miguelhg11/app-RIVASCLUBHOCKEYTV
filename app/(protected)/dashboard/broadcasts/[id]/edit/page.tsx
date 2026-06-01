@@ -53,6 +53,7 @@ export default async function EditBroadcastPage({ params }: EditPageProps) {
         categorizedBadges={categorizedBadges}
         thumbnailBackgrounds={activeBackgrounds}
         isAdmin={isAdmin}
+        canPublishPublic={assigned.canPublishPublic}
       />
     </div>
   );

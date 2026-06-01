@@ -9,6 +9,7 @@ import type { UserRow, TeamRow } from "@/src/lib/admin/queries";
 
 import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
 import { YouTubeShareButton } from "@/src/components/ui/youtube-share-button";
+import { VisibilitySelect } from "./visibility-select";
 
 function DeleteBroadcastButton({ id }: { id: string }) {
   const [state, formAction, pending] = useActionState(deleteBroadcastAction, {});
@@ -132,6 +133,10 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                   <div className="mt-3 border-t border-white/10 pt-3 space-y-2 text-xs text-text-muted">
                     <p>Creador: {row.creatorName || "-"} ({row.creatorEmail})</p>
                     <p>Estado live: {row.youtubeLifeCycleStatus} · Sync: {row.youtubeSyncStatus}</p>
+                    <div className="flex items-center gap-2">
+                      <span>Visibilidad:</span>
+                      <VisibilitySelect id={row.id} type="broadcast" initialStatus={row.privacyStatus as "unlisted" | "public"} />
+                    </div>
                     <p>{isExpired ? "Expirando..." : `Expira en ${hoursLeft}h`}</p>
                     <div className="flex flex-wrap items-center gap-2 pt-1">
                       {row.youtubeWatchUrl ? <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" /> : null}
@@ -159,6 +164,7 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                   <th className="px-3 py-2.5">Equipo</th>
                   <th className="px-3 py-2.5">Creador</th>
                   <th className="px-3 py-2.5">Estado Live</th>
+                  <th className="px-3 py-2.5">Visibilidad</th>
                   <th className="px-3 py-2.5">Estado Sync</th>
                   <th className="px-3 py-2.5 text-center">URLs</th>
                   <th className="px-3 py-2.5 text-right">Acciones</th>
@@ -204,6 +210,9 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                           )}
                           {row.youtubeLifeCycleStatus}
                         </span>
+                      </td>
+                      <td className="px-3 py-3">
+                        <VisibilitySelect id={row.id} type="broadcast" initialStatus={row.privacyStatus as "unlisted" | "public"} />
                       </td>
                       <td className="px-3 py-3 text-text-muted">{row.youtubeSyncStatus}</td>
                       <td className="px-3 py-3 text-center">

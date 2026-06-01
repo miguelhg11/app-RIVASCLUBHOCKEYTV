@@ -3,6 +3,36 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { google } from "googleapis";
 import { serverEnv } from "@/src/lib/validation/env";
+import { getSupabaseServerClient } from "@/src/lib/supabase/server";
+
+// Cache in memory for YouTube concurrent viewers to avoid repetitive API reads (1 unit/each)
+const concurrentViewersCache = new Map<string, { viewers: number | null; timestamp: number }>();
+const CACHE_TTL_MS = 60 * 1000; // 60 seconds TTL
+
+export async function trackYouTubeQuotaUsage(input: {
+  method: string;
+  quotaCost: number;
+  feature: string;
+  youtubeResourceId?: string | null;
+  metadata?: Record<string, any>;
+}) {
+  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
+    return;
+  }
+  try {
+    const supabase = getSupabaseServerClient();
+    await supabase.from("youtube_quota_usage_events").insert({
+      method: input.method,
+      quota_cost: input.quotaCost,
+      feature: input.feature,
+      youtube_resource_id: input.youtubeResourceId || null,
+      metadata: input.metadata || {},
+    });
+  } catch (err) {
+    console.error("Failed to write to quota ledger:", err);
+  }
+}
+
 
 export type YouTubeCreateResult = {
   broadcastId: string;
@@ -59,7 +89,7 @@ function getYoutubeEnv(name: "YOUTUBE_CLIENT_ID" | "YOUTUBE_CLIENT_SECRET" | "YO
   return value;
 }
 
-function getYoutubeClient() {
+function getYoutubeAuthClient() {
   const oauth2Client = new google.auth.OAuth2(
     getYoutubeEnv("YOUTUBE_CLIENT_ID"),
     getYoutubeEnv("YOUTUBE_CLIENT_SECRET"),
@@ -70,7 +100,12 @@ function getYoutubeClient() {
     refresh_token: getYoutubeEnv("YOUTUBE_REFRESH_TOKEN"),
   });
 
-  return google.youtube({ version: "v3", auth: oauth2Client });
+  return oauth2Client;
+}
+
+function getYoutubeClient() {
+  const auth = getYoutubeAuthClient();
+  return google.youtube({ version: "v3", auth });
 }
 
 export async function createYouTubeBroadcast(input: {
@@ -79,6 +114,7 @@ export async function createYouTubeBroadcast(input: {
   scheduledStart: string;
   playlistId: string;
   youtubeLiveStreamId: string;
+  privacyStatus?: string;
 }): Promise<YouTubeCreateResult> {
   if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
     return createYouTubeBroadcastMock(input);
@@ -95,7 +131,7 @@ export async function createYouTubeBroadcast(input: {
         scheduledStartTime: input.scheduledStart,
       },
       status: {
-        privacyStatus: "unlisted",
+        privacyStatus: input.privacyStatus || "unlisted",
       },
       contentDetails: {
         latencyPreference: "normal",
@@ -127,6 +163,15 @@ export async function createYouTubeBroadcast(input: {
         },
       },
     },
+  });
+
+  // Track the quota for: liveBroadcasts.insert (100) + liveBroadcasts.bind (50) + playlistItems.insert (50)
+  await trackYouTubeQuotaUsage({
+    method: "liveBroadcasts.insert + bind + playlistItems.insert",
+    quotaCost: 200,
+    feature: "create_broadcast",
+    youtubeResourceId: broadcastId,
+    metadata: { playlistId: input.playlistId, streamId: input.youtubeLiveStreamId }
   });
 
   return {
@@ -541,20 +586,52 @@ export async function updateYouTubeBroadcast(input: {
   title: string;
   description: string;
   scheduledStart: string;
+  privacyStatus?: string;
 }) {
   if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
     return { ok: true };
   }
 
   const youtube = getYoutubeClient();
+  const part = ["snippet"];
+  const requestBody: any = {
+    id: input.youtubeBroadcastId,
+    snippet: {
+      title: input.title,
+      description: input.description,
+      scheduledStartTime: input.scheduledStart,
+    },
+  };
+
+  if (input.privacyStatus) {
+    part.push("status");
+    requestBody.status = {
+      privacyStatus: input.privacyStatus,
+    };
+  }
+
   await youtube.liveBroadcasts.update({
-    part: ["snippet"],
+    part,
+    requestBody,
+  });
+  return { ok: true };
+}
+
+export async function updateYouTubeVideoPrivacyStatus(input: {
+  youtubeVideoId: string;
+  privacyStatus: string;
+}) {
+  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
+    return { ok: true };
+  }
+
+  const youtube = getYoutubeClient();
+  await youtube.videos.update({
+    part: ["status"],
     requestBody: {
-      id: input.youtubeBroadcastId,
-      snippet: {
-        title: input.title,
-        description: input.description,
-        scheduledStartTime: input.scheduledStart,
+      id: input.youtubeVideoId,
+      status: {
+        privacyStatus: input.privacyStatus,
       },
     },
   });
@@ -594,6 +671,7 @@ export type SyncedYouTubeVideo = {
   shareUrl: string;
   embedUrl: string;
   playlistIds: string[];
+  privacyStatus: string | null;
 };
 
 function parseISO8601DurationToSeconds(durationStr: string): number {
@@ -618,6 +696,7 @@ export async function listYouTubeChannelVideosMock(): Promise<SyncedYouTubeVideo
       shareUrl: "https://youtube.com/live/mock-vid-001?feature=share",
       embedUrl: "https://www.youtube.com/embed/mock-vid-001",
       playlistIds: ["mock-playlist-1"],
+      privacyStatus: "unlisted",
     },
     {
       youtubeVideoId: "mock-vid-002",
@@ -629,6 +708,7 @@ export async function listYouTubeChannelVideosMock(): Promise<SyncedYouTubeVideo
       shareUrl: "https://youtube.com/live/mock-vid-002?feature=share",
       embedUrl: "https://www.youtube.com/embed/mock-vid-002",
       playlistIds: ["mock-playlist-2"],
+      privacyStatus: "unlisted",
     },
     {
       youtubeVideoId: "mock-vid-003",
@@ -640,6 +720,7 @@ export async function listYouTubeChannelVideosMock(): Promise<SyncedYouTubeVideo
       shareUrl: "https://youtube.com/live/mock-vid-003?feature=share",
       embedUrl: "https://www.youtube.com/embed/mock-vid-003",
       playlistIds: [],
+      privacyStatus: "unlisted",
     },
     {
       youtubeVideoId: "mock-vid-004",
@@ -651,6 +732,7 @@ export async function listYouTubeChannelVideosMock(): Promise<SyncedYouTubeVideo
       shareUrl: "https://youtube.com/live/mock-vid-004?feature=share",
       embedUrl: "https://www.youtube.com/embed/mock-vid-004",
       playlistIds: [],
+      privacyStatus: "unlisted",
     },
     {
       youtubeVideoId: "mock-vid-005",
@@ -662,6 +744,7 @@ export async function listYouTubeChannelVideosMock(): Promise<SyncedYouTubeVideo
       shareUrl: "https://youtube.com/live/mock-vid-005?feature=share",
       embedUrl: "https://www.youtube.com/embed/mock-vid-005",
       playlistIds: ["mock-playlist-1"],
+      privacyStatus: "unlisted",
     },
     {
       youtubeVideoId: "mock-vid-006",
@@ -673,6 +756,7 @@ export async function listYouTubeChannelVideosMock(): Promise<SyncedYouTubeVideo
       shareUrl: "https://youtube.com/live/mock-vid-006?feature=share",
       embedUrl: "https://www.youtube.com/embed/mock-vid-006",
       playlistIds: ["mock-playlist-2"],
+      privacyStatus: "unlisted",
     },
     {
       youtubeVideoId: "mock-vid-007",
@@ -684,6 +768,7 @@ export async function listYouTubeChannelVideosMock(): Promise<SyncedYouTubeVideo
       shareUrl: "https://youtube.com/live/mock-vid-007?feature=share",
       embedUrl: "https://www.youtube.com/embed/mock-vid-007",
       playlistIds: [],
+      privacyStatus: "unlisted",
     }
   ];
 }
@@ -774,7 +859,7 @@ export async function listYouTubeChannelVideos(): Promise<SyncedYouTubeVideo[]> 
   for (let i = 0; i < videoIds.length; i += 50) {
     const chunk = videoIds.slice(i, i + 50);
     const videosResponse = await youtube.videos.list({
-      part: ["snippet", "contentDetails", "liveStreamingDetails"],
+      part: ["snippet", "contentDetails", "liveStreamingDetails", "status"],
       id: chunk,
     });
     detailedVideos.push(...(videosResponse.data.items ?? []));
@@ -806,6 +891,7 @@ export async function listYouTubeChannelVideos(): Promise<SyncedYouTubeVideo[]> 
       shareUrl: `https://youtube.com/live/${videoId}?feature=share`,
       embedUrl: `https://www.youtube.com/embed/${videoId}`,
       playlistIds: playlistItemsMap.get(videoId) ?? [],
+      privacyStatus: item.status?.privacyStatus ?? null,
     };
   });
 }
@@ -838,4 +924,242 @@ export async function getYouTubeBroadcastStatuses(
     }
   }
   return out;
+}
+
+export type YouTubeVideoAnalyticsResult = {
+  views: number;
+  estimatedMinutesWatched: number;
+  provincias: Array<{ code: string; name: string; views: number; percentage: number }>;
+  devices: Array<{ type: string; views: number; percentage: number }>;
+};
+
+const PROVINCES_MAP: Record<string, string> = {
+  "ES-M": "Madrid",
+  "ES-B": "Barcelona",
+  "ES-V": "Valencia",
+  "ES-SE": "Sevilla",
+  "ES-Z": "Zaragoza",
+  "ES-MA": "Málaga",
+  "ES-MU": "Murcia",
+  "ES-PM": "Baleares",
+  "ES-GC": "Las Palmas",
+  "ES-A": "Alicante",
+  "ES-CS": "Castellón",
+  "ES-C": "A Coruña",
+  "ES-PO": "Pontevedra",
+  "ES-SS": "Gipuzkoa",
+  "ES-BI": "Bizkaia",
+  "ES-LO": "La Rioja",
+  "ES-O": "Asturias",
+  "ES-GI": "Girona",
+  "ES-T": "Tarragona",
+  "ES-CC": "Cáceres",
+  "ES-BA": "Badajoz",
+  "ES-TO": "Toledo",
+  "ES-CR": "Ciudad Real",
+  "ES-CA": "Cádiz",
+  "ES-CO": "Córdoba",
+  "ES-GR": "Granada",
+  "ES-H": "Huelva",
+  "ES-JA": "Jaén",
+  "ES-AL": "Almería",
+  "ES-SG": "Segovia",
+  "ES-AV": "Ávila",
+  "ES-SA": "Salamanca",
+  "ES-ZA": "Zamora",
+  "ES-LE": "León",
+  "ES-P": "Palencia",
+  "ES-BU": "Burgos",
+  "ES-SO": "Soria",
+  "ES-VA": "Valladolid",
+  "ES-TE": "Teruel",
+  "ES-HU": "Huesca",
+  "ES-TF": "Tenerife",
+  "ES-CU": "Cuenca",
+  "ES-GU": "Guadalajara",
+  "ES-NA": "Navarra",
+  "ES-LU": "Lugo",
+  "ES-OR": "Ourense",
+  "ES-S": "Cantabria",
+  "ES-CE": "Ceuta",
+  "ES-ML": "Melilla"
+};
+
+export async function getYouTubeVideoAnalytics(videoId: string): Promise<YouTubeVideoAnalyticsResult> {
+  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
+    // Generate realistic Spanish mock data
+    const totalViews = Math.floor(Math.random() * 450) + 50;
+    const totalMinutes = Math.floor(totalViews * (Math.random() * 15 + 5));
+    
+    // Provincias
+    const isSharedSymptom = Math.random() > 0.5; // Simulate shared with rivals
+    const madViews = Math.floor(totalViews * (isSharedSymptom ? 0.45 : 0.90));
+    const rivalViews = isSharedSymptom ? Math.floor(totalViews * 0.35) : 0;
+    const restViews = totalViews - madViews - rivalViews;
+    
+    const provincias = [
+      { code: "ES-M", name: "Madrid", views: madViews, percentage: Math.round((madViews / totalViews) * 100) }
+    ];
+    
+    if (isSharedSymptom) {
+      // Simulate team rival (e.g. Barcelona/Cataluña or Galicia)
+      const rivalCode = Math.random() > 0.5 ? "ES-B" : "ES-C";
+      const rivalName = rivalCode === "ES-B" ? "Barcelona" : "A Coruña";
+      provincias.push({
+        code: rivalCode,
+        name: rivalName,
+        views: rivalViews,
+        percentage: Math.round((rivalViews / totalViews) * 100)
+      });
+    }
+    
+    if (restViews > 0) {
+      provincias.push({
+        code: "Otros",
+        name: "Otras regiones / Desconocido",
+        views: restViews,
+        percentage: Math.round((restViews / totalViews) * 100)
+      });
+    }
+    
+    // Devices
+    const mobileViews = Math.floor(totalViews * 0.55);
+    const tvViews = Math.floor(totalViews * 0.25);
+    const desktopViews = totalViews - mobileViews - tvViews;
+    
+    const devices = [
+      { type: "MÓVIL", views: mobileViews, percentage: Math.round((mobileViews / totalViews) * 100) },
+      { type: "TELEVISIÓN (Smart TV)", views: tvViews, percentage: Math.round((tvViews / totalViews) * 100) },
+      { type: "ORDENADOR", views: desktopViews, percentage: Math.round((desktopViews / totalViews) * 100) }
+    ];
+
+    return {
+      views: totalViews,
+      estimatedMinutesWatched: totalMinutes,
+      provincias: provincias.sort((a, b) => b.views - a.views),
+      devices: devices.sort((a, b) => b.views - a.views)
+    };
+  }
+
+  const auth = getYoutubeAuthClient();
+  const analytics = google.youtubeAnalytics({ version: "v2", auth });
+
+  // YouTube Analytics requires start/end dates. We query since 2025 to now.
+  const todayStr = new Date().toISOString().split("T")[0];
+
+  try {
+    // 1. Query views, estimatedMinutesWatched by province
+    const geoQuery = await analytics.reports.query({
+      ids: "channel==MINE",
+      startDate: "2025-01-01",
+      endDate: todayStr,
+      metrics: "views,estimatedMinutesWatched",
+      dimensions: "province",
+      filters: `video==${videoId}`,
+    });
+
+    // 2. Query views by deviceType
+    const deviceQuery = await analytics.reports.query({
+      ids: "channel==MINE",
+      startDate: "2025-01-01",
+      endDate: todayStr,
+      metrics: "views",
+      dimensions: "deviceType",
+      filters: `video==${videoId}`,
+    });
+
+    let totalViews = 0;
+    let totalMinutes = 0;
+    
+    const geoRows = geoQuery.data.rows ?? [];
+    const rawProvinces = geoRows.map((row) => {
+      const code = String(row[0] || "");
+      const views = Number(row[1] || 0);
+      const minutes = Number(row[2] || 0);
+      totalViews += views;
+      totalMinutes += minutes;
+
+      const name = PROVINCES_MAP[code] || (code.startsWith("ES-") ? `Provincia ${code}` : `Región Extranjera (${code})`);
+      return { code, name, views };
+    });
+
+    const provincias = rawProvinces.map((prov) => ({
+      ...prov,
+      percentage: totalViews > 0 ? Math.round((prov.views / totalViews) * 100) : 0
+    })).sort((a, b) => b.views - a.views);
+
+    const deviceRows = deviceQuery.data.rows ?? [];
+    let deviceTotalViews = 0;
+    const rawDevices = deviceRows.map((row) => {
+      const typeCode = String(row[0] || "").toUpperCase();
+      const views = Number(row[1] || 0);
+      deviceTotalViews += views;
+
+      let type = "OTROS";
+      if (typeCode === "MOBILE") type = "MÓVIL";
+      else if (typeCode === "DESKTOP") type = "ORDENADOR";
+      else if (typeCode === "TV") type = "TELEVISIÓN (Smart TV)";
+      else if (typeCode === "TABLET") type = "TABLET";
+      else if (typeCode === "GAME_CONSOLE") type = "CONSOLA DE JUEGOS";
+
+      return { type, views };
+    });
+
+    const devices = rawDevices.map((dev) => ({
+      ...dev,
+      percentage: deviceTotalViews > 0 ? Math.round((dev.views / deviceTotalViews) * 100) : 0
+    })).sort((a, b) => b.views - a.views);
+
+    return {
+      views: totalViews,
+      estimatedMinutesWatched: totalMinutes,
+      provincias,
+      devices
+    };
+  } catch (err) {
+    console.error(`Error querying YouTube Analytics for video ${videoId}:`, err);
+    throw err;
+  }
+}
+
+export async function getYouTubeLiveConcurrentViewers(videoId: string): Promise<number | null> {
+  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
+    return Math.floor(Math.random() * 80) + 10;
+  }
+
+  // 1. Check cache first
+  const cached = concurrentViewersCache.get(videoId);
+  const now = Date.now();
+  if (cached && (now - cached.timestamp < CACHE_TTL_MS)) {
+    return cached.viewers;
+  }
+
+  const youtube = getYoutubeClient();
+  try {
+    const res = await youtube.videos.list({
+      part: ["liveStreamingDetails"],
+      id: [videoId],
+    });
+
+    // Track real YouTube read call (1 unit of quota)
+    await trackYouTubeQuotaUsage({
+      method: "videos.list",
+      quotaCost: 1,
+      feature: "live_concurrent_viewers",
+      youtubeResourceId: videoId,
+    });
+
+    const item = res.data.items?.[0];
+    let viewers: number | null = null;
+    if (item?.liveStreamingDetails?.concurrentViewers) {
+      viewers = parseInt(item.liveStreamingDetails.concurrentViewers, 10);
+    }
+
+    // Update cache
+    concurrentViewersCache.set(videoId, { viewers, timestamp: now });
+    return viewers;
+  } catch (err) {
+    console.error(`Error fetching concurrent viewers for video ${videoId}:`, err);
+    return null;
+  }
 }

@@ -51,6 +51,7 @@ export type UserRow = {
   phone: string | null;
   role: "admin" | "user";
   active: boolean;
+  can_publish_public?: boolean;
 };
 
 export type StreamKeyRow = {
@@ -190,7 +191,7 @@ export async function listUsers(): Promise<UserRow[]> {
   const supabase = getSupabaseServerClient();
   const { data } = await supabase
     .from("users")
-    .select("id,name,email,phone,role,active")
+    .select("id,name,email,phone,role,active,can_publish_public")
     .is("deleted_at", null)
     .order("created_at", { ascending: false });
   return (data ?? []) as UserRow[];

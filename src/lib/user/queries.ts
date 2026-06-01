@@ -39,13 +39,17 @@ export async function getAssignedResourcesForCurrentUser() {
 
 export async function getBroadcastFormResourcesForCurrentUser() {
   const session = await requireSession();
+  const supabase = getSupabaseServerClient();
+  const { data: userRow } = await supabase.from("users").select("can_publish_public").eq("id", session.userId).maybeSingle();
+  const canPublishPublic = !!userRow?.can_publish_public;
+
   if (session.role === ROLES.admin) {
     const all = await getAllActiveResources();
-    return { ...all, isAdmin: true };
+    return { ...all, isAdmin: true, canPublishPublic: true };
   }
 
   const assigned = await getAssignedResourcesByUserId(session.userId);
-  return { ...assigned, isAdmin: false };
+  return { ...assigned, isAdmin: false, canPublishPublic };
 }
 
 async function getAssignedResourcesByUserId(userId: string) {
@@ -470,6 +474,7 @@ export async function listFinishedEventsAdminGlobal(seasonId?: string): Promise<
   youtubeShareUrl: string | null;
   teamName: string;
   creatorName: string | null;
+  privacyStatus?: string;
 }>> {
   const session = await requireSession();
   if (session.role !== "admin" && (session.role as string) !== "superadmin") {
@@ -479,7 +484,7 @@ export async function listFinishedEventsAdminGlobal(seasonId?: string): Promise<
   const supabase = getSupabaseServerClient();
   let query = supabase
     .from("broadcasts")
-    .select("id, title, scheduled_start, youtube_watch_url, youtube_share_url, teams(name), users!broadcasts_created_by_fkey(name)")
+    .select("id, title, scheduled_start, youtube_watch_url, youtube_share_url, teams(name), users!broadcasts_created_by_fkey(name), privacy_status")
     .eq("youtube_life_cycle_status", "complete")
     .is("deleted_at", null)
     .order("scheduled_start", { ascending: false })
@@ -507,6 +512,7 @@ export async function listFinishedEventsAdminGlobal(seasonId?: string): Promise<
       youtubeShareUrl: row.youtube_share_url,
       teamName: team?.name || "-",
       creatorName: creator?.name || null,
+      privacyStatus: row.privacy_status,
     };
   });
 }

@@ -22,6 +22,7 @@ export function EditBroadcastForm({
   categorizedBadges,
   thumbnailBackgrounds = [],
   isAdmin = false,
+  canPublishPublic = false,
 }: {
   broadcast: any;
   teams: Option[];
@@ -36,6 +37,7 @@ export function EditBroadcastForm({
   };
   thumbnailBackgrounds?: Array<{ id: string; name: string; url_path: string; is_default: boolean; base64_data: string | null }>;
   isAdmin?: boolean;
+  canPublishPublic?: boolean;
 }) {
   const router = useRouter();
   const [state, formAction, pending] = useActionState(updateBroadcastAction, initialState);
@@ -59,6 +61,7 @@ export function EditBroadcastForm({
   const [venue, setVenue] = useState(broadcast.venue || "");
   const [description, setDescription] = useState(broadcast.description || "");
   const [scheduledStart, setScheduledStart] = useState(defaultScheduledStart);
+  const [privacyStatus, setPrivacyStatus] = useState<"unlisted" | "public">(broadcast.privacy_status || "unlisted");
   const [datePart, setDatePart] = useState(() => {
     if (!defaultScheduledStart) return "";
     return defaultScheduledStart.split("T")[0] || "";
@@ -550,6 +553,33 @@ export function EditBroadcastForm({
             onChange={(e) => setDescription(e.target.value)}
             className="w-full rounded-lg border border-white/10 bg-[#12121a] px-3 py-2 text-white focus:border-accent-cyan focus:outline-none"
           />
+        </label>
+
+        {/* Visibility */}
+        <label className="text-sm sm:col-span-2">
+          <span className="mb-1 block text-text-muted">Visibilidad del directo en YouTube</span>
+          {canPublishPublic ? (
+            <select
+              name="privacyStatus"
+              value={privacyStatus}
+              onChange={(e) => setPrivacyStatus(e.target.value as "unlisted" | "public")}
+              className="w-full rounded-lg border border-white/10 bg-[#12121a] px-3 py-2 text-white focus:border-accent-cyan focus:outline-none"
+            >
+              <option value="unlisted">Oculto (Por defecto, recomendado)</option>
+              <option value="public">Público (Visible en el canal de YouTube y buscador)</option>
+            </select>
+          ) : (
+            <div className="relative">
+              <select
+                disabled
+                value="unlisted"
+                className="w-full rounded-lg border border-white/5 bg-[#12121a] px-3 py-2 text-text-muted focus:outline-none opacity-80 cursor-not-allowed"
+              >
+                <option value="unlisted">Oculto (Por defecto / No tienes permisos para emitir en público)</option>
+              </select>
+              <input type="hidden" name="privacyStatus" value="unlisted" />
+            </div>
+          )}
         </label>
       </div>
 

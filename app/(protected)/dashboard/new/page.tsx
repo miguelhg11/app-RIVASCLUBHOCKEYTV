@@ -51,6 +51,7 @@ export default async function NewBroadcastPage({
         teamResourcesMap={teamResourcesMap}
         categorizedBadges={categorizedBadges}
         thumbnailBackgrounds={activeBackgrounds}
+        canPublishPublic={assigned.canPublishPublic}
       />
     </div>
   );

@@ -49,6 +49,7 @@ export default async function AgendaPage({
         teamResourcesMap={teamResourcesMap}
         categorizedBadges={categorizedBadges}
         thumbnailBackgrounds={activeBackgrounds}
+        canPublishPublic={assigned.canPublishPublic}
       />
     </div>
   );

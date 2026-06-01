@@ -347,6 +347,7 @@ export type PendingBroadcastAdminRow = {
   teamId: string;
   teamName: string;
   teamDisplayName: string | null;
+  privacyStatus?: string;
 };
 
 export async function listPendingBroadcastsAdmin(): Promise<PendingBroadcastAdminRow[]> {
@@ -371,7 +372,8 @@ export async function listPendingBroadcastsAdmin(): Promise<PendingBroadcastAdmi
       created_by,
       users!broadcasts_created_by_fkey(name, email),
       team_id,
-      teams(id, name, display_name)
+      teams(id, name, display_name),
+      privacy_status
     `)
     .is("deleted_at", null)
     .neq("youtube_life_cycle_status", "complete")
@@ -401,6 +403,7 @@ export async function listPendingBroadcastsAdmin(): Promise<PendingBroadcastAdmi
       teamId: row.team_id,
       teamName: team?.name || "-",
       teamDisplayName: team?.display_name || null,
+      privacyStatus: row.privacy_status,
     };
   });
 }
@@ -416,6 +419,7 @@ export type CachedYouTubeVideoRow = {
   youtubeShareUrl: string | null;
   youtubeEmbedUrl: string | null;
   playlistIds: string[];
+  privacyStatus?: string;
 };
 
 export async function listCachedChannelVideosAdmin(): Promise<CachedYouTubeVideoRow[]> {
@@ -466,6 +470,7 @@ export async function listCachedChannelVideosAdmin(): Promise<CachedYouTubeVideo
     youtubeShareUrl: row.youtube_share_url,
     youtubeEmbedUrl: row.youtube_embed_url,
     playlistIds: Array.isArray(row.playlist_ids) ? row.playlist_ids : [],
+    privacyStatus: row.privacy_status,
   }));
 }
 
@@ -595,7 +600,8 @@ export async function getBroadcastForEdit(id: string) {
       thumbnail_overrides,
       created_by,
       federation_source,
-      federation_match_id
+      federation_match_id,
+      privacy_status
     `)
     .eq("id", id)
     .maybeSingle();

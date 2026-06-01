@@ -76,6 +76,7 @@ const updateUserSchema = z.object({
   email: z.email().trim().toLowerCase(),
   phone: z.string().trim().max(30).optional(),
   role: z.enum(["admin", "user"]),
+  canPublishPublic: z.preprocess((val) => val === "true" || val === true, z.boolean()).optional().default(false),
 });
 
 const updateStreamKeySchema = z.object({
@@ -236,6 +237,7 @@ export async function createAdminUserAction(_prev: AdminActionState, formData: F
     email: formData.get("email"),
     phone: formData.get("phone") || undefined,
     role: formData.get("role"),
+    canPublishPublic: formData.get("canPublishPublic") === "true",
   });
 
   if (!parsed.success) {
@@ -255,6 +257,7 @@ export async function createAdminUserAction(_prev: AdminActionState, formData: F
       phone: parsed.data.phone || null,
       password_hash: passwordHash,
       role: parsed.data.role,
+      can_publish_public: parsed.data.canPublishPublic,
       active: true,
     })
     .select("id")
@@ -729,6 +732,7 @@ export async function updateUserAction(_prev: AdminActionState, formData: FormDa
     email: formData.get("email"),
     phone: formData.get("phone") || undefined,
     role: formData.get("role"),
+    canPublishPublic: formData.get("canPublishPublic") === "true",
   });
   if (!parsed.success) return { error: "Usuario no valido." };
 
@@ -742,6 +746,7 @@ export async function updateUserAction(_prev: AdminActionState, formData: FormDa
       email: parsed.data.email,
       phone: parsed.data.phone || null,
       role: parsed.data.role,
+      can_publish_public: parsed.data.canPublishPublic,
     })
     .eq("id", parsed.data.id);
 

@@ -111,6 +111,7 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
     thumbnailPayload: formData.get("thumbnailPayload") || undefined,
     thumbnailOverrides: formData.get("thumbnailOverrides") || undefined,
     thumbnailBackgroundId: formData.get("thumbnailBackgroundId") || undefined,
+    privacyStatus: formData.get("privacyStatus") || undefined,
   });
 
   if (!parsed.success) {
@@ -147,6 +148,13 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
   const supabase = getSupabaseServerClient();
   const season = await getSelectedSeason();
 
+  // Validate user public visibility permissions
+  const { data: userRow } = await supabase.from("users").select("role, can_publish_public").eq("id", session.userId).maybeSingle();
+  const isAllowedToPublishPublic = userRow?.role === "admin" || !!userRow?.can_publish_public;
+  if (parsed.data.privacyStatus === "public" && !isAllowedToPublishPublic) {
+    return { error: "No tienes permisos para programar o emitir eventos en público." };
+  }
+
   const [{ data: streamKey }, { data: playlist }] = await Promise.all([
     supabase.from("stream_keys").select("id,name,youtube_live_stream_id,rtmp_url,stream_key").eq("id", parsed.data.streamKeyId).maybeSingle(),
     supabase.from("playlists").select("id,name,youtube_playlist_id").eq("id", parsed.data.playlistId).maybeSingle(),
@@ -165,6 +173,7 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
       scheduledStart: scheduledStartIso,
       playlistId: playlist.youtube_playlist_id,
       youtubeLiveStreamId: streamKey.youtube_live_stream_id,
+      privacyStatus: parsed.data.privacyStatus,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Error desconocido YouTube";
@@ -214,7 +223,7 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
     away_crest_url: parsed.data.awayCrestUrl ?? null,
     federation_source: parsed.data.federationSource ?? "manual",
     federation_match_id: parsed.data.federationMatchId ?? null,
-    privacy_status: "unlisted",
+    privacy_status: parsed.data.privacyStatus,
     youtube_broadcast_id: youtubeResult.broadcastId,
     youtube_video_id: youtubeResult.videoId,
     youtube_watch_url: youtubeResult.watchUrl,
@@ -228,6 +237,9 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
     confirmed_legal_basis: true,
     confirmed_by: session.userId,
     confirmed_at: new Date().toISOString(),
+    visibility_public_confirmed: parsed.data.privacyStatus === "public",
+    visibility_public_confirmed_by: parsed.data.privacyStatus === "public" ? session.userId : null,
+    visibility_public_confirmed_at: parsed.data.privacyStatus === "public" ? new Date().toISOString() : null,
   };
 
   if (parsed.data.thumbnailPayload) {
@@ -504,6 +516,7 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
             youtube_share_url: video.shareUrl,
             youtube_embed_url: video.embedUrl,
             playlist_ids: video.playlistIds,
+            privacy_status: video.privacyStatus || "unlisted",
             last_youtube_sync_at: nowIso,
           },
           { onConflict: "youtube_video_id" },
@@ -971,6 +984,7 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
     thumbnailPayload: formData.get("thumbnailPayload") || undefined,
     thumbnailOverrides: formData.get("thumbnailOverrides") || undefined,
     thumbnailBackgroundId: formData.get("thumbnailBackgroundId") || null,
+    privacyStatus: formData.get("privacyStatus") || undefined,
   });
 
   if (!parsed.success) {
@@ -1000,6 +1014,13 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
 
   if (!isAdmin && existing.created_by !== session.userId) {
     return { error: "No tienes permisos para actualizar esta programación." };
+  }
+
+  // Validate user public visibility permissions
+  const { data: userRow } = await supabase.from("users").select("role, can_publish_public").eq("id", session.userId).maybeSingle();
+  const isAllowedToPublishPublic = userRow?.role === "admin" || !!userRow?.can_publish_public;
+  if (parsed.data.privacyStatus === "public" && !isAllowedToPublishPublic) {
+    return { error: "No tienes permisos para programar o emitir eventos en público." };
   }
 
   // Check resource permissions for non-admin users
@@ -1034,7 +1055,7 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
 
   const title = `${parsed.data.homeTeamName} vs ${parsed.data.awayTeamName} | ${parsed.data.competitionName}`;
 
-  // 1. Update YouTube snippet
+  // 1. Update YouTube snippet & privacy status
   if (existing.youtube_broadcast_id) {
     try {
       await updateYouTubeBroadcast({
@@ -1042,6 +1063,7 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
         title,
         description: parsed.data.description ?? "",
         scheduledStart: scheduledStartIso,
+        privacyStatus: parsed.data.privacyStatus,
       });
 
       if (existing.youtube_video_id) {
@@ -1087,6 +1109,10 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
     federation_match_id: parsed.data.federationMatchId ?? null,
     youtube_playlist_id: playlist.youtube_playlist_id,
     youtube_bound_stream_id: streamKey.youtube_live_stream_id,
+    privacy_status: parsed.data.privacyStatus,
+    visibility_public_confirmed: parsed.data.privacyStatus === "public",
+    visibility_public_confirmed_by: parsed.data.privacyStatus === "public" ? session.userId : null,
+    visibility_public_confirmed_at: parsed.data.privacyStatus === "public" ? new Date().toISOString() : null,
   };
 
   if (parsed.data.thumbnailPayload) {
@@ -1133,4 +1159,42 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
   await revalidateAllResourcePaths();
 
   return { ok: true };
+}
+
+import { generateWeeklySchedule } from "@/src/lib/schedule/weekly-generator";
+
+export type GenerateScheduleState = {
+  error?: string;
+  ok?: string;
+};
+
+export async function triggerManualScheduleGenerationAction(): Promise<GenerateScheduleState> {
+  const session = await requireAdmin();
+  const supabase = getSupabaseServerClient();
+
+  try {
+    const result = await generateWeeklySchedule();
+
+    await supabase.from("operation_logs").insert({
+      user_id: session.userId,
+      operation_type: "manual_schedule_generation",
+      status: "ok",
+      message: `Calendario semanal generado manualmente. Partidos incluidos: ${result.matchesCount}`,
+      metadata: { startDate: result.startDate, endDate: result.endDate, count: result.matchesCount },
+    });
+
+    revalidatePath("/weekly-schedule");
+
+    return { ok: `Calendario generado con éxito. Se han programado ${result.matchesCount} partidos.` };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    await supabase.from("operation_logs").insert({
+      user_id: session.userId,
+      operation_type: "manual_schedule_generation",
+      status: "failed",
+      message: "Fallo al generar calendario manualmente",
+      metadata: { error: msg },
+    });
+    return { error: `Error de ejecución: ${msg}` };
+  }
 }

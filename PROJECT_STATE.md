@@ -6,48 +6,37 @@ Rivas YouTube Live Manager.
 
 ## Estado actual
 
-Aplicación funcional y robusta con todas las fases base completadas:
+Aplicación funcional y robusta con todas las fases base completadas y optimizadas:
 - Agenda de competiciones integrada.
 - Programación manual y automática de directos.
 - Edición y sincronización bidireccional con YouTube/Supabase.
 - Generación de miniaturas dinámicas.
 - Scraping de federaciones (FMP/RFEP).
-- Generación de reportes PDF para administradores.
-- **Nuevo**: Sincronización y asignación manual de emisiones externas creadas en YouTube Studio a equipos-usuarios locales.
-- **Nuevo**: Alertas visuales con pulsadores animados (`live-dot`) en la cabecera y panel de administración cuando hay directos externos sin asignar.
-- **Nuevo**: Casilla única vacía de hora (`HH:MM`) en programación manual que permite borrar y editar con libertad, normalizándose en el `onBlur`.
-- **Nuevo**: Corrección en el envío de emails de bienvenida y restablecimiento de contraseña en Vercel al incluir las variables de Gmail en el script de entorno.
-- **Nuevo**: Redirección unificada para que todos los usuarios (incluido el administrador) inicien en el panel principal (`/dashboard`).
-- **Nuevo**: Menú desplegable en móvil se cierra automáticamente al pulsar sobre cualquiera de sus enlaces o botones de navegación.
+- **Optimización de API de YouTube**:
+  * Implementación de una caché en memoria (TTL de 60s) para espectadores concurrentes en tiempo real para evitar consumos duplicados por recargas del panel.
+  * Sistema de registro de auditoría de cuota (`youtube_quota_usage_events`) para monitorizar de manera transparente el consumo real por cada endpoint/acción.
+- **Calendario Semanal Persistido (Viernes a Jueves)**:
+  * Generación bajo demanda y programada vía API (`/api/schedule/generate`) del cuadrante semanal, guardándose como caché estática (`weekly_schedules`) para descarga pública de "cuota cero" y enviando alertas automáticas por email (vía Resend) a los administradores.
+- **Ajustes en el Panel de Administrador**:
+  * Eliminación de la tarjeta inactiva de Logs.
+  * Renombramiento de "Buscador de contenidos" por "Gestor de contenidos" y de "Reportes" por "Exportar programación".
+  * Reordenación de los pasos de configuración del 1 al 14 en la página principal del administrador.
+- **Auto-Sincronización en Entrada**: Toda la app ahora sincroniza automáticamente con YouTube Studio al entrar a los menús correspondientes (`broadcasts`, `stream-keys`, `playlists`, `event-links`).
+- **Botón Atrás Físico/Gestos**: Corregido comportamiento del botón atrás del dispositivo (Android/iOS) para subir en la jerarquía de la app hasta el Dashboard.
+- **Tarjetas de Programación en Móvil**: Rediseño completo para evitar que los nombres de los equipos se corten en vistas de pantalla pequeña.
+- **Grants Explícitos Supabase**: Migración `014_explicit_grants.sql` aplicada que asegura compatibilidad con la nueva directiva de Data API de Supabase asignando privilegios explícitos a roles `anon`, `authenticated` y `service_role`.
 
 ## Punto exacto actual
 
-- El esquema de Supabase está **100% alineado** y validado con `check:supabase-schema` en verde.
-- No hay warnings ni errores de compilación (`npm run build`), tipado (`typecheck`) ni formateo (`lint`).
-- La aplicación se encuentra desplegada y funcionando en producción en Vercel con todos los cambios y variables de Gmail configuradas correctamente.
-- Se ha limpiado el módulo experimental de manuales a petición del usuario, dejando la aplicación en su estado óptimo de producción.
+- El esquema de Supabase está **100% alineado** y validado (incluyendo la tabla de auditoría de cuota `youtube_quota_usage_events` y la caché `weekly_schedules` de la migración `017`).
+- La aplicación se encuentra desplegada y funcionando en producción en Vercel en la URL oficial: [https://rivasyoutubelivehandoff.vercel.app](https://rivasyoutubelivehandoff.vercel.app)
+- No hay warnings ni errores de compilación, tipado (`typecheck`) ni formateo (`lint`).
+- La estimación realista para un uso diario muy activo (20 usuarios y 5 administradores) con la cuota actual ampliada a 50,000 unidades es sumamente segura, permitiendo emitir más de 45 partidos simultáneos, realizar búsquedas y consultar estadísticas de manera segura gracias a los sistemas de caché incorporados.
 
-## Objetivo vigente
+## Siguiente paso
 
-Monitorear el uso de producción del sistema con retransmisiones en vivo reales, y dar soporte de uso técnico al administrador y emisores.
-
-## Lo ya implementado
-
-- Auth propia por cookie y roles (`admin`/`user`).
-- Asignación de permisos por recurso (equipos, stream keys y playlists asignados a delegados).
-- Generador de miniaturas dinámicas con escudos y fondo.
-- Integración de Scraping FMP con POST a Sidgad (evitando Playwright) y persistencia en caché en Supabase (`app_settings`).
-- Módulo de reportes PDF descargables para administradores.
-- **Asignador de Directos Externos**: Flujo completo de asignación manual de directos creados en YouTube Studio.
-- **Reloj Manual HH:MM**: Input libre y sin bloqueos de hora en la creación y edición.
-- **Emails SMTP Gmail**: Integración de credenciales Gmail en el entorno de Vercel y validación local de envíos.
-- **Usabilidad Móvil**: Autocierre del menú de navegación móvil al pulsar cualquier opción.
-
-## Siguiente paso (inmediato)
-
-1. Verificar que los delegados de pista estén recibiendo correctamente los emails de bienvenida con sus contraseñas temporales al ser creados desde el panel de Admin en producción.
-2. Hacer una prueba de retransmisión completa de un partido usando OBS/Larix Broadcaster para comprobar el flujo de inicio, visualización y detención del directo desde la app móvil.
-3. Monitorear los logs en el panel de administración ante cualquier comportamiento inesperado.
+1. Supervisar el ledger de consumo de cuotas (`youtube_quota_usage_events`) directamente en Supabase tras los primeros fines de semana de uso en producción para validar el consumo real.
+2. Comprobar el correcto funcionamiento de las notificaciones automáticas por correo de Resend al generar o regenerar el calendario semanal.
 
 ## Comandos útiles
 
@@ -56,3 +45,4 @@ Monitorear el uso de producción del sistema con retransmisiones en vivo reales,
 - `npm run build` (Compila para producción)
 - `npm run lint` (Valida código)
 - `npm run typecheck` (Valida TypeScript)
+- `npm run test:federations` (Ejecuta tests de scraping de federación)

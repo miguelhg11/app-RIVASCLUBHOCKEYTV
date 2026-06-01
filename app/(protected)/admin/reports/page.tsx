@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { requireAdmin } from "@/src/lib/auth/guards";
 import { SharePdfButton } from "@/src/components/admin/share-pdf-button";
+import { CopyPublicLinkButton } from "@/src/components/admin/copy-public-link-button";
 import { getWeeklyBroadcastRows } from "@/src/lib/reports/weekly";
+import { UpdateScheduleButton } from "./update-schedule-button";
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -9,11 +11,23 @@ export default async function AdminReportsPage({ searchParams }: { searchParams:
   await requireAdmin();
 
   const params = await searchParams;
+  
+  // Calculate current Friday to Thursday for weekly defaults
   const now = new Date();
-  const defaultFrom = toDateInput(now);
-  const to = new Date(now);
-  to.setDate(to.getDate() + 7);
-  const defaultTo = toDateInput(to);
+  const currentDay = now.getUTCDay(); 
+  let offsetToFriday = currentDay - 5;
+  if (offsetToFriday < 0) {
+    offsetToFriday = 7 + offsetToFriday;
+  }
+  
+  const friday = new Date(now);
+  friday.setUTCDate(now.getUTCDate() - offsetToFriday);
+  
+  const thursday = new Date(friday);
+  thursday.setUTCDate(friday.getUTCDate() + 6);
+
+  const defaultFrom = toDateInput(friday);
+  const defaultTo = toDateInput(thursday);
 
   const from = typeof params.from === "string" ? params.from : defaultFrom;
   const until = typeof params.to === "string" ? params.to : defaultTo;
@@ -31,6 +45,21 @@ export default async function AdminReportsPage({ searchParams }: { searchParams:
         Solo administradores. Incluye emisiones de la app y programaciones detectadas en YouTube Studio.
       </p>
 
+      <div className="bg-emerald-950/20 border border-emerald-500/30 rounded-xl p-5 space-y-4">
+        <div>
+          <h3 className="text-emerald-400 font-semibold text-sm">Enlace Público Permanente</h3>
+          <p className="text-xs text-text-muted mt-1">
+            Usa este botón para copiar el enlace dinámico y compartirlo con el club. El enlace público lee de una versión persistida en base de datos para no consumir créditos de la API de YouTube por cada visita.
+          </p>
+        </div>
+        
+        <UpdateScheduleButton />
+
+        <div className="pt-2 border-t border-white/5">
+          <CopyPublicLinkButton />
+        </div>
+      </div>
+
       <form className="mt-4 grid gap-3 glass-panel rounded-xl p-5 sm:grid-cols-4" method="GET">
         <label className="text-sm font-medium">
           <span className="mb-1 block text-text-muted">Desde</span>
@@ -40,12 +69,12 @@ export default async function AdminReportsPage({ searchParams }: { searchParams:
           <span className="mb-1 block text-text-muted">Hasta</span>
           <input type="date" name="to" defaultValue={until} className="w-full glass-card rounded-lg px-4 py-3" />
         </label>
-        <div className="flex items-end gap-2 sm:col-span-2">
+        <div className="flex flex-wrap items-end gap-2 sm:col-span-2">
           <button type="submit" className="btn-primary rounded-lg px-4 py-2 text-xs">
             Filtrar
           </button>
           <a href={pdfHref} className="rounded border border-accent-cyan px-4 py-2 font-medium text-accent-cyan">
-            Descargar PDF
+            Descargar PDF (Rango)
           </a>
           <SharePdfButton pdfHref={pdfHref} />
         </div>

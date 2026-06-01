@@ -66,6 +66,17 @@ export function UserCreateForm({
               <option value="admin">Administrador</option>
             </select>
           </div>
+          <div className="flex items-center pt-2">
+            <label className="flex items-center gap-2.5 text-xs text-text-muted hover:text-white cursor-pointer select-none">
+              <input
+                type="checkbox"
+                name="canPublishPublic"
+                value="true"
+                className="rounded border-white/10 bg-white/[0.03] text-cyan-500 focus:ring-0 focus:ring-offset-0"
+              />
+              <span>Permitir emitir / programar eventos en público</span>
+            </label>
+          </div>
         </div>
 
         {/* Asignación de Recursos */}

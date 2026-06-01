@@ -10,15 +10,50 @@ export type WeeklyReportRow = {
   timeLabel: string;
   watchUrl: string;
   source: "app" | "youtube_external";
+  youtubeBroadcastId: string | null;
 };
 
 export async function getWeeklyBroadcastRows(params: { fromIso: string; toIso: string }): Promise<WeeklyReportRow[]> {
   const supabase = getSupabaseServerClient();
 
+  // Try to load cached schedule first
+  const startDateStr = params.fromIso.split("T")[0];
+  const endDateStr = params.toIso.split("T")[0];
+
+  try {
+    const { data: cached } = await supabase
+      .from("weekly_schedules")
+      .select("data")
+      .eq("start_date", startDateStr)
+      .eq("end_date", endDateStr)
+      .maybeSingle();
+
+    if (cached && Array.isArray(cached.data)) {
+      return cached.data.map((m: any) => {
+        const dt = new Date(m.scheduledStart);
+        const dateLabel = Number.isNaN(dt.getTime()) ? "-" : dt.toLocaleDateString("es-ES");
+        const timeLabel = Number.isNaN(dt.getTime()) ? "-" : dt.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+
+        return {
+          rivasTeamLabel: m.teamName || "Rivas",
+          title: m.title,
+          scheduledStart: m.scheduledStart,
+          dateLabel,
+          timeLabel,
+          watchUrl: m.watchUrl || "",
+          source: m.type === "external" ? "youtube_external" : "app",
+          youtubeBroadcastId: m.id || null,
+        };
+      });
+    }
+  } catch (err) {
+    console.warn("Weekly schedule cache hit failed, falling back to database query:", err);
+  }
+
   const [appRes, externalRes] = await Promise.all([
     supabase
       .from("broadcasts")
-      .select("title,scheduled_start,youtube_watch_url,youtube_share_url,teams(name,letter,categories(name))")
+      .select("youtube_broadcast_id,title,scheduled_start,youtube_watch_url,youtube_share_url,teams(name,letter,categories(name))")
       .is("deleted_at", null)
       .gte("scheduled_start", params.fromIso)
       .lte("scheduled_start", params.toIso)
@@ -33,6 +68,7 @@ export async function getWeeklyBroadcastRows(params: { fromIso: string; toIso: s
   ]);
 
   const appRows = ((appRes.data ?? []) as Array<{
+    youtube_broadcast_id: string | null;
     title: string;
     scheduled_start: string;
     youtube_watch_url: string | null;
@@ -61,6 +97,7 @@ export async function getWeeklyBroadcastRows(params: { fromIso: string; toIso: s
     youtube_share_url: string | null;
   }>).map((row) => mapRow({
     ...row,
+    youtube_broadcast_id: null, // extracted from URL inside mapRow
     rivasTeamLabel: "Externa (sin equipo app)",
   }, "youtube_external"));
 
@@ -69,6 +106,7 @@ export async function getWeeklyBroadcastRows(params: { fromIso: string; toIso: s
 
 function mapRow(
   row: {
+    youtube_broadcast_id?: string | null;
     title: string;
     scheduled_start: string;
     youtube_watch_url: string | null;
@@ -80,6 +118,25 @@ function mapRow(
   const dt = new Date(row.scheduled_start);
   const dateLabel = Number.isNaN(dt.getTime()) ? "-" : dt.toLocaleDateString("es-ES");
   const timeLabel = Number.isNaN(dt.getTime()) ? "-" : dt.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+
+  let youtubeBroadcastId = row.youtube_broadcast_id || null;
+  if (!youtubeBroadcastId) {
+    // Try to extract from URLs
+    const targetUrl = row.youtube_share_url || row.youtube_watch_url || "";
+    if (targetUrl) {
+      try {
+        const url = new URL(targetUrl);
+        if (url.searchParams.has("v")) {
+          youtubeBroadcastId = url.searchParams.get("v")!;
+        } else {
+          youtubeBroadcastId = url.pathname.split("/").pop() || "";
+        }
+      } catch {
+        youtubeBroadcastId = targetUrl.split("v=").pop()?.split("&")[0] || "";
+      }
+    }
+  }
+
   return {
     rivasTeamLabel: row.rivasTeamLabel,
     title: row.title,
@@ -88,6 +145,7 @@ function mapRow(
     timeLabel,
     watchUrl: row.youtube_share_url || row.youtube_watch_url || "",
     source,
+    youtubeBroadcastId,
   };
 }
 

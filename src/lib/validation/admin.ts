@@ -23,6 +23,7 @@ export const adminUserSchema = z.object({
   email: z.email().trim().toLowerCase(),
   phone: z.string().trim().max(30).optional(),
   role: z.enum(["admin", "user"]),
+  canPublishPublic: z.preprocess((val) => val === "true" || val === true, z.boolean()).optional().default(false),
 });
 
 export const streamKeySchema = z.object({

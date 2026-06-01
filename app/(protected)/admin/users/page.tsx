@@ -89,6 +89,7 @@ export default async function AdminUsersPage() {
                       email={user.email}
                       phone={user.phone}
                       role={user.role}
+                      canPublishPublic={user.can_publish_public ?? false}
                       allTeams={teamsOptions}
                       assignedTeamIds={userAss.teamIds || []}
                     />

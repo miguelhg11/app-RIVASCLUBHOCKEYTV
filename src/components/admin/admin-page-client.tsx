@@ -204,58 +204,48 @@ Permite visualizar, compartir y finalizar directos en tiempo real con confirmaci
     color: "text-violet-300",
     bg: "bg-violet-500/10",
     ring: "ring-violet-500/20",
-    subtitle: "Operaciones — Histórico global",
-    description: `Histórico de emisiones finalizadas del canal.
+    subtitle: "Operaciones — Finalizadas",
+    description: `Visión completa de todos los directos finalizados.
 
-Incluye enlace de visualización y opción de eliminación completa para administradores.`,
+Permite consultar el histórico de emisiones completadas y acceder a sus grabaciones/VODs.`,
   },
   {
     step: 12,
-    label: "Buscador contenidos",
+    label: "Gestor de contenidos",
     href: "/admin/event-links",
     icon: "M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244",
     color: "text-accent-cyan",
     bg: "bg-accent-cyan/10",
     ring: "ring-accent-cyan/20",
-    subtitle: "Operaciones — Buscador del canal",
-    description: `Buscador de contenidos del canal (directos, vídeos, shorts y enlaces de evento).
+    subtitle: "Operaciones — Gestor del canal",
+    description: `Buscador y gestor de contenidos del canal (directos, vídeos, shorts y enlaces de evento).
 
 Útil para localizar y compartir rápidamente piezas publicadas.`,
   },
   {
     step: 13,
-    label: "Reportes",
+    label: "Exportar programación",
     href: "/admin/reports",
     icon: "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z",
     color: "text-accent-cyan",
     bg: "bg-accent-cyan/10",
     ring: "ring-accent-cyan/20",
-    subtitle: "Análisis — Estadísticas y actividad",
-    description: `Consulta estadísticas generales de la actividad del sistema:
-  • Número de directos por equipo y temporada
-  • Histórico de emisiones completadas
-  • Uso de stream keys y playlists
-  • Actividad de usuarios
-
-Útil para reportar a la directiva del club o para planificar la gestión de recursos de la siguiente temporada.`,
+    subtitle: "Análisis — PDF y Calendario Semanal",
+    description: `Consulta y exporta planificaciones semanales estáticas (Viernes a Jueves) y genera PDF del cuadrante de partidos del club para vuestra audiencia.`,
   },
   {
     step: 14,
-    label: "Logs",
-    href: "/admin/logs",
-    icon: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z",
-    color: "text-white",
-    bg: "bg-white/5",
-    ring: "ring-white/10",
-    subtitle: "Sistema — Registro de actividad técnica",
-    description: `Registro técnico de todas las acciones realizadas en el sistema: creaciones, modificaciones, errores de la API de YouTube, intentos de acceso fallidos, etc.
-
-Útil para:
-  • Depurar problemas cuando un directo no se crea correctamente en YouTube
-  • Auditar quién hizo qué y cuándo
-  • Detectar errores recurrentes en integraciones
-
-Solo visible para administradores.`,
+    label: "Estadísticas YouTube",
+    href: "/admin/stats",
+    icon: "M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z",
+    color: "text-accent-cyan",
+    bg: "bg-accent-cyan/10",
+    ring: "ring-accent-cyan/20",
+    subtitle: "Análisis — Procedencia y dispositivos",
+    description: `Muestra estadísticas en tiempo real y datos consolidados de visualizaciones del canal:
+  • Procedencia geográfica detallada por municipios para ver desde dónde se siguen las emisiones.
+  • Tipo de dispositivo desde el que se reproducen.
+  • Espectadores concurrentes en tiempo real para emisiones en directo.`,
   },
 ] as const;
 

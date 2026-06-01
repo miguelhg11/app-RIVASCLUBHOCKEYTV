@@ -63,6 +63,7 @@ export function NewBroadcastForm({
   teamResourcesMap = {},
   categorizedBadges,
   thumbnailBackgrounds = [],
+  canPublishPublic = false,
 }: {
   mode: "agenda" | "manual";
   agendaOnly?: boolean;
@@ -78,6 +79,7 @@ export function NewBroadcastForm({
     selecciones: { canonical_name: string; logo_url: string; normalized_aliases: string[] }[];
   };
   thumbnailBackgrounds?: Array<{ id: string; name: string; url_path: string; is_default: boolean; base64_data: string | null }>;
+  canPublishPublic?: boolean;
 }) {
   const [state, formAction, pending] = useActionState(createBroadcastAction, initialState);
   const [matches, setMatches] = useState<UnifiedFederationMatch[]>([]);
@@ -147,6 +149,7 @@ export function NewBroadcastForm({
   const [selectedTeamId, setSelectedTeamId] = useState("");
   const [selectedStreamKeyId, setSelectedStreamKeyId] = useState("");
   const [selectedPlaylistId, setSelectedPlaylistId] = useState("");
+  const [privacyStatus, setPrivacyStatus] = useState<"unlisted" | "public">("unlisted");
 
   // --- Thumbnail / Miniatura States ---
   const [shortTitle, setShortTitle] = useState("");
@@ -1321,10 +1324,36 @@ export function NewBroadcastForm({
                 </p>
               ) : null}
             </label>
-            <label className="text-sm font-medium sm:col-span-2">
+             <label className="text-sm font-medium sm:col-span-2">
               <span className="mb-1 block text-text-muted">Descripción del directo</span>
               <textarea name="description" rows={4} value={description} onChange={(e) => setDescription(e.target.value)}
                 className="w-full rounded-lg border border-white/8 bg-black/30 px-3 py-2 text-white focus:border-accent-cyan focus:outline-none" />
+            </label>
+
+            <label className="text-sm font-medium sm:col-span-2">
+              <span className="mb-1 block text-text-muted">Visibilidad del directo en YouTube</span>
+              {canPublishPublic ? (
+                <select
+                  name="privacyStatus"
+                  value={privacyStatus}
+                  onChange={(e) => setPrivacyStatus(e.target.value as "unlisted" | "public")}
+                  className="w-full rounded-lg border border-white/25 bg-[#1a1a24] px-3 py-2.5 text-white focus:border-accent-cyan focus:outline-none"
+                >
+                  <option value="unlisted">Oculto (Por defecto, recomendado)</option>
+                  <option value="public">Público (Visible en el canal de YouTube y buscador)</option>
+                </select>
+              ) : (
+                <div className="relative">
+                  <select
+                    disabled
+                    value="unlisted"
+                    className="w-full rounded-lg border border-white/10 bg-[#12121a] px-3 py-2.5 text-text-muted focus:outline-none opacity-80 cursor-not-allowed"
+                  >
+                    <option value="unlisted">Oculto (Por defecto / No tienes permisos para emitir en público)</option>
+                  </select>
+                  <input type="hidden" name="privacyStatus" value="unlisted" />
+                </div>
+              )}
             </label>
           </div>
 

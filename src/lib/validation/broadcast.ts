@@ -19,6 +19,7 @@ export const createBroadcastSchema = z.object({
   thumbnailPayload: z.string().trim().optional(),
   thumbnailOverrides: z.string().trim().optional(),
   thumbnailBackgroundId: z.string().uuid().optional(),
+  privacyStatus: z.enum(["unlisted", "public"]).optional().default("unlisted"),
 });
 
 export type CreateBroadcastInput = z.infer<typeof createBroadcastSchema>;
@@ -42,6 +43,7 @@ export const updateBroadcastSchema = z.object({
   thumbnailPayload: z.string().trim().optional(),
   thumbnailOverrides: z.string().trim().optional(),
   thumbnailBackgroundId: z.string().uuid().optional().nullable(),
+  privacyStatus: z.enum(["unlisted", "public"]).optional().default("unlisted"),
 });
 
 export type UpdateBroadcastInput = z.infer<typeof updateBroadcastSchema>;

@@ -3,6 +3,7 @@ import { listFinishedEventsAdminGlobal } from "@/src/lib/user/queries";
 import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
 import { ShareLinkButton } from "@/src/components/ui/share-link-button";
 import { DeleteBroadcastButton } from "@/src/components/forms/delete-broadcast-button";
+import { VisibilitySelect } from "@/src/components/admin/visibility-select";
 
 export default async function AdminFinishedBroadcastsPage() {
   const rows = await listFinishedEventsAdminGlobal();
@@ -27,6 +28,10 @@ export default async function AdminFinishedBroadcastsPage() {
                 </summary>
                 <div className="mt-3 border-t border-white/10 pt-3">
                   <p className="text-xs text-text-muted mb-2">Creador: {row.creatorName || "-"}</p>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xs text-text-muted">Visibilidad:</span>
+                    <VisibilitySelect id={row.id} type="broadcast" initialStatus={row.privacyStatus as "unlisted" | "public"} />
+                  </div>
                   <div className="flex flex-wrap items-center gap-2">
                     {row.youtubeWatchUrl ? <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" /> : null}
                     {(row.youtubeShareUrl || row.youtubeWatchUrl) ? (
@@ -46,6 +51,7 @@ export default async function AdminFinishedBroadcastsPage() {
                 <th className="px-3 py-2.5">Equipo</th>
                 <th className="px-3 py-2.5">Creador</th>
                 <th className="px-3 py-2.5">Fecha</th>
+                <th className="px-3 py-2.5">Visibilidad</th>
                 <th className="px-3 py-2.5">Enlaces</th>
                 <th className="px-3 py-2.5 text-right">Acciones</th>
               </tr>
@@ -57,6 +63,9 @@ export default async function AdminFinishedBroadcastsPage() {
                   <td className="px-3 py-3 text-text-muted">{row.teamName}</td>
                   <td className="px-3 py-3 text-text-muted">{row.creatorName || "-"}</td>
                   <td className="px-3 py-3 text-text-muted">{new Date(row.scheduledStart).toLocaleString()}</td>
+                  <td className="px-3 py-3">
+                    <VisibilitySelect id={row.id} type="broadcast" initialStatus={row.privacyStatus as "unlisted" | "public"} />
+                  </td>
                   <td className="px-3 py-3">
                     <div className="flex items-center gap-2">
                       {row.youtubeWatchUrl ? <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" /> : null}

@@ -6,6 +6,7 @@ import type { CachedYouTubeVideoRow } from "@/src/lib/broadcast/queries";
 import type { PlaylistRow } from "@/src/lib/admin/queries";
 import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
 import { DeleteChannelContentForm } from "@/src/components/admin/delete-channel-content-form";
+import { VisibilitySelect } from "./visibility-select";
 
 type Props = {
   videos: CachedYouTubeVideoRow[];
@@ -181,6 +182,10 @@ export function EventLinksList({ videos, playlists }: Props) {
                   </summary>
                   <div className="mt-3 border-t border-white/10 pt-3 space-y-2">
                     <p className="text-xs text-text-muted">Tipo: {row.videoType === "live" ? "Directo" : row.videoType === "short" ? "Short" : "Video"}</p>
+                    <div className="flex items-center gap-2 text-xs">
+                      <span className="text-text-muted">Visibilidad:</span>
+                      <VisibilitySelect id={row.youtubeVideoId} type="video" initialStatus={row.privacyStatus as "unlisted" | "public"} />
+                    </div>
                     <div className="flex flex-wrap gap-1">
                       {matchedPlaylists.length === 0 ? (
                         <span className="text-xs text-text-muted/50">Sin listas</span>
@@ -214,6 +219,7 @@ export function EventLinksList({ videos, playlists }: Props) {
                   <th className="px-3 py-2.5">Título</th>
                   <th className="px-3 py-2.5">Fecha</th>
                   <th className="px-3 py-2.5">Tipo</th>
+                  <th className="px-3 py-2.5">Visibilidad</th>
                   <th className="px-3 py-2.5">Listas de reproducción</th>
                   <th className="px-3 py-2.5 text-right">Enlaces y acciones</th>
                 </tr>
@@ -253,6 +259,9 @@ export function EventLinksList({ videos, playlists }: Props) {
                         }`}>
                           {row.videoType === "live" ? "Directo" : row.videoType === "short" ? "Short" : "Vídeo"}
                         </span>
+                      </td>
+                      <td className="px-3 py-4">
+                        <VisibilitySelect id={row.youtubeVideoId} type="video" initialStatus={row.privacyStatus as "unlisted" | "public"} />
                       </td>
                       <td className="px-3 py-4">
                         <div className="flex flex-wrap gap-1">
