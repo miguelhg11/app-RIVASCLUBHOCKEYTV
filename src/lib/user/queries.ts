@@ -81,17 +81,27 @@ async function getAssignedResourcesByUserId(userId: string) {
   const streamKeysMap = new Map<string, AssignedStreamKey>();
   for (const row of ((teamStreamKeysRes.data ?? []) as unknown[])) {
     const record = row as {
-      teams?: Array<{
-        team_stream_keys?: Array<{
-          stream_keys?:
-            | { id?: string; name?: string; active?: boolean }
-            | Array<{ id?: string; name?: string; active?: boolean }>
-            | null;
-        }> | null;
-      }>;
+      teams?:
+        | {
+            team_stream_keys?: Array<{
+              stream_keys?:
+                | { id?: string; name?: string; active?: boolean }
+                | Array<{ id?: string; name?: string; active?: boolean }>
+                | null;
+            }> | null;
+          }
+        | Array<{
+            team_stream_keys?: Array<{
+              stream_keys?:
+                | { id?: string; name?: string; active?: boolean }
+                | Array<{ id?: string; name?: string; active?: boolean }>
+                | null;
+            }> | null;
+          }>;
     };
-    const teamsWithLinks = Array.isArray(record.teams) ? record.teams : [];
+    const teamsWithLinks = normalizeRelation(record.teams);
     for (const team of teamsWithLinks) {
+      if (!team) continue;
       const links = team.team_stream_keys ?? [];
       for (const link of links) {
         const streamKeys = Array.isArray(link.stream_keys) ? link.stream_keys : link.stream_keys ? [link.stream_keys] : [];
@@ -118,17 +128,27 @@ async function getAssignedResourcesByUserId(userId: string) {
   const playlistsMap = new Map<string, AssignedPlaylist>();
   for (const row of ((playlistsRes.data ?? []) as unknown[])) {
     const record = row as {
-      teams?: Array<{
-        team_playlists?: Array<{
-          playlists?:
-            | { id?: string; name?: string; active?: boolean }
-            | Array<{ id?: string; name?: string; active?: boolean }>
-            | null;
-        }> | null;
-      }>;
+      teams?:
+        | {
+            team_playlists?: Array<{
+              playlists?:
+                | { id?: string; name?: string; active?: boolean }
+                | Array<{ id?: string; name?: string; active?: boolean }>
+                | null;
+            }> | null;
+          }
+        | Array<{
+            team_playlists?: Array<{
+              playlists?:
+                | { id?: string; name?: string; active?: boolean }
+                | Array<{ id?: string; name?: string; active?: boolean }>
+                | null;
+            }> | null;
+          }>;
     };
-    const teamsWithLinks = Array.isArray(record.teams) ? record.teams : [];
+    const teamsWithLinks = normalizeRelation(record.teams);
     for (const team of teamsWithLinks) {
+      if (!team) continue;
       const links = team.team_playlists ?? [];
       for (const link of links) {
         const playlistsArray = Array.isArray(link.playlists) ? link.playlists : link.playlists ? [link.playlists] : [];
