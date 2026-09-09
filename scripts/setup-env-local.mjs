@@ -117,7 +117,11 @@ async function main() {
 
   const content = `# Generado localmente por scripts/setup-env-local.mjs\n# NO VERSIONAR. NO PEGAR EN CHATS.\n\nAPP_ENV=${escapeEnv(appEnv)}\nAPP_BASE_URL=${escapeEnv(appBaseUrl)}\nSESSION_SECRET=${escapeEnv(sessionSecret)}\nYOUTUBE_MOCK_MODE=${escapeEnv(youtubeMockMode)}\n\nNEXT_PUBLIC_SUPABASE_URL=${escapeEnv(supabaseUrl)}\nSUPABASE_SERVICE_ROLE_KEY=${escapeEnv(supabaseServiceRoleKey)}\n\nYOUTUBE_CLIENT_ID=${escapeEnv(youtubeClientId)}\nYOUTUBE_CLIENT_SECRET=${escapeEnv(youtubeClientSecret)}\nYOUTUBE_REFRESH_TOKEN=${escapeEnv(youtubeRefreshToken)}\nYOUTUBE_TOKEN_URI=https://oauth2.googleapis.com/token\nYOUTUBE_SCOPE=https://www.googleapis.com/auth/youtube\n\nCLUB_NAME=${escapeEnv(clubName)}\nFMP_CLUB_NAME=${escapeEnv(fmpClubName)}\nRFEP_CLUB_NAME=${escapeEnv(rfepClubName)}\nFEDERATION_LOOKAHEAD_DAYS=${escapeEnv(federationLookaheadDays)}\nFEDERATION_CACHE_MINUTES=${escapeEnv(federationCacheMinutes)}\n\nDEFAULT_PRIVACY_STATUS=unlisted\nDEFAULT_LATENCY_PREFERENCE=normal\nDEFAULT_ENABLE_AUTO_START=true\nDEFAULT_ENABLE_AUTO_STOP=false\n`;
 
-  fs.writeFileSync(envPath, content, { mode: 0o600 });
+  const completeContent = content.replace(
+    'YOUTUBE_SCOPE=https://www.googleapis.com/auth/youtube\n',
+    `YOUTUBE_SCOPE=https://www.googleapis.com/auth/youtube\nYOUTUBE_EXPECTED_CHANNEL_ID=UCTaSaAtAbEqJGS89Z2Tqsbg\nCRON_SECRET=${escapeEnv(generateSecret())}\n`,
+  );
+  fs.writeFileSync(envPath, completeContent, { mode: 0o600 });
   ensureGitignore();
 
   console.log('\n.env.local creado correctamente. Resumen:');

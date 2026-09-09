@@ -58,30 +58,33 @@ export async function autoSyncBroadcastStatuses() {
 
         if (remote.lifeCycleStatus === "complete") {
           updatePayload.ended_at = nowIso;
-          updatePayload.ended_by = "system_auto_sync";
+          updatePayload.ended_by = null;
+          updatePayload.end_reason = "youtube_auto_sync";
         }
 
-        await supabase
+        const { error: updateError } = await supabase
           .from("broadcasts")
           .update(updatePayload)
           .eq("id", bc.id);
+        if (updateError) {
+          console.error(`Failed to persist status for broadcast ${bc.id}:`, updateError.message);
+          continue;
+        }
 
         if (statusChanged) {
           console.log(`Auto-synchronized status for broadcast ${bc.id}: ${bc.youtube_life_cycle_status} -> ${remote.lifeCycleStatus}`);
         }
       } else {
-        // Not found on YouTube: could be deleted. Soft-delete locally to match YouTube Studio.
-        console.log(`Broadcast ${bc.id} (${youtubeId}) not found on YouTube. Soft-deleting.`);
-        await supabase
+        // An omitted API item is not authoritative evidence that the broadcast was deleted.
+        const { error: updateError } = await supabase
           .from("broadcasts")
           .update({
-            deleted_at: nowIso,
-            youtube_life_cycle_status: "complete",
-            youtube_sync_status: "synced",
-            youtube_last_error: "Eliminado o cancelado desde YouTube Studio.",
+            youtube_sync_status: "failed",
+            youtube_last_error: "YouTube no devolvio el broadcast durante la comprobacion de estado.",
             last_youtube_sync_at: nowIso,
           })
           .eq("id", bc.id);
+        if (updateError) console.error(`Failed to record missing status for broadcast ${bc.id}:`, updateError.message);
       }
     }
   } catch (err) {
@@ -112,7 +115,6 @@ export async function getBroadcastForSuccessPage(id: string) {
 
 export async function listMyBroadcasts() {
   const session = await requireSession();
-  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
   const supabase = getSupabaseServerClient();
 
   const { data } = await supabase
@@ -123,17 +125,10 @@ export async function listMyBroadcasts() {
     .order("scheduled_start", { ascending: false })
     .limit(100);
 
-  const list = data ?? [];
-  const nowMs = Date.now();
-  const liveStatuses = new Set(["live", "testing"]);
-
-  return list.filter((bc) => {
+  return (data ?? []).filter((bc) => {
     if (bc.youtube_life_cycle_status === "complete") return false;
     const status = (bc.youtube_life_cycle_status ?? "").toLowerCase();
-    if (liveStatuses.has(status)) return false;
-    const scheduledMs = new Date(bc.scheduled_start).getTime();
-    if (!Number.isFinite(scheduledMs)) return true;
-    return scheduledMs >= nowMs;
+    return status !== "live" && status !== "testing";
   });
 }
 
@@ -150,7 +145,6 @@ export type LiveBroadcastRow = {
 
 export async function listLiveBroadcastsForSession(scope: "personal" | "global" = "personal"): Promise<LiveBroadcastRow[]> {
   const session = await requireSession();
-  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
   const supabase = getSupabaseServerClient();
 
   let query = supabase
@@ -187,7 +181,6 @@ export async function listLiveBroadcastsForSession(scope: "personal" | "global" 
 export async function countLiveBroadcastsForSession(scope: "personal" | "global" = "personal"): Promise<number> {
   const session = await requireSession().catch(() => null);
   if (!session) return 0;
-  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
 
   const supabase = getSupabaseServerClient();
   let query = supabase
@@ -247,7 +240,6 @@ export async function listAdminBroadcastOverview(): Promise<AdminBroadcastOvervi
   if (session.role !== ROLES.admin) {
     return [];
   }
-  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
 
   const supabase = getSupabaseServerClient();
 
@@ -355,7 +347,6 @@ export async function listPendingBroadcastsAdmin(): Promise<PendingBroadcastAdmi
   if (session.role !== ROLES.admin) {
     return [];
   }
-  await autoSyncBroadcastStatuses().catch((err) => console.error(err));
 
   const supabase = getSupabaseServerClient();
   const { data, error } = await supabase

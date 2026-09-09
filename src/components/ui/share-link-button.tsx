@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { extractYouTubeId } from "@/src/lib/tracking/url";
+import { getYouTubeUrl } from "@/src/lib/youtube/url";
 
 type ShareLinkButtonProps = {
   href: string;
@@ -13,22 +13,18 @@ type ShareLinkButtonProps = {
 export function ShareLinkButton({ href, title, text = "Te comparto este directo", className = "" }: ShareLinkButtonProps) {
   const [copied, setCopied] = useState(false);
 
-  const videoId = extractYouTubeId(href);
-  const trackingUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/r/${videoId}`
-      : `/r/${videoId}`;
+  const youtubeUrl = getYouTubeUrl(href);
 
   async function onShare() {
     try {
       const nav: any = typeof window !== "undefined" ? window.navigator : null;
       if (nav && typeof nav.share === "function") {
-        await nav.share({ title, text, url: trackingUrl });
+        await nav.share({ title, text, url: youtubeUrl });
         return;
       }
 
       if (nav?.clipboard?.writeText) {
-        await nav.clipboard.writeText(trackingUrl);
+        await nav.clipboard.writeText(youtubeUrl);
         setCopied(true);
         window.setTimeout(() => setCopied(false), 1400);
       }

@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element, react-hooks/set-state-in-effect */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useActionState, useEffect, useMemo, useRef, useState } from "react";
@@ -421,13 +421,11 @@ export function EditBroadcastForm({
       <div className="grid gap-4 sm:grid-cols-2">
         {/* Stream Key Select */}
         <label className="text-sm">
-          <span className="mb-1 block text-text-muted">Clave de Emisión (Stream Key)</span>
+          <span className="mb-1 block text-text-muted">Clave de Emisión (fija tras crear)</span>
+          <input type="hidden" name="streamKeyId" value={broadcast.stream_key_id || ""} />
           <select
-            name="streamKeyId"
-            required
             value={selectedStreamKeyId}
-            onChange={(e) => setSelectedStreamKeyId(e.target.value)}
-            disabled={!selectedTeamId}
+            disabled
             className="w-full rounded-lg border border-white/10 bg-[#12121a] px-3 py-2 text-white focus:border-accent-cyan focus:outline-none disabled:opacity-50"
           >
             <option value="">
@@ -448,13 +446,11 @@ export function EditBroadcastForm({
 
         {/* Playlist Select */}
         <label className="text-sm">
-          <span className="mb-1 block text-text-muted">Playlist Vinculada</span>
+          <span className="mb-1 block text-text-muted">Playlist Vinculada (fija tras crear)</span>
+          <input type="hidden" name="playlistId" value={broadcast.playlist_id || ""} />
           <select
-            name="playlistId"
-            required
             value={selectedPlaylistId}
-            onChange={(e) => setSelectedPlaylistId(e.target.value)}
-            disabled={!selectedTeamId}
+            disabled
             className="w-full rounded-lg border border-white/10 bg-[#12121a] px-3 py-2 text-white focus:border-accent-cyan focus:outline-none disabled:opacity-50"
           >
             <option value="">

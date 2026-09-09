@@ -89,7 +89,7 @@ export default async function DashboardPage() {
             </div>
             <h2 className="font-display text-lg font-semibold tracking-wide text-white">Programaciones pendientes</h2>
             <p className="mt-1 text-xs leading-relaxed text-text-muted">
-              Gestiona tus próximas emisiones programadas y obtén los enlaces de directo.
+              Gestiona todas tus emisiones no finalizadas y obtén los enlaces de directo.
             </p>
           </div>
         </Link>

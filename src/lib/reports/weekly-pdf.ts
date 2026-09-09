@@ -4,8 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { PDFDocument } from "pdf-lib";
 import { getWeeklyBroadcastRows } from "./weekly";
-import { serverEnv } from "@/src/lib/validation/env";
-import { getTrackingUrl } from "@/src/lib/tracking/url";
+import { getYouTubeUrl } from "@/src/lib/youtube/url";
 
 export async function generateWeeklyReportPdf(from: string, to: string): Promise<Buffer> {
   const fromIso = `${from}T00:00:00.000Z`;
@@ -37,24 +36,11 @@ export async function generateWeeklyReportPdf(from: string, to: string): Promise
     theme: "grid",
     head: [["PARTIDO", "FECHA", "HORA", "LINK YOUTUBE"]],
     body: rows.map((row) => {
-      // Build tracking URL: prefer youtubeBroadcastId, otherwise try to extract
-      // YouTube video ID from the raw watchUrl for external broadcasts.
-      let trackingUrl: string = "";
-
-      if (row.youtubeBroadcastId) {
-        trackingUrl = getTrackingUrl(row.youtubeBroadcastId, serverEnv.APP_BASE_URL);
-      } else if (row.watchUrl) {
-        // Try to extract YouTube video ID from the watchUrl
-        try {
-          const u = new URL(row.watchUrl);
-          const extractedId = u.searchParams.get("v") || u.pathname.split("/").pop() || "";
-          trackingUrl = extractedId ? getTrackingUrl(extractedId, serverEnv.APP_BASE_URL) : row.watchUrl;
-        } catch {
-          trackingUrl = row.watchUrl;
-        }
-      }
-
-      const displayUrl = trackingUrl || "-";
+      const displayUrl = row.watchUrl
+        ? getYouTubeUrl(row.watchUrl)
+        : row.youtubeBroadcastId
+          ? getYouTubeUrl(row.youtubeBroadcastId)
+          : "-";
 
       return {
         partido: row.title,

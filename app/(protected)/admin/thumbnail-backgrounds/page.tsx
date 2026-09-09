@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { ThumbnailBackgroundCreateForm } from "@/src/components/admin/thumbnail-background-create-form";
 import { ActiveToggleForm } from "@/src/components/admin/active-toggle-form";
 import { ThumbnailBackgroundEditForm } from "@/src/components/admin/thumbnail-background-edit-form";

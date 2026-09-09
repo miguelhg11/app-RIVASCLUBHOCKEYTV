@@ -24,11 +24,28 @@ const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
-const { data, error } = await supabase.from("users").select("id,email,role,active,deleted_at").limit(20);
+const { data: user, error: userErr } = await supabase
+  .from("users")
+  .select("id,name,email,role,active")
+  .eq("email", "rubendelamogalan@gmail.com")
+  .maybeSingle();
 
-if (error) {
-  console.error("ERROR:", error.message);
+if (userErr || !user) {
+  console.error("User not found or error:", userErr);
   process.exit(1);
 }
 
-console.log(JSON.stringify(data, null, 2));
+console.log("USER:", user);
+
+const { data: userTeams, error: utErr } = await supabase
+  .from("user_teams")
+  .select("team_id, teams(id, name, active, season_id, team_stream_keys(stream_key_id, stream_keys(name, active)), team_playlists(playlist_id, playlists(name, active)))")
+  .eq("user_id", user.id);
+
+if (utErr) {
+  console.error("Error fetching user teams:", utErr);
+  process.exit(1);
+}
+
+console.log("ASSIGNED TEAMS AND RESOURCES:");
+console.log(JSON.stringify(userTeams, null, 2));

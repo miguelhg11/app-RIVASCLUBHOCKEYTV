@@ -2,8 +2,8 @@ import "server-only";
 
 import crypto from "node:crypto";
 import { cookies } from "next/headers";
-import { cache } from "react";
-import type { Role } from "@/src/lib/auth/roles";
+import { ROLES, type Role } from "@/src/lib/auth/roles";
+import { getSupabaseServerClient } from "@/src/lib/supabase/server";
 
 const SESSION_COOKIE = "rivas_session";
 
@@ -22,8 +22,8 @@ function getSecret() {
   return secret;
 }
 
-function sign(value: string) {
-  return crypto.createHmac("sha256", getSecret()).update(value).digest("base64url");
+function sign(value: string, secret = getSecret()) {
+  return crypto.createHmac("sha256", secret).update(value).digest("base64url");
 }
 
 function encode(payload: SessionPayload) {
@@ -33,14 +33,21 @@ function encode(payload: SessionPayload) {
 }
 
 function decode(token: string): SessionPayload | null {
-  const [body, sig] = token.split(".");
-  if (!body || !sig) return null;
-  const expected = sign(body);
-  if (sig.length !== expected.length) return null;
-  if (!crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
-  const parsed = JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as SessionPayload;
-  if (parsed.exp <= Date.now()) return null;
-  return parsed;
+  try {
+    const [body, sig] = token.split(".");
+    if (!body || !sig) return null;
+    const secrets = [getSecret(), process.env.SESSION_SECRET_PREVIOUS].filter((value): value is string => Boolean(value));
+    const validSignature = secrets.some((secret) => {
+      const expected = sign(body, secret);
+      return sig.length === expected.length && crypto.timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
+    });
+    if (!validSignature) return null;
+    const parsed = JSON.parse(Buffer.from(body, "base64url").toString("utf8")) as SessionPayload;
+    if (parsed.exp <= Date.now()) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
 }
 
 export async function setSessionCookie(payload: Omit<SessionPayload, "exp">) {
@@ -61,9 +68,26 @@ export async function clearSessionCookie() {
   jar.delete(SESSION_COOKIE);
 }
 
-export const getSession = cache(async () => {
+export async function getSession() {
   const jar = await cookies();
   const token = jar.get(SESSION_COOKIE)?.value;
   if (!token) return null;
-  return decode(token);
-});
+  const session = decode(token);
+  if (!session) return null;
+
+  const { data: user, error } = await getSupabaseServerClient()
+    .from("users")
+    .select("id,email,role,active,deleted_at")
+    .eq("id", session.userId)
+    .maybeSingle();
+
+  if (error || !user || !user.active || user.deleted_at) return null;
+  if (user.role !== ROLES.admin && user.role !== ROLES.user) return null;
+
+  return {
+    userId: user.id,
+    email: user.email,
+    role: user.role as Role,
+    exp: session.exp,
+  };
+}

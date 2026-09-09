@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getSession } from "@/src/lib/auth/session";
-import { syncChannelBroadcastsAction } from "@/src/actions/broadcast.actions";
+import { autoSyncBroadcastStatuses } from "@/src/lib/broadcast/queries";
 
 export const dynamic = "force-dynamic";
 
@@ -11,8 +11,8 @@ export async function POST() {
   }
 
   try {
-    const result = await syncChannelBroadcastsAction({});
-    return NextResponse.json({ ok: !result.error, message: result.ok ?? result.error ?? "sync" });
+    await autoSyncBroadcastStatuses();
+    return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json({ ok: false, error: "Sync fallida" }, { status: 500 });
   }

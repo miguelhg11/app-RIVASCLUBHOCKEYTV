@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { extractYouTubeId } from "@/src/lib/tracking/url";
+import { getYouTubeUrl } from "@/src/lib/youtube/url";
 
 type YouTubeShareButtonProps = {
   href: string;
@@ -13,11 +13,7 @@ export function YouTubeShareButton({ href, className = "", size = "md" }: YouTub
   const [copied, setCopied] = useState(false);
   const logoHeight = size === "sm" ? "h-5" : "h-7";
 
-  const videoId = extractYouTubeId(href);
-  const trackingUrl =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/r/${videoId}`
-      : `/r/${videoId}`;
+  const youtubeUrl = getYouTubeUrl(href);
 
   async function onShare() {
     try {
@@ -26,13 +22,13 @@ export function YouTubeShareButton({ href, className = "", size = "md" }: YouTub
         await nav.share({
           title: "Directo Rivas TV",
           text: "Te comparto este directo de Rivas TV",
-          url: trackingUrl,
+          url: youtubeUrl,
         });
         return;
       }
 
       if (nav?.clipboard?.writeText) {
-        await nav.clipboard.writeText(trackingUrl);
+        await nav.clipboard.writeText(youtubeUrl);
         setCopied(true);
         window.setTimeout(() => setCopied(false), 1400);
       }

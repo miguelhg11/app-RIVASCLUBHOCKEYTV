@@ -122,7 +122,7 @@ async function getAssignedResourcesByUserId(userId: string) {
     .map((item) => ({
       id: item.id,
       name: item.name,
-      reason: availability.reasonsById.get(item.id) ?? "Ocupada por programacion pendiente o activa.",
+      reason: availability.reasonsById.get(item.id) ?? "Ocupada por una programacion vinculada en YouTube.",
     }));
 
   const playlistsMap = new Map<string, AssignedPlaylist>();
@@ -185,7 +185,7 @@ async function getAllActiveResources() {
     .map((item) => ({
       id: item.id,
       name: item.name,
-      reason: availability.reasonsById.get(item.id) ?? "Ocupada por programacion pendiente o activa.",
+      reason: availability.reasonsById.get(item.id) ?? "Ocupada por una programacion vinculada en YouTube.",
     }));
   const playlists = (playlistsRes.data ?? []) as AssignedPlaylist[];
 

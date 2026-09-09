@@ -15,7 +15,9 @@ const required = [
   'YOUTUBE_REFRESH_TOKEN',
   'YOUTUBE_TOKEN_URI',
   'YOUTUBE_SCOPE',
+  'YOUTUBE_EXPECTED_CHANNEL_ID',
 ];
+
 
 function parseEnv(text) {
   const out = {};
@@ -37,12 +39,6 @@ function parseEnv(text) {
 function isPlaceholder(value) {
   if (!value) return true;
   return /replace-with|your-|changeme|placeholder/i.test(value);
-}
-
-function mask(value) {
-  if (!value) return '(vacío)';
-  if (value.length <= 8) return '*'.repeat(value.length);
-  return `${value.slice(0, 4)}${'*'.repeat(Math.min(12, value.length - 8))}${value.slice(-4)}`;
 }
 
 async function main() {
@@ -73,7 +69,7 @@ async function main() {
 
   console.log('Validación local de .env.local');
   for (const key of required) {
-    console.log(`- ${key}: ${key.includes('SECRET') || key.includes('TOKEN') || key.includes('KEY') ? mask(env[key]) : env[key]}`);
+    console.log(`- ${key}: ${env[key] ? 'configurada' : 'ausente'}`);
   }
 
   if (warnings.length) {
@@ -125,7 +121,21 @@ async function checkYoutubeToken(env) {
     process.exit(1);
   }
 
-  console.log('Intercambio correcto. No se imprime el access token.');
+  const channelRes = await fetch('https://www.googleapis.com/youtube/v3/channels?part=id,snippet&mine=true', {
+    headers: { Authorization: `Bearer ${json.access_token}` },
+  });
+  const channelJson = await channelRes.json().catch(() => ({}));
+  const channel = channelJson.items?.[0];
+  if (!channelRes.ok || !channel?.id) {
+    console.error('OAuth funciona, pero no se pudo identificar el canal de YouTube asociado.');
+    process.exit(1);
+  }
+  if (channel.id !== env.YOUTUBE_EXPECTED_CHANNEL_ID) {
+    console.error(`Canal incorrecto. Esperado ${env.YOUTUBE_EXPECTED_CHANNEL_ID}; recibido ${channel.id}.`);
+    process.exit(1);
+  }
+
+  console.log(`Intercambio correcto. Canal verificado: ${channel.snippet?.title || channel.id}.`);
 }
 
 main().catch((err) => {

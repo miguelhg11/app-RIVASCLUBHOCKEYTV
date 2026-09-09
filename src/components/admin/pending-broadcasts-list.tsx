@@ -10,7 +10,7 @@ import type { UserRow, TeamRow } from "@/src/lib/admin/queries";
 import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
 import { YouTubeShareButton } from "@/src/components/ui/youtube-share-button";
 import { VisibilitySelect } from "./visibility-select";
-import { CopyTrackingLinkButton } from "@/src/components/ui/copy-tracking-link-button";
+import { CopyYouTubeLinkButton } from "@/src/components/ui/copy-youtube-link-button";
 
 function DeleteBroadcastButton({ id }: { id: string }) {
   const [state, formAction, pending] = useActionState(deleteBroadcastAction, {});
@@ -48,8 +48,6 @@ type Props = {
 export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts, users, teams }: Props) {
   const [selectedUser, setSelectedUser] = useState<string>("all");
   const [selectedTeam, setSelectedTeam] = useState<string>("all");
-  const [now] = useState(() => Date.now());
-
   const filteredBroadcasts = initialBroadcasts.filter((bc) => {
     const matchUser = selectedUser === "all" || bc.createdBy === selectedUser;
     const matchTeam = selectedTeam === "all" || bc.teamId === selectedTeam;
@@ -107,7 +105,7 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
               Programaciones Pendientes ({filteredBroadcasts.length})
             </h2>
             <p className="mt-0.5 text-xs text-text-muted">
-              Schedules that have not completed yet (auto-expires after 24h).
+              Emisiones no finalizadas. No se eliminan automáticamente por fecha.
             </p>
           </div>
         </div>
@@ -122,11 +120,6 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
             {filteredBroadcasts.map((row) => {
               const canEnd = row.youtubeLifeCycleStatus === "live" || row.youtubeLifeCycleStatus === "testing" || row.youtubeLifeCycleStatus === "ready";
               const scheduledDate = new Date(row.scheduledStart);
-              const expiresTime = scheduledDate.getTime() + 24 * 60 * 60 * 1000;
-              const msLeft = expiresTime - now;
-              const hoursLeft = Math.max(0, Math.floor(msLeft / (60 * 60 * 1000)));
-              const isExpired = msLeft <= 0;
-
               return (
                 <details key={row.id} className="rounded-lg border border-white/10 bg-white/[0.02] p-3">
                   <summary className="list-none cursor-pointer">
@@ -140,10 +133,10 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                       <span>Visibilidad:</span>
                       <VisibilitySelect id={row.id} type="broadcast" initialStatus={row.privacyStatus as "unlisted" | "public"} />
                     </div>
-                    <p>{isExpired ? "Expirando..." : `Expira en ${hoursLeft}h`}</p>
+                    <p>Sin caducidad automática.</p>
                     <div className="flex flex-wrap items-center gap-2 pt-1">
-                      {row.youtubeBroadcastId && (
-                        <CopyTrackingLinkButton videoIdOrUuid={row.youtubeBroadcastId} />
+                      {row.youtubeWatchUrl && (
+                        <CopyYouTubeLinkButton href={row.youtubeWatchUrl} />
                       )}
                       {row.youtubeWatchUrl ? <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" /> : null}
                       {row.youtubeShareUrl ? <YouTubeShareButton href={row.youtubeShareUrl} size="sm" /> : null}
@@ -180,25 +173,12 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                 {filteredBroadcasts.map((row) => {
                   const canEnd = row.youtubeLifeCycleStatus === "live" || row.youtubeLifeCycleStatus === "testing" || row.youtubeLifeCycleStatus === "ready";
                   const scheduledDate = new Date(row.scheduledStart);
-                  
-                  // Calculate time until expiration
-                  const expiresTime = scheduledDate.getTime() + 24 * 60 * 60 * 1000;
-                  const msLeft = expiresTime - now;
-                  const hoursLeft = Math.max(0, Math.floor(msLeft / (60 * 60 * 1000)));
-                  const isExpired = msLeft <= 0;
-
                   return (
                     <tr key={row.id} className="border-b border-white/5 align-top hover:bg-white/[0.01] transition-all">
                       <td className="px-3 py-3 font-medium text-white">{row.title}</td>
                       <td className="px-3 py-3 text-text-muted">
                         <div>{scheduledDate.toLocaleString()}</div>
-                        <div className="mt-0.5 text-[10px] uppercase font-semibold">
-                          {isExpired ? (
-                            <span className="text-accent-red">Expirando...</span>
-                          ) : (
-                            <span className="text-accent-cyan">Expira en {hoursLeft}h</span>
-                          )}
-                        </div>
+                        <div className="mt-0.5 text-[10px] uppercase font-semibold text-accent-cyan">Sin caducidad automática</div>
                       </td>
                       <td className="px-3 py-3 text-text-muted">{row.teamDisplayName || row.teamName}</td>
                       <td className="px-3 py-3 text-text-muted">
@@ -223,8 +203,8 @@ export function PendingBroadcastsList({ initialBroadcasts, unassignedBroadcasts,
                       <td className="px-3 py-3 text-text-muted">{row.youtubeSyncStatus}</td>
                       <td className="px-3 py-3 text-center">
                         <div className="flex flex-col items-center gap-1">
-                          {row.youtubeBroadcastId && (
-                            <CopyTrackingLinkButton videoIdOrUuid={row.youtubeBroadcastId} />
+                          {row.youtubeWatchUrl && (
+                            <CopyYouTubeLinkButton href={row.youtubeWatchUrl} />
                           )}
                           {row.youtubeWatchUrl ? (
                             <YouTubeWatchButton href={row.youtubeWatchUrl} size="sm" />

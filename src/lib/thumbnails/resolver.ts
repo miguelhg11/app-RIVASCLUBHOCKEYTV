@@ -14,6 +14,25 @@ let badgesCache: any[] | null = null;
 let cacheTimestamp = 0;
 const CACHE_DURATION_MS = 5 * 60 * 1000; // 5 minutos de cache
 
+// Fallback local mínimo: la resolución de un rival no debe convertirse en el
+// escudo de Rivas cuando Supabase está temporalmente fuera de servicio.
+const LOCAL_BADGE_FALLBACKS = [
+  {
+    canonical_name: "Colegio Alameda de Osuna",
+    source_scope: "fmp",
+    aliases: ["Alameda", "Alameda de Osuna", "Colegio Alameda de Osuna"],
+    normalized_aliases: ["alameda", "alameda de osuna", "colegio alameda de osuna"],
+    logo_url: "/badges/fmp/alameda.png",
+  },
+  {
+    canonical_name: "CHP Aluche",
+    source_scope: "fmp",
+    aliases: ["Aluche", "CHP Aluche"],
+    normalized_aliases: ["aluche", "chp aluche"],
+    logo_url: "/badges/fmp/aluche.png",
+  },
+];
+
 async function getBadges() {
   const now = Date.now();
   if (badgesCache && now - cacheTimestamp < CACHE_DURATION_MS) {
@@ -26,7 +45,7 @@ async function getBadges() {
 
   if (error) {
     console.error("Error fetching badges from Supabase:", error.message);
-    return badgesCache || []; // devolver cache antigua si falla
+    return badgesCache || LOCAL_BADGE_FALLBACKS; // conservar resolución segura sin DB
   }
 
   badgesCache = data || [];

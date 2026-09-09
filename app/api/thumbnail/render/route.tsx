@@ -1,9 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import fs from "node:fs";
 import path from "node:path";
 import { RIVAS_THUMBNAIL_STYLE } from "@/src/lib/thumbnails/rivas-thumbnail-style";
 import { createClient } from "@supabase/supabase-js";
+import { getSession } from "@/src/lib/auth/session";
 
 function getMimeFromPath(filePath: string) {
   const ext = path.extname(filePath).toLowerCase();
@@ -79,15 +81,9 @@ async function getBackgroundBase64(id: string, origin: string): Promise<string |
       const cleanPath = rawPath.startsWith("/") ? rawPath.slice(1) : rawPath;
       const cleanPublicPath = cleanPath.startsWith("public/") ? cleanPath.slice("public/".length) : cleanPath;
 
-      const fullPath = path.join(process.cwd(), cleanPath);
-      console.log("[getBackgroundBase64] Resolving local disk path:", fullPath);
-      const fromDisk = await filePathToDataUrl(fullPath);
-      if (fromDisk) return fromDisk;
-      else {
-        console.warn("[getBackgroundBase64] Local disk path does not exist:", fullPath);
-      }
-
-      const publicPath = path.join(process.cwd(), "public", cleanPublicPath);
+      const publicRoot = path.resolve(process.cwd(), "public");
+      const publicPath = path.resolve(publicRoot, cleanPublicPath);
+      if (!publicPath.startsWith(`${publicRoot}${path.sep}`)) return null;
       console.log("[getBackgroundBase64] Resolving public path fallback:", publicPath);
       const fromPublic = await filePathToDataUrl(publicPath);
       if (fromPublic) return fromPublic;
@@ -162,11 +158,20 @@ async function getExternalImageBase64(url: string): Promise<string | null> {
 }
 
 export async function GET(req: NextRequest) {
+  if (!(await isAuthorized(req))) return new Response("No autorizado", { status: 401 });
   return handleRender(req);
 }
 
 export async function POST(req: NextRequest) {
+  if (!(await isAuthorized(req))) return new Response("No autorizado", { status: 401 });
   return handleRender(req);
+}
+
+async function isAuthorized(req: NextRequest) {
+  const internalKey = req.headers.get("x-internal-thumbnail-key");
+  if (internalKey && internalKey === process.env.SESSION_SECRET) return true;
+  if (!req.cookies.get("rivas_session")?.value) return false;
+  return Boolean(await getSession());
 }
 
 async function handleRender(req: NextRequest) {

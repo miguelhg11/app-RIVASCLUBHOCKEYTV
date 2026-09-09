@@ -1,13 +1,11 @@
 import "server-only";
 
 import { randomUUID } from "node:crypto";
-import { google } from "googleapis";
+import { google, youtube_v3 } from "googleapis";
 import { serverEnv } from "@/src/lib/validation/env";
 import { getSupabaseServerClient } from "@/src/lib/supabase/server";
 
 // Cache in memory for YouTube concurrent viewers to avoid repetitive API reads (1 unit/each)
-const concurrentViewersCache = new Map<string, { viewers: number | null; timestamp: number }>();
-const CACHE_TTL_MS = 60 * 1000; // 60 seconds TTL
 
 export async function trackYouTubeQuotaUsage(input: {
   method: string;
@@ -108,6 +106,45 @@ function getYoutubeClient() {
   return google.youtube({ version: "v3", auth });
 }
 
+const EXPECTED_YOUTUBE_CHANNEL_ID = serverEnv.YOUTUBE_EXPECTED_CHANNEL_ID;
+let channelVerification: Promise<void> | null = null;
+
+async function getVerifiedYoutubeClient() {
+  const youtube = getYoutubeClient();
+
+  if (!channelVerification) {
+    channelVerification = youtube.channels
+      .list({ part: ["id"], mine: true })
+      .then((response) => {
+        const channelId = response.data.items?.[0]?.id;
+        if (!EXPECTED_YOUTUBE_CHANNEL_ID || !channelId || channelId !== EXPECTED_YOUTUBE_CHANNEL_ID) {
+          throw new Error("Las credenciales de YouTube no pertenecen al canal configurado.");
+        }
+      })
+      .catch((error) => {
+        channelVerification = null;
+        throw error;
+      });
+  }
+
+  await channelVerification;
+  return youtube;
+}
+
+export async function verifyYouTubeConnection() {
+  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
+    return { channelId: "mock", title: "YouTube mock", mode: "mock" as const };
+  }
+
+  const youtube = await getVerifiedYoutubeClient();
+  const response = await youtube.channels.list({ part: ["id", "snippet"], mine: true });
+  const channel = response.data.items?.[0];
+  if (!channel?.id || channel.id !== EXPECTED_YOUTUBE_CHANNEL_ID) {
+    throw new Error("El canal autenticado no coincide con el canal configurado.");
+  }
+  return { channelId: channel.id, title: channel.snippet?.title ?? "Canal YouTube", mode: "real" as const };
+}
+
 export async function createYouTubeBroadcast(input: {
   title: string;
   description: string;
@@ -120,7 +157,7 @@ export async function createYouTubeBroadcast(input: {
     return createYouTubeBroadcastMock(input);
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
 
   const created = await youtube.liveBroadcasts.insert({
     part: ["snippet", "status", "contentDetails"],
@@ -195,7 +232,7 @@ export async function createYouTubeLiveStream(input: { title: string }): Promise
     };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   const created = await youtube.liveStreams.insert({
     part: ["snippet", "cdn", "contentDetails"],
     requestBody: {
@@ -240,7 +277,7 @@ export async function createYouTubePlaylist(input: { title: string; description?
     };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   const created = await youtube.playlists.insert({
     part: ["snippet", "status"],
     requestBody: {
@@ -380,14 +417,25 @@ export async function listYouTubeChannelBroadcasts(): Promise<YouTubeChannelBroa
     return listYouTubeChannelBroadcastsMock();
   }
 
-  const youtube = getYoutubeClient();
-  const result = await youtube.liveBroadcasts.list({
-    part: ["id", "snippet", "status", "contentDetails"],
-    mine: true,
-    maxResults: 50,
-  });
+  const youtube = await getVerifiedYoutubeClient();
+  const items: youtube_v3.Schema$LiveBroadcast[] = [];
 
-  return (result.data.items ?? []).map((item) => ({
+  for (const broadcastStatus of ["active", "upcoming"] as const) {
+    let pageToken: string | undefined;
+    do {
+      const result = await youtube.liveBroadcasts.list({
+        part: ["id", "snippet", "status", "contentDetails"],
+        broadcastStatus,
+        broadcastType: "all",
+        maxResults: 50,
+        pageToken,
+      });
+      items.push(...(result.data.items ?? []));
+      pageToken = result.data.nextPageToken ?? undefined;
+    } while (pageToken);
+  }
+
+  return items.map((item) => ({
     youtubeBroadcastId: item.id ?? "",
     title: item.snippet?.title ?? "Sin titulo",
     description: item.snippet?.description ?? null,
@@ -395,8 +443,8 @@ export async function listYouTubeChannelBroadcasts(): Promise<YouTubeChannelBroa
     privacyStatus: item.status?.privacyStatus ?? null,
     lifeCycleStatus: item.status?.lifeCycleStatus ?? null,
     boundStreamId: item.contentDetails?.boundStreamId ?? null,
-    actualStart: ((item as unknown as { actualStartTime?: string }).actualStartTime) ?? null,
-    actualEnd: ((item as unknown as { actualEndTime?: string }).actualEndTime) ?? null,
+    actualStart: item.snippet?.actualStartTime ?? null,
+    actualEnd: item.snippet?.actualEndTime ?? null,
     watchUrl: `https://www.youtube.com/watch?v=${item.id ?? ""}`,
     shareUrl: `https://youtube.com/live/${item.id ?? ""}?feature=share`,
     embedUrl: `https://www.youtube.com/embed/${item.id ?? ""}`,
@@ -410,14 +458,21 @@ export async function listYouTubeChannelStreams(): Promise<YouTubeChannelStream[
     return listYouTubeChannelStreamsMock();
   }
 
-  const youtube = getYoutubeClient();
-  const result = await youtube.liveStreams.list({
-    part: ["id", "snippet", "cdn", "status", "contentDetails"],
-    mine: true,
-    maxResults: 50,
-  });
+  const youtube = await getVerifiedYoutubeClient();
+  const rawItems: youtube_v3.Schema$LiveStream[] = [];
+  let pageToken: string | undefined;
+  do {
+    const result = await youtube.liveStreams.list({
+      part: ["id", "snippet", "cdn", "status", "contentDetails"],
+      mine: true,
+      maxResults: 50,
+      pageToken,
+    });
+    rawItems.push(...(result.data.items ?? []));
+    pageToken = result.data.nextPageToken ?? undefined;
+  } while (pageToken);
 
-  return (result.data.items ?? [])
+  return rawItems
     .map((item) => ({
       youtubeLiveStreamId: item.id ?? "",
       title: item.snippet?.title ?? "YouTube Stream",
@@ -439,14 +494,21 @@ export async function listYouTubeChannelPlaylists(): Promise<YouTubeChannelPlayl
     return [];
   }
 
-  const youtube = getYoutubeClient();
-  const result = await youtube.playlists.list({
-    part: ["id", "snippet", "status", "contentDetails"],
-    mine: true,
-    maxResults: 50,
-  });
+  const youtube = await getVerifiedYoutubeClient();
+  const rawItems: youtube_v3.Schema$Playlist[] = [];
+  let pageToken: string | undefined;
+  do {
+    const result = await youtube.playlists.list({
+      part: ["id", "snippet", "status", "contentDetails"],
+      mine: true,
+      maxResults: 50,
+      pageToken,
+    });
+    rawItems.push(...(result.data.items ?? []));
+    pageToken = result.data.nextPageToken ?? undefined;
+  } while (pageToken);
 
-  return (result.data.items ?? [])
+  return rawItems
     .map((item) => ({
       youtubePlaylistId: item.id ?? "",
       title: item.snippet?.title ?? "Playlist",
@@ -463,7 +525,7 @@ export async function endYouTubeBroadcast(input: { youtubeBroadcastId: string })
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   await youtube.liveBroadcasts.transition({
     part: ["id", "status", "snippet"],
     id: input.youtubeBroadcastId,
@@ -482,7 +544,7 @@ export async function updateYouTubePlaylist(input: {
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   await youtube.playlists.update({
     part: ["snippet"],
     requestBody: {
@@ -502,7 +564,7 @@ export async function deleteYouTubePlaylist(input: { youtubePlaylistId: string }
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   await youtube.playlists.delete({ id: input.youtubePlaylistId });
   return { ok: true };
 }
@@ -515,7 +577,7 @@ export async function updateYouTubeLiveStreamTitle(input: {
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   const existing = await youtube.liveStreams.list({
     part: ["id", "snippet", "cdn", "contentDetails"],
     id: [input.youtubeLiveStreamId],
@@ -554,7 +616,7 @@ export async function deleteYouTubeLiveStream(input: { youtubeLiveStreamId: stri
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   await youtube.liveStreams.delete({ id: input.youtubeLiveStreamId });
   return { ok: true };
 }
@@ -564,7 +626,7 @@ export async function deleteYouTubeBroadcast(input: { youtubeBroadcastId: string
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   await youtube.liveBroadcasts.delete({
     id: input.youtubeBroadcastId,
   });
@@ -576,7 +638,7 @@ export async function deleteYouTubeVideo(input: { youtubeVideoId: string }) {
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   await youtube.videos.delete({ id: input.youtubeVideoId });
   return { ok: true };
 }
@@ -592,7 +654,7 @@ export async function updateYouTubeBroadcast(input: {
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   const part = ["snippet"];
   const requestBody: any = {
     id: input.youtubeBroadcastId,
@@ -625,7 +687,7 @@ export async function updateYouTubeVideoPrivacyStatus(input: {
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   await youtube.videos.update({
     part: ["status"],
     requestBody: {
@@ -647,7 +709,7 @@ export async function uploadYouTubeBroadcastThumbnail(input: {
     return { ok: true };
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   await youtube.thumbnails.set({
     videoId: input.videoId,
     media: {
@@ -778,7 +840,7 @@ export async function listYouTubeChannelVideos(): Promise<SyncedYouTubeVideo[]> 
     return listYouTubeChannelVideosMock();
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
 
   // 1. Get channel playlists items to map video IDs to playlists
   const playlistItemsMap = new Map<string, string[]>();
@@ -907,7 +969,7 @@ export async function getYouTubeBroadcastStatuses(
     return out;
   }
 
-  const youtube = getYoutubeClient();
+  const youtube = await getVerifiedYoutubeClient();
   const res = await youtube.liveBroadcasts.list({
     part: ["id", "status", "snippet"],
     id: ids,
@@ -924,267 +986,4 @@ export async function getYouTubeBroadcastStatuses(
     }
   }
   return out;
-}
-
-export type YouTubeVideoAnalyticsResult = {
-  views: number;
-  estimatedMinutesWatched: number;
-  provincias: Array<{ code: string; name: string; views: number; percentage: number }>;
-  devices: Array<{ type: string; views: number; percentage: number }>;
-};
-
-const PROVINCES_MAP: Record<string, string> = {
-  "ES-M": "Madrid",
-  "ES-B": "Barcelona",
-  "ES-V": "Valencia",
-  "ES-SE": "Sevilla",
-  "ES-Z": "Zaragoza",
-  "ES-MA": "Málaga",
-  "ES-MU": "Murcia",
-  "ES-PM": "Baleares",
-  "ES-GC": "Las Palmas",
-  "ES-A": "Alicante",
-  "ES-CS": "Castellón",
-  "ES-C": "A Coruña",
-  "ES-PO": "Pontevedra",
-  "ES-SS": "Gipuzkoa",
-  "ES-BI": "Bizkaia",
-  "ES-LO": "La Rioja",
-  "ES-O": "Asturias",
-  "ES-GI": "Girona",
-  "ES-T": "Tarragona",
-  "ES-CC": "Cáceres",
-  "ES-BA": "Badajoz",
-  "ES-TO": "Toledo",
-  "ES-CR": "Ciudad Real",
-  "ES-CA": "Cádiz",
-  "ES-CO": "Córdoba",
-  "ES-GR": "Granada",
-  "ES-H": "Huelva",
-  "ES-JA": "Jaén",
-  "ES-AL": "Almería",
-  "ES-SG": "Segovia",
-  "ES-AV": "Ávila",
-  "ES-SA": "Salamanca",
-  "ES-ZA": "Zamora",
-  "ES-LE": "León",
-  "ES-P": "Palencia",
-  "ES-BU": "Burgos",
-  "ES-SO": "Soria",
-  "ES-VA": "Valladolid",
-  "ES-TE": "Teruel",
-  "ES-HU": "Huesca",
-  "ES-TF": "Tenerife",
-  "ES-CU": "Cuenca",
-  "ES-GU": "Guadalajara",
-  "ES-NA": "Navarra",
-  "ES-LU": "Lugo",
-  "ES-OR": "Ourense",
-  "ES-S": "Cantabria",
-  "ES-CE": "Ceuta",
-  "ES-ML": "Melilla"
-};
-
-const COUNTRIES_MAP: Record<string, string> = {
-  "ES": "España",
-  "US": "Estados Unidos",
-  "FR": "Francia",
-  "PT": "Portugal",
-  "IT": "Italia",
-  "DE": "Alemania",
-  "AD": "Andorra",
-  "AR": "Argentina",
-  "MX": "México",
-  "CO": "Colombia",
-  "GB": "Reino Unido",
-  "BR": "Brasil",
-  "CL": "Chile",
-  "UY": "Uruguay",
-};
-
-export async function getYouTubeVideoAnalytics(videoId: string): Promise<YouTubeVideoAnalyticsResult> {
-  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
-    // Generate realistic Spanish mock data
-    const totalViews = Math.floor(Math.random() * 450) + 50;
-    const totalMinutes = Math.floor(totalViews * (Math.random() * 15 + 5));
-    
-    // Provincias
-    const isSharedSymptom = Math.random() > 0.5; // Simulate shared with rivals
-    const madViews = Math.floor(totalViews * (isSharedSymptom ? 0.45 : 0.90));
-    const rivalViews = isSharedSymptom ? Math.floor(totalViews * 0.35) : 0;
-    const restViews = totalViews - madViews - rivalViews;
-    
-    const provincias = [
-      { code: "ES-M", name: "Madrid", views: madViews, percentage: Math.round((madViews / totalViews) * 100) }
-    ];
-    
-    if (isSharedSymptom) {
-      // Simulate team rival (e.g. Barcelona/Cataluña or Galicia)
-      const rivalCode = Math.random() > 0.5 ? "ES-B" : "ES-C";
-      const rivalName = rivalCode === "ES-B" ? "Barcelona" : "A Coruña";
-      provincias.push({
-        code: rivalCode,
-        name: rivalName,
-        views: rivalViews,
-        percentage: Math.round((rivalViews / totalViews) * 100)
-      });
-    }
-    
-    if (restViews > 0) {
-      provincias.push({
-        code: "Otros",
-        name: "Otras regiones / Desconocido",
-        views: restViews,
-        percentage: Math.round((restViews / totalViews) * 100)
-      });
-    }
-    
-    // Devices
-    const mobileViews = Math.floor(totalViews * 0.55);
-    const tvViews = Math.floor(totalViews * 0.25);
-    const desktopViews = totalViews - mobileViews - tvViews;
-    
-    const devices = [
-      { type: "MÓVIL", views: mobileViews, percentage: Math.round((mobileViews / totalViews) * 100) },
-      { type: "TELEVISIÓN (Smart TV)", views: tvViews, percentage: Math.round((tvViews / totalViews) * 100) },
-      { type: "ORDENADOR", views: desktopViews, percentage: Math.round((desktopViews / totalViews) * 100) }
-    ];
-
-    return {
-      views: totalViews,
-      estimatedMinutesWatched: totalMinutes,
-      provincias: provincias.sort((a, b) => b.views - a.views),
-      devices: devices.sort((a, b) => b.views - a.views)
-    };
-  }
-
-  const auth = getYoutubeAuthClient();
-  const analytics = google.youtubeAnalytics({ version: "v2", auth });
-
-  // YouTube Analytics requires start/end dates. We query since 2025 to now.
-  const todayStr = new Date().toISOString().split("T")[0];
-
-  try {
-    // Query absolute total metrics, country breakdown, and device breakdown in parallel
-    const [totalQuery, geoQuery, deviceQuery] = await Promise.all([
-      analytics.reports.query({
-        ids: "channel==MINE",
-        startDate: "2025-01-01",
-        endDate: todayStr,
-        metrics: "views,estimatedMinutesWatched",
-        filters: `video==${videoId}`,
-      }),
-      analytics.reports.query({
-        ids: "channel==MINE",
-        startDate: "2025-01-01",
-        endDate: todayStr,
-        metrics: "views,estimatedMinutesWatched",
-        dimensions: "country",
-        filters: `video==${videoId}`,
-      }),
-      analytics.reports.query({
-        ids: "channel==MINE",
-        startDate: "2025-01-01",
-        endDate: todayStr,
-        metrics: "views",
-        dimensions: "deviceType",
-        filters: `video==${videoId}`,
-      }),
-    ]);
-
-    // Extract absolute totals (independent of dimensions matching or thresholds)
-    const totalRows = totalQuery.data.rows ?? [];
-    const totalViews = Number(totalRows[0]?.[0] || 0);
-    const totalMinutes = Number(totalRows[0]?.[1] || 0);
-
-    const geoRows = geoQuery.data.rows ?? [];
-    let geoTotalViews = 0;
-    const rawProvinces = geoRows.map((row) => {
-      const code = String(row[0] || "");
-      const views = Number(row[1] || 0);
-      geoTotalViews += views;
-
-      const name = COUNTRIES_MAP[code] || `Región (${code})`;
-      return { code, name, views };
-    });
-
-    const provincias = rawProvinces.map((prov) => ({
-      ...prov,
-      percentage: geoTotalViews > 0 ? Math.round((prov.views / geoTotalViews) * 100) : 0
-    })).sort((a, b) => b.views - a.views);
-
-    const deviceRows = deviceQuery.data.rows ?? [];
-    let deviceTotalViews = 0;
-    const rawDevices = deviceRows.map((row) => {
-      const typeCode = String(row[0] || "").toUpperCase();
-      const views = Number(row[1] || 0);
-      deviceTotalViews += views;
-
-      let type = "OTROS";
-      if (typeCode === "MOBILE") type = "MÓVIL";
-      else if (typeCode === "DESKTOP") type = "ORDENADOR";
-      else if (typeCode === "TV") type = "TELEVISIÓN (Smart TV)";
-      else if (typeCode === "TABLET") type = "TABLET";
-      else if (typeCode === "GAME_CONSOLE") type = "CONSOLA DE JUEGOS";
-
-      return { type, views };
-    });
-
-    const devices = rawDevices.map((dev) => ({
-      ...dev,
-      percentage: deviceTotalViews > 0 ? Math.round((dev.views / deviceTotalViews) * 100) : 0
-    })).sort((a, b) => b.views - a.views);
-
-    return {
-      views: totalViews,
-      estimatedMinutesWatched: totalMinutes,
-      provincias,
-      devices
-    };
-  } catch (err) {
-    console.error(`Error querying YouTube Analytics for video ${videoId}:`, err);
-    throw err;
-  }
-}
-
-export async function getYouTubeLiveConcurrentViewers(videoId: string): Promise<number | null> {
-  if (serverEnv.YOUTUBE_MOCK_MODE === "true") {
-    return Math.floor(Math.random() * 80) + 10;
-  }
-
-  // 1. Check cache first
-  const cached = concurrentViewersCache.get(videoId);
-  const now = Date.now();
-  if (cached && (now - cached.timestamp < CACHE_TTL_MS)) {
-    return cached.viewers;
-  }
-
-  const youtube = getYoutubeClient();
-  try {
-    const res = await youtube.videos.list({
-      part: ["liveStreamingDetails"],
-      id: [videoId],
-    });
-
-    // Track real YouTube read call (1 unit of quota)
-    await trackYouTubeQuotaUsage({
-      method: "videos.list",
-      quotaCost: 1,
-      feature: "live_concurrent_viewers",
-      youtubeResourceId: videoId,
-    });
-
-    const item = res.data.items?.[0];
-    let viewers: number | null = null;
-    if (item?.liveStreamingDetails?.concurrentViewers) {
-      viewers = parseInt(item.liveStreamingDetails.concurrentViewers, 10);
-    }
-
-    // Update cache
-    concurrentViewersCache.set(videoId, { viewers, timestamp: now });
-    return viewers;
-  } catch (err) {
-    console.error(`Error fetching concurrent viewers for video ${videoId}:`, err);
-    return null;
-  }
 }

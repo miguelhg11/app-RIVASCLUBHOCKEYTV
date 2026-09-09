@@ -20,28 +20,17 @@ export function RealtimeSyncPulse() {
       "/admin/event-links"
     ]);
     const isFastPath = fastPaths.has(pathname);
-    const intervalMs = isFastPath ? 20000 : 60000;
+    if (!isFastPath) return;
 
-    let lastPulse = 0;
+    const intervalMs = 45000;
     let refreshInFlight = false;
 
-    const trySyncPulse = async () => {
-      const now = Date.now();
-      if (!isFastPath) return;
-      if (now - lastPulse < 45000) return;
-      lastPulse = now;
-      try {
-        await fetch("/api/sync/pulse", { method: "POST", cache: "no-store", keepalive: true });
-      } catch {
-        // no-op
-      }
-    };
-
     const tick = async () => {
-      if (refreshInFlight) return;
+      if (refreshInFlight || document.visibilityState !== "visible") return;
       refreshInFlight = true;
       try {
-        router.refresh();
+        const response = await fetch("/api/sync/pulse", { method: "POST", cache: "no-store" });
+        if (response.ok) router.refresh();
       } finally {
         window.setTimeout(() => {
           refreshInFlight = false;
@@ -49,17 +38,13 @@ export function RealtimeSyncPulse() {
       }
     };
 
-    void trySyncPulse();
-
     const interval = window.setInterval(tick, intervalMs);
     const onVisible = () => {
       if (document.visibilityState === "visible") {
-        void trySyncPulse();
         void tick();
       }
     };
     const onFocus = () => {
-      void trySyncPulse();
       void tick();
     };
 

@@ -233,20 +233,6 @@ Permite consultar el histórico de emisiones completadas y acceder a sus grabaci
     subtitle: "Análisis — PDF y Calendario Semanal",
     description: `Consulta y exporta planificaciones semanales estáticas (Viernes a Jueves) y genera PDF del cuadrante de partidos del club para vuestra audiencia.`,
   },
-  {
-    step: 14,
-    label: "Estadísticas YouTube",
-    href: "/admin/stats",
-    icon: "M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z",
-    color: "text-accent-cyan",
-    bg: "bg-accent-cyan/10",
-    ring: "ring-accent-cyan/20",
-    subtitle: "Análisis — Procedencia y dispositivos",
-    description: `Muestra estadísticas en tiempo real y datos consolidados de visualizaciones del canal:
-  • Procedencia geográfica detallada por municipios para ver desde dónde se siguen las emisiones.
-  • Tipo de dispositivo desde el que se reproducen.
-  • Espectadores concurrentes en tiempo real para emisiones en directo.`,
-  },
 ] as const;
 
 // ─── Info Modal Component ────────────────────────────────────────────────────

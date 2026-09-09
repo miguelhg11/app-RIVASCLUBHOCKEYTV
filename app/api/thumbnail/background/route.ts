@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    // 4. Read from local disk
+    // 4. Read from public assets only. Do not resolve arbitrary project paths.
     if (data.url_path) {
       let cleanPath = data.url_path;
       if (cleanPath.startsWith("/")) {
@@ -85,20 +85,11 @@ export async function GET(req: NextRequest) {
       if (cleanPath.startsWith("public/")) {
         cleanPath = cleanPath.slice("public/".length);
       }
-      const fullPath = path.join(process.cwd(), cleanPath);
-      if (fs.existsSync(fullPath)) {
-        const buffer = fs.readFileSync(fullPath);
-        const mime = getMimeFromPath(cleanPath);
-        return new Response(buffer, {
-          headers: {
-            "Content-Type": mime,
-            "Cache-Control": "public, max-age=31536000, immutable",
-          },
-        });
+      const publicRoot = path.resolve(process.cwd(), "public");
+      const publicPath = path.resolve(publicRoot, cleanPath);
+      if (!publicPath.startsWith(`${publicRoot}${path.sep}`)) {
+        return new Response("Invalid background path", { status: 400 });
       }
-      
-      // Also check public folder
-      const publicPath = path.join(process.cwd(), "public", cleanPath);
       if (fs.existsSync(publicPath)) {
         const buffer = fs.readFileSync(publicPath);
         const mime = getMimeFromPath(cleanPath);

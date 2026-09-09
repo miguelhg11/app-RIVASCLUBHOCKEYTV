@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element, react-hooks/set-state-in-effect */
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useActionState, useEffect, useMemo, useRef, useState, DragEvent, ChangeEvent } from "react";
@@ -209,7 +209,7 @@ export function NewBroadcastForm({
   // STATIC FMP LOOKUP TABLE (offline fallback — always available)
   // Source: codigo.txt + club_badges_seed.json
   // ========================================================================
-  const STATIC_FMP_BADGES: { aliases: string[]; logo_url: string }[] = [
+  const STATIC_FMP_BADGES = useMemo<{ aliases: string[]; logo_url: string }[]>(() => [
     { aliases: ["ALAMEDA OSUNA", "AOA", "ALAMEDA DE OSUNA", "COLEGIO ALAMEDA DE OSUNA"], logo_url: "/badges/fmp/alameda.png" },
     { aliases: ["ALCALA", "ALCA", "CP ALCALA"], logo_url: "/badges/fmp/alcala.png" },
     { aliases: ["ALCOBENDAS", "ALB", "CP ALCOBENDAS"], logo_url: "/badges/fmp/alcobendas.png" },
@@ -229,7 +229,7 @@ export function NewBroadcastForm({
     { aliases: ["VETONIA", "VET"], logo_url: "/badges/fmp/vetonia.png" },
     { aliases: ["VIRGEN DE EUROPA", "CVE", "CLUB VIRGEN DE EUROPA", "VDE"], logo_url: "/badges/fmp/vdeuropa.png" },
     { aliases: ["VIEJAS GLORIAS", "VIEJAS GLORIAS VDE", "VIEJAS GLORIAS VIRGEN DE EUROPA"], logo_url: "/badges/fmp/viejasgloriasVDE.png" },
-  ];
+  ], []);
 
   // ========================================================================
   // CLIENT-SIDE CREST RESOLVER — 4-tier matching
@@ -345,7 +345,7 @@ export function NewBroadcastForm({
       console.warn(`[findCrestUrl] No badge found for team: "${teamName}" (normalized: "${input}")`);
       return "/badges/fmp/rivas.png";
     };
-  }, [categorizedBadges]);
+  }, [categorizedBadges, STATIC_FMP_BADGES]);
 
   // Pre-sort badge lists alphabetically
   const sortedBadges = useMemo(() => {
@@ -583,7 +583,7 @@ export function NewBroadcastForm({
       setUserEditedBottomLine(true);
       setPreviewTick(t => t + 1);
     };
-  }, [findCrestUrl]);
+  }, [findCrestUrl, categorizedBadges]);
 
   // Load matches from API
   useEffect(() => {

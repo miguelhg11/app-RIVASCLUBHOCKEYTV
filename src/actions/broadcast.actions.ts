@@ -2,8 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 import { z } from "zod";
+import { randomUUID } from "node:crypto";
 import { requireAdmin, requireSession } from "@/src/lib/auth/guards";
 import { revalidateAllResourcePaths } from "./admin.actions";
 import { getSelectedSeason } from "@/src/lib/seasons/utils";
@@ -24,7 +24,6 @@ import {
   updateYouTubeBroadcast,
   uploadYouTubeBroadcastThumbnail,
 } from "@/src/lib/youtube/service";
-import { expirePendingBroadcasts } from "@/src/lib/broadcast/expiration";
 
 export type CreateBroadcastState = {
   error?: string;
@@ -42,10 +41,9 @@ export type EndBroadcastState = {
 
 async function applyThumbnailToYouTube(videoId: string, data: any) {
   try {
-    const hostList = await headers();
-    const host = hostList.get("host") || "localhost:3000";
-    const protocol = host.startsWith("localhost") || host.startsWith("127.0.0.1") ? "http" : "https";
-    const baseUrl = `${protocol}://${host}`;
+    const configuredBaseUrl = process.env.APP_BASE_URL;
+    if (!configuredBaseUrl || !process.env.SESSION_SECRET) throw new Error("APP_BASE_URL o SESSION_SECRET no configurado");
+    const baseUrl = configuredBaseUrl.replace(/\/$/, "");
 
     const shortTitle = data.thumbnailPayload ? JSON.parse(data.thumbnailPayload).shortTitle : "";
     const competitionLine = data.thumbnailPayload ? JSON.parse(data.thumbnailPayload).competitionLine : "";
@@ -57,6 +55,7 @@ async function applyThumbnailToYouTube(videoId: string, data: any) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "X-Internal-Thumbnail-Key": process.env.SESSION_SECRET,
       },
       body: JSON.stringify({
         shortTitle,
@@ -303,9 +302,18 @@ export async function createBroadcastAction(_prev: CreateBroadcastState, formDat
 }
 
 export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Promise<SyncBroadcastState> {
-  const session = await requireSession();
+  const session = await requireAdmin();
   const supabase = getSupabaseServerClient();
   const startedAt = new Date().toISOString();
+  const leaseOwnerId = randomUUID();
+
+  const { data: leaseAcquired, error: leaseError } = await supabase.rpc("acquire_youtube_sync_lease", {
+    p_owner_id: leaseOwnerId,
+    p_ttl_seconds: 120,
+  });
+  if (leaseError || leaseAcquired !== true) {
+    return { error: "Ya hay una sincronizacion de YouTube en curso. Intentalo de nuevo en unos segundos." };
+  }
 
   try {
     const { data: latestRun } = await supabase
@@ -318,6 +326,7 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
     if (latestRun?.finished_at && latestRun.status === "ok") {
       const seconds = (Date.now() - new Date(latestRun.finished_at).getTime()) / 1000;
       if (seconds < 45) {
+        await supabase.rpc("release_youtube_sync_lease", { p_owner_id: leaseOwnerId });
         return { ok: "Sync reciente detectada. Mostrando datos actualizados." };
       }
     }
@@ -331,7 +340,7 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
       started_at: startedAt,
       status: "running",
       triggered_by: session.userId,
-      trigger_source: session.role === "admin" ? "admin" : "user",
+      trigger_source: "admin",
       resource_type: "all",
       metadata: { source: "syncChannelBroadcastsAction" },
     })
@@ -341,13 +350,6 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
   const runId = runStartError ? null : runRow?.id ?? null;
 
   try {
-    // 0. Auto-expire broadcasts older than 24 hours
-    try {
-      await expirePendingBroadcasts();
-    } catch (expireErr) {
-      console.error("Auto-expiration failed during sync:", expireErr);
-    }
-
     const [channelBroadcasts, channelStreams, channelPlaylists, channelVideos] = await Promise.all([
       listYouTubeChannelBroadcasts(),
       listYouTubeChannelStreams(),
@@ -361,6 +363,7 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
     let broadcastsUpdated = 0;
     let externalUpserted = 0;
     let videosUpserted = 0;
+    const syncErrors: string[] = [];
 
     for (const stream of channelStreams) {
       const fallbackName = `YouTube Stream ${stream.youtubeLiveStreamId.slice(0, 8)}`;
@@ -388,6 +391,7 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
         { onConflict: "youtube_live_stream_id" },
       );
       if (!error) streamsUpserted += 1;
+      else syncErrors.push(`stream ${stream.youtubeLiveStreamId}: ${error.message}`);
     }
 
     for (const playlist of channelPlaylists) {
@@ -408,6 +412,7 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
         { onConflict: "youtube_playlist_id" },
       );
       if (!error) playlistsUpserted += 1;
+      else syncErrors.push(`playlist ${playlist.youtubePlaylistId}: ${error.message}`);
     }
 
     for (const item of channelBroadcasts) {
@@ -418,7 +423,7 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
         .maybeSingle();
 
       if (localOwned?.id) {
-        await supabase
+        const { error } = await supabase
           .from("broadcasts")
           .update({
             title: item.title,
@@ -440,11 +445,12 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
             youtube_last_error: null,
           })
           .eq("id", localOwned.id);
-        broadcastsUpdated += 1;
+        if (!error) broadcastsUpdated += 1;
+        else syncErrors.push(`broadcast ${item.youtubeBroadcastId}: ${error.message}`);
         continue;
       }
 
-      await supabase.from("youtube_external_broadcasts").upsert(
+      const { error } = await supabase.from("youtube_external_broadcasts").upsert(
         {
           youtube_broadcast_id: item.youtubeBroadcastId,
           youtube_video_id: item.youtubeBroadcastId,
@@ -467,40 +473,8 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
         },
         { onConflict: "youtube_broadcast_id" },
       );
-      externalUpserted += 1;
-    }
-
-    // 0.5. Check for broadcasts that exist locally but were deleted from YouTube
-    const youtubeBroadcastIds = new Set(channelBroadcasts.map((cb) => cb.youtubeBroadcastId));
-    const { data: localActiveBroadcasts } = await supabase
-      .from("broadcasts")
-      .select("id, youtube_broadcast_id, title")
-      .is("deleted_at", null)
-      .neq("youtube_life_cycle_status", "complete");
-
-    if (localActiveBroadcasts) {
-      for (const localBc of localActiveBroadcasts) {
-        if (localBc.youtube_broadcast_id && !youtubeBroadcastIds.has(localBc.youtube_broadcast_id)) {
-          console.log(`Local broadcast '${localBc.title}' (ID: ${localBc.id}) not found on YouTube. Marking as deleted.`);
-          await supabase
-            .from("broadcasts")
-            .update({
-              deleted_at: new Date().toISOString(),
-              youtube_life_cycle_status: "complete",
-              youtube_last_error: "Eliminado o cancelado desde YouTube Studio.",
-            })
-            .eq("id", localBc.id);
-
-          await supabase.from("operation_logs").insert({
-            user_id: session.userId,
-            broadcast_id: localBc.id,
-            operation_type: "sync_delete_broadcast",
-            status: "ok",
-            message: `Programación eliminada localmente tras ser borrada en YouTube Studio: ${localBc.title}`,
-            metadata: sanitizeForLog({ id: localBc.id, youtubeBroadcastId: localBc.youtube_broadcast_id }),
-          });
-        }
-      }
+      if (!error) externalUpserted += 1;
+      else syncErrors.push(`external broadcast ${item.youtubeBroadcastId}: ${error.message}`);
     }
 
     for (const video of channelVideos) {
@@ -525,21 +499,25 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
           videosUpserted += 1;
         } else {
           console.error(`Failed to cache video ${video.youtubeVideoId}:`, videoError.message);
+          syncErrors.push(`video ${video.youtubeVideoId}: ${videoError.message}`);
         }
       } catch (err) {
         console.warn(`Resilience guard: Failed to cache video ${video.youtubeVideoId} (table might not exist yet):`, err);
+        syncErrors.push(`video ${video.youtubeVideoId}: error inesperado`);
       }
     }
+
+    const syncStatus = syncErrors.length === 0 ? "ok" : "partial";
 
     if (runId) {
       await supabase
         .from("youtube_sync_runs")
         .update({
           finished_at: new Date().toISOString(),
-          status: "ok",
+          status: syncStatus,
           items_seen: channelBroadcasts.length + channelStreams.length + channelPlaylists.length + channelVideos.length,
           items_upserted: streamsUpserted + playlistsUpserted + broadcastsUpdated + externalUpserted + videosUpserted,
-          items_failed: 0,
+          items_failed: syncErrors.length,
           metadata: {
             broadcastsSeen: channelBroadcasts.length,
             streamsSeen: channelStreams.length,
@@ -550,6 +528,7 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
             broadcastsUpdated,
             externalUpserted,
             videosUpserted,
+            errors: syncErrors.slice(0, 20),
           },
         })
         .eq("id", runId);
@@ -558,8 +537,8 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
     await supabase.from("operation_logs").insert({
       user_id: session.userId,
       operation_type: "sync_channel_broadcasts",
-      status: "ok",
-      message: "Sincronizacion YouTube completa (streams/playlists/broadcasts/external/videos)",
+      status: syncStatus,
+      message: syncStatus === "ok" ? "Sincronizacion YouTube completa" : "Sincronizacion YouTube parcial",
       metadata: sanitizeForLog({
         broadcastsSeen: channelBroadcasts.length,
         streamsSeen: channelStreams.length,
@@ -570,14 +549,19 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
         broadcastsUpdated,
         externalUpserted,
         videosUpserted,
+        errors: syncErrors.slice(0, 20),
       }),
     });
 
     await revalidateAllResourcePaths();
 
-    return {
-      ok: `Sync OK. Streams: ${streamsUpserted}/${channelStreams.length}. Playlists: ${playlistsUpserted}/${channelPlaylists.length}. Broadcasts locales: ${broadcastsUpdated}. Externos: ${externalUpserted}. Videos cacheados: ${videosUpserted}/${channelVideos.length}.`,
-    };
+    if (syncErrors.length > 0) {
+      await supabase.rpc("release_youtube_sync_lease", { p_owner_id: leaseOwnerId });
+      return { error: `Sincronizacion parcial: ${syncErrors.length} elementos no se pudieron guardar.` };
+    }
+
+    await supabase.rpc("release_youtube_sync_lease", { p_owner_id: leaseOwnerId });
+    return { ok: `Sync OK. Streams: ${streamsUpserted}/${channelStreams.length}. Playlists: ${playlistsUpserted}/${channelPlaylists.length}. Broadcasts locales: ${broadcastsUpdated}. Externos: ${externalUpserted}. Videos cacheados: ${videosUpserted}/${channelVideos.length}.` };
   } catch (error) {
     const message = error instanceof Error ? error.message : "Error desconocido en sync YouTube";
 
@@ -592,6 +576,8 @@ export async function syncChannelBroadcastsAction(_prev: SyncBroadcastState): Pr
         })
         .eq("id", runId);
     }
+
+    await supabase.rpc("release_youtube_sync_lease", { p_owner_id: leaseOwnerId });
 
     await supabase.from("operation_logs").insert({
       user_id: session.userId,
@@ -864,7 +850,7 @@ export async function deleteChannelContentAction(
                        message.toLowerCase().includes("not found");
 
     if (isNotFound) {
-      console.warn(`Video ${youtubeVideoId} not found on YouTube, proceeding with local cleanup.`, error);
+      console.warn(`Video ${youtubeVideoId} not found on YouTube; local cleanup is consistent.`, error);
       youtubeDeletedMessage = "El video no existía en YouTube. Se ha limpiado correctamente de la app.";
     } else {
       return { error: `No se pudo borrar en YouTube: ${message}` };
@@ -925,8 +911,17 @@ export async function deleteBroadcastAction(_prev: DeleteBroadcastState, formDat
     try {
       await deleteYouTubeBroadcast({ youtubeBroadcastId: row.youtube_broadcast_id });
     } catch (error) {
-      console.error(`Failed to delete broadcast ${row.youtube_broadcast_id} from YouTube:`, error);
-      // Proceed to soft delete locally anyway so resources are freed up
+      const message = error instanceof Error ? error.message : "Error desconocido en YouTube";
+      console.error(`Failed to delete broadcast ${row.youtube_broadcast_id} from YouTube:`, message);
+      await supabase.from("operation_logs").insert({
+        user_id: session.userId,
+        broadcast_id: id,
+        operation_type: "delete_broadcast",
+        status: "failed",
+        message: "No se pudo borrar el broadcast en YouTube",
+        metadata: sanitizeForLog({ youtubeBroadcastId: row.youtube_broadcast_id, reason: message }),
+      });
+      return { error: "No se pudo borrar el broadcast en YouTube; no se modificó la copia local." };
     }
   }
 
@@ -1002,7 +997,7 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
 
   const { data: existing, error: fetchError } = await supabase
     .from("broadcasts")
-    .select("id, youtube_broadcast_id, youtube_video_id, created_by")
+    .select("id, youtube_broadcast_id, youtube_video_id, created_by, stream_key_id, playlist_id")
     .eq("id", parsed.data.id)
     .maybeSingle();
 
@@ -1014,6 +1009,10 @@ export async function updateBroadcastAction(_prev: UpdateBroadcastState, formDat
 
   if (!isAdmin && existing.created_by !== session.userId) {
     return { error: "No tienes permisos para actualizar esta programación." };
+  }
+
+  if (existing.stream_key_id !== parsed.data.streamKeyId || existing.playlist_id !== parsed.data.playlistId) {
+    return { error: "No se puede cambiar la stream key ni la playlist de una emisión ya creada en YouTube." };
   }
 
   // Validate user public visibility permissions

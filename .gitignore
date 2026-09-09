@@ -6,11 +6,13 @@ node_modules/
 .next/
 out/
 .vercel/
+supabase/.temp/
 
 # env / secrets
 .env
 .env.*
 !.env.example
+credenciales_admin.txt
 
 # local artifacts
 *.log
@@ -18,8 +20,10 @@ out/
 coverage/
 playwright-report/
 test-results/
+scratch/*backup*.sql
 
 # generated backups
 .env.local.backup.*
 
 .vercel
+.env*.local

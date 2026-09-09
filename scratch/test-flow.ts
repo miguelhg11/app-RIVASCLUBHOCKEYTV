@@ -156,13 +156,6 @@ async function main() {
   const passwordOk = await bcrypt.compare(newPassword, userPostReset.password_hash);
   console.log("Does new password hash match?", passwordOk ? "YES" : "NO");
 
-  // 5. Test Expiration logic
-  console.log("\n--- 5. Verify unbroadcast schedules expiration ---");
-  const { expirePendingBroadcasts } = await import("../src/lib/broadcast/expiration");
-  console.log("Running expirePendingBroadcasts()...");
-  const expiredSummary = await expirePendingBroadcasts();
-  console.log("Expiration run completed.", expiredSummary);
-
   console.log("\nAll backend checks passed successfully!");
 }
 

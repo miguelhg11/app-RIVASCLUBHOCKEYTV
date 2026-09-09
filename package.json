@@ -10,10 +10,12 @@
     "typecheck": "tsc --noEmit",
     "check:supabase-schema": "node scripts/check-supabase-schema.mjs",
     "test:federations": "tsx --test tests/federations/*.test.ts",
+    "test": "tsx --test tests/*.test.ts tests/federations/*.test.ts tests/thumbnails/*.test.ts",
     "setup:env": "node scripts/setup-env-local.mjs",
     "setup:gmail-email": "node scripts/setup-gmail-email.mjs",
     "check:env": "node scripts/check-env.mjs",
-    "check:youtube-token": "node scripts/check-env.mjs --youtube-token-check"
+    "check:youtube-token": "node scripts/check-env.mjs --youtube-token-check",
+    "test:e2e": "playwright test"
   },
   "keywords": [],
   "author": "",
@@ -26,7 +28,7 @@
     "jspdf": "^4.2.1",
     "jspdf-autotable": "^5.0.8",
     "next": "^16.2.6",
-    "nodemailer": "^7.0.10",
+    "nodemailer": "^9.0.5",
     "pdf-lib": "^1.17.1",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
@@ -34,6 +36,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@tailwindcss/postcss": "^4.3.0",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^25.9.1",
@@ -42,6 +45,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.6",
+    "supabase": "^2.116.0",
     "tailwindcss": "^4.3.0",
     "tsx": "^4.22.3",
     "typescript": "^6.0.3"

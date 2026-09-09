@@ -1,6 +1,0 @@
-Credenciales de Acceso - Administrador Inicial
----------------------------------------------
-Email: admin@rivas.local
-Contraseña: AdminRivas2026!
-Rol: admin
-Nombre: Admin Inicial

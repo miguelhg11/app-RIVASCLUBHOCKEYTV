@@ -2,7 +2,7 @@ import Link from "next/link";
 import { listMyBroadcasts } from "@/src/lib/broadcast/queries";
 import { DeleteBroadcastButton } from "@/src/components/forms/delete-broadcast-button";
 import { YouTubeWatchButton } from "@/src/components/ui/youtube-watch-button";
-import { CopyTrackingLinkButton } from "@/src/components/ui/copy-tracking-link-button";
+import { CopyYouTubeLinkButton } from "@/src/components/ui/copy-youtube-link-button";
 import { ReactiveSyncHandler } from "@/src/components/ui/reactive-sync-handler";
 
 export default async function BroadcastListPage() {
@@ -47,7 +47,7 @@ export default async function BroadcastListPage() {
                     <YouTubeWatchButton href={broadcast.youtube_watch_url} size="sm" />
                   ) : null}
                   {broadcast.youtube_watch_url ? (
-                    <CopyTrackingLinkButton videoIdOrUuid={broadcast.youtube_broadcast_id || broadcast.id} />
+                    <CopyYouTubeLinkButton href={broadcast.youtube_watch_url} />
                   ) : null}
                 </div>
                 <div className="flex items-center gap-2">

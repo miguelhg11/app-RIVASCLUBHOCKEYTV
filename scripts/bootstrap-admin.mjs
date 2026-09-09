@@ -1,3 +1,4 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import bcrypt from "bcrypt";
 import { createClient } from "@supabase/supabase-js";
@@ -25,8 +26,8 @@ const supabase = createClient(env.NEXT_PUBLIC_SUPABASE_URL, env.SUPABASE_SERVICE
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
-const email = "admin@rivas.local";
-const password = "AdminRivas2026!";
+const email = (process.env.ADMIN_BOOTSTRAP_EMAIL || "admin@rivas.local").trim().toLowerCase();
+const password = process.env.ADMIN_BOOTSTRAP_PASSWORD || crypto.randomBytes(18).toString("base64url");
 const passwordHash = await bcrypt.hash(password, 12);
 
 const { data: existing, error: findError } = await supabase.from("users").select("id").eq("email", email).maybeSingle();
@@ -57,4 +58,4 @@ if (existing?.id) {
 }
 
 console.log(`EMAIL=${email}`);
-console.log(`PASSWORD=${password}`);
+console.log("PASSWORD=<generated-or-provided-not-logged>");

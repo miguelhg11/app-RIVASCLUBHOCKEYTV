@@ -17,8 +17,7 @@ begin
 end $$;
 
 create unique index if not exists idx_teams_category_letter_unique
-  on teams(category_id, coalesce(letter, ''))
-  where deleted_at is null;
+  on teams(category_id, coalesce(letter, ''));
 
 create unique index if not exists idx_categories_name_unique
   on categories(name);
